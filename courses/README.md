@@ -5,18 +5,8 @@
 ```
 .
 ├── algorithms-and-datastructres
-│   ├── 
-│   └── 
 ├── javascript-bootcamp
-│   ├── 
-│   ├── 
-│   └──
-├── object-oriented-javascript
-│   ├── 
-│   └──  
-│       ├── 
-│       └── 
-└── README.md
+└── object-oriented-javascript
 ```
 
 ### [Algorithms And Datastructres](https://russellabraham.github.io/javascript/courses/algorithms-and-datastructres)
