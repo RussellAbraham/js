@@ -5,15 +5,6 @@
 ```
 .
 ├── courses
-│   └── algorithms-and-datastructres
-│       ├── 
-│       └── 
-│   └── object-oriented-javascript
-│       ├── 
-│       └── 
-│   └── js
-│       ├── 
-│       └── 
 ├── qr.png
 └── README.md
 ```
