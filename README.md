@@ -6,18 +6,16 @@
 
 ```
 .
-├── algorithms-and-datastructres
-│   ├── main.css
-│   └── README.md
-├── object-oriented-javascript
-│   ├── main.css
-│   └── README.md
-├── js
-│   ├── main.js
-│   ├── plugins.js
-│   └── vendor
-│       ├── jquery.min.js
-│       └── modernizr.min.js
+├── courses
+│   └── algorithms-and-datastructres
+│       ├── 
+│       └── 
+│   └── object-oriented-javascript
+│       ├── 
+│       └── 
+│   └── js
+│       ├── 
+│       └── 
 ├── qr.png
 └── README.md
 ```
