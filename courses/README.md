@@ -15,5 +15,5 @@ The Missing Computer Science and Coding Interview Bootcamp
 ### [JavaScript Bootcamp](https://russellabraham.github.io/javascript/courses/javascript-bootcamp)
 The most up-to-date JS resource online! Master Javascript by building a beautiful portfolio of projects!
 
-### [Object Oriented JavaScript](https://russellabraham.github.io/javascript/courses/object-oriented-javascripts)
+### [Object Oriented JavaScript](https://russellabraham.github.io/javascript/courses/object-oriented-javascript)
 Master the internals of JavaScript and use it better
