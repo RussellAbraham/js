@@ -18,7 +18,7 @@ A collection of random javascript snippets and examples.
 
 ```
 .
-│   qr.png
+│   javascript.png
 │   README.md
 │   
 ├───courses
