@@ -1,7 +1,7 @@
 [JavaScript](https://github.com/RussellAbraham/javascript) | [Documentation
 table of contents](README.md)
 
-# Coursees
+# Courses
 
 ## Structure
 
