@@ -37,7 +37,7 @@ This directory contains.
 
 This directory should contain.
 
-### qr.png
-![](qr.png)
+### QR Code
+![JavaScript](qr.png)
 
 ### README.md
