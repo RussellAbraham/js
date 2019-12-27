@@ -38,7 +38,6 @@ This directory contains.
 This directory should contain.
 
 ### qr.png
-[HTML5 Boilerplate homepage](https://html5boilerplate.com) | [Documentation
-table of contents](TOC.md)
+[JavaScript](https://github.com/RussellAbraham/javascript/) | [QR Code](qr.md)
 
 ### README.md
