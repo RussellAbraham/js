@@ -20,9 +20,7 @@
 
 What follows is a general overview of each major part and how to use them.
 
-### [courses](https://github.com/RussellAbraham/javascript/courses/)
-
-This directory should contain. 
+### [Courses](https://russellabraham.github.io/javascript/courses/)
 
 <hr>
 
