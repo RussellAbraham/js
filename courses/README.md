@@ -1,4 +1,4 @@
-[Github Repository](https://github.com/RussellAbraham/javascript/courses)
+[Github Repository](https://github.com/RussellAbraham/javascript/tree/master/courses)
 
 ## Structure
 
