@@ -20,19 +20,10 @@
 
 What follows is a general overview of each major part and how to use them.
 
-### [algorithms-and-datastructres](https://github.com/RussellAbraham/javascript/courses/algorithms-and-datastructres/)
+### [courses](https://github.com/RussellAbraham/javascript/courses/)
 
 This directory should contain. 
 
-### [object-oriented-javascript](https://github.com/RussellAbraham/javascript/object-oriented-javascript/)
+<hr>
 
-This directory contains.
-
-### js
-
-This directory should contain.
-
-### QR Code
 ![JavaScript](qr.png)
-
-### README.md
