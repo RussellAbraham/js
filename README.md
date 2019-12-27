@@ -1,7 +1,5 @@
 [Github Repository](https://github.com/RussellAbraham/javascript/)
 
-# Courses
-
 ## Structure
 
 ```
