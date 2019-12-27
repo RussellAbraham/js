@@ -1,4 +1,4 @@
-[JavaScript](https://github.com/RussellAbraham/javascript) | [Documentation
+[JavaScript](https://russellabraham.github.io/javascript/) | [Documentation
 table of contents](README.md)
 
 # Courses
