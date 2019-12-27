@@ -24,7 +24,7 @@
 
 What follows is a general overview of each major part and how to use them.
 
-### [algorithms-and-datastructresy](https://github.com/RussellAbraham/javascript/courses/algorithms-and-datastructres/)
+### [algorithms-and-datastructres](https://github.com/RussellAbraham/javascript/courses/algorithms-and-datastructres/)
 
 This directory should contain. 
 
