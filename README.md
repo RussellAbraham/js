@@ -38,6 +38,6 @@ This directory contains.
 This directory should contain.
 
 ### qr.png
-[JavaScript](https://github.com/RussellAbraham/javascript/) | [QR Code](qr.md)
+![](qr.png)
 
 ### README.md
