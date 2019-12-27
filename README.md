@@ -24,11 +24,11 @@
 
 What follows is a general overview of each major part and how to use them.
 
-### algorithms-and-datastructres
+### [algorithms-and-datastructresy](https://github.com/RussellAbraham/javascript/courses/algorithms-and-datastructres/)
 
 This directory should contain. 
 
-### object-oriented-javascript
+### [object-oriented-javascript](https://github.com/RussellAbraham/javascript/object-oriented-javascript/)
 
 This directory contains.
 
