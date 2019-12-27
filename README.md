@@ -1,4 +1,4 @@
-[README](https://russellabraham.github.io/javascript/)
+[Github Repository](https://github.com/RussellAbraham/javascript/)
 
 # Courses
 
