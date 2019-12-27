@@ -10,6 +10,10 @@ A collection of links and source material from different online courses on javas
 
 A collection of random javascript snippets and examples.
 
+<hr>
+
+![JavaScript](qr.png)
+
 ## Structure
 
 ```
@@ -199,7 +203,3 @@ A collection of random javascript snippets and examples.
 └───scripts
         README.md
 ```
-
-<hr>
-
-![JavaScript](qr.png)
