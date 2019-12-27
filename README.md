@@ -12,7 +12,7 @@ A collection of random javascript snippets and examples.
 
 <hr>
 
-![JavaScript](qr.png)
+![JavaScript](javascript.png)
 
 ## Structure
 
