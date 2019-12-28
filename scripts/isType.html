@@ -167,7 +167,7 @@ function isArray(obj) {
   return toString.call(obj) === "[object Array]";
 } 
 
-(function(){ return _.isArray(arguments); })();
+(function(){ return isArray(arguments); })();
 // false
 
 isArray([1,2,3])
