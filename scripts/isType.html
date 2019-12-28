@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>isType</title>
+<meta name="viewport" content="width=device-width, initial-scale=0.75, user-scalable=no">
 <link rel='stylesheet' href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/boot.css'>
 <link rel='stylesheet' href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/prism.css'>
 <style>
@@ -48,6 +49,9 @@ aside, main {
   height: calc(100% - 3em);
    overflow:auto;
 }
+#myUL {
+  padding: 0.5em;
+}
 #aside.active {  
   opacity:1;
   transform:translate(0px);
@@ -66,7 +70,9 @@ input{
 }
 
 li {
+  padding: .25em 0 .25em 0;
   list-style: none;
+  border-bottom:1px solid rgba(0,0,0,0.15)
 }
 
 .post {
@@ -379,11 +385,18 @@ isUniform([1,2,3])
 <div class="date"><a name="isEven">December 27 2019</a></div>
 <h2>isEven</h2>
 <p class="quote">
+Returns <code>true</code> if the number is an even number.
 </p>
 <pre><code class="lang-javascript">
 function isEven(num) {
   return num % 2 === 0;
 }
+
+isEven(2);
+// true
+
+isEven(3);
+// false
 </code></pre>
 <hr>
 </div>
@@ -648,6 +661,27 @@ function myFunction() {
     }
 }
 
+function each(obj, iterator, context) {
+  var breaker = {},
+    ArrayProto = Array.prototype,
+    ObjProto = Object.prototype,
+    hasOwnProperty = ObjProto.hasOwnProperty,
+    nativeForEach = ArrayProto.forEach;
+  if (nativeForEach && obj.forEach === nativeForEach) {
+    obj.forEach(iterator, context);
+  } else if (obj.length === +obj.length) {
+    for (var i = 0, l = obj.length; i < l; i++) {
+      if (i in obj && iterator.call(context, obj[i], i, obj) === breaker)
+        return;
+    }
+  } else {
+    for (var key in obj) {
+      if (hasOwnProperty.call(obj, key)) {
+        if (iterator.call(context, obj[key], key, obj) === breaker) return;
+      }
+    }
+  }
+}
 
 /* *** isArray()     *** */ 
 function isArray(obj) {
@@ -761,13 +795,18 @@ function isPrime(value) {
   }
   return value > 1;
 }
-var arr = ["Arguments","Function","String","Number","Date","RegExp","Error","Symbol","Map","WeakMap","Set","WeakSet"];
-arr.forEach(function(name) {
+
+each(["Arguments","Function","String","Number","Date","RegExp","Error","Symbol","Map","WeakMap","Set","WeakSet"], function(name) {
     window["is" + name] = function(obj) {
       return toString.call(obj) === "[object " + name + "]";
     };
 });
-
-    </script>
+// var arr = ["Arguments","Function","String","Number","Date","RegExp","Error","Symbol","Map","WeakMap","Set","WeakSet"];
+// arr.forEach(function(name) {
+//     window["is" + name] = function(obj) {
+//       return toString.call(obj) === "[object " + name + "]";
+//     };
+// });
+</script>
 </body>
 </html>
