@@ -4,652 +4,269 @@
 <head>
 <meta charset="UTF-8">
 <title>isType</title>
-<meta name="viewport" content="width=device-width, initial-scale=0.75, user-scalable=no">
-<link rel='stylesheet' href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/boot.css'>
+<link rel='stylesheet' href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/base.css'>
 <link rel='stylesheet' href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/prism.css'>
 <style>
-button {
-  height: 2em;
+.navbar {
+  height: 3.5em;
+  border-bottom:1px solid RGBA(0,0,0,0.15);
 }
-aside, main {
-  
+/* aside, main */
+#aside, #main {
+  position: absolute;
+  height: calc(100% - 3.6em);
 }
 #main {
   width: 100%;
   padding: .5em;
 }
-#container {
-  width: 100%;
+#main_body {
+  width:100%;
   height: 100%;
-  margin: .175em;
   overflow: auto;
   font-family: 'Source Sans Pro', sans-serif;
   padding: 20px;
 }
-#aside, #main {
-  
-  position: absolute;
-  border: 1px solid RGBA(0,0,0,0.15);
-  height: calc(100% - 2em);
-  
-}
 #aside {
-  
   opacity:0;
   transform: translateX(-300px);
   transition: all .5s;
   background-color:rgb(250,250,250);
- 
+  border-right:1px solid RGBA(0,0,0,0.15);
   width: 250px;
   z-index: 1; 
   will-change: transform, opacity;
-  
-}
-#div{
-  height: calc(100% - 3em);
-   overflow:auto;
-}
-#myUL {
-  padding: 0.5em;
 }
 #aside.active {  
   opacity:1;
   transform:translate(0px);
 }
-#box{
+#aside_head {
   width: 100%;
   border-bottom:1px solid RGBA(0,0,0,0.15);
-  
 }
-input{
+#aside_search {
   margin: 2%;
   width: 96%;
 }
-.hidden {
-  
+#aside_body {
+  height: calc(100% - 2.5em);
+  overflow:auto;
 }
-
-li {
-  padding: .25em 0 .25em 0;
-  list-style: none;
-  border-bottom:1px solid rgba(0,0,0,0.15)
+#aside_list {
+  padding: 0.5em;
 }
-
+/* post */
 .post {
   margin-bottom: 20px;
 }
-
+.post pre {
+  margin-top: 0.5em;
+  padding-left: 1em;
+  padding-right:1em;
+}
 .date {
   color: #3498db;
   letter-spacing: 0.2rem;
   text-transform: uppercase;
 }
-
 .quote{
   border-left: 5px solid #bdc3c7;
   padding-left: 5px;
 }
-
-h2 {
-  font-size: 2.0rem;
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content */
+.modal-content {
+  overflow: auto; /* Enable scroll if needed */
+  background-color: RGB(251,251,248);
+  margin: 1em auto;
+  padding: 20px;
+  border: 1px solid RGBA(0,0,0,0.15);
+  border-radius: 3px;
+  width: 80%;
+  height: calc(100% - 2em);
+}
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
   font-weight: bold;
-  color: #2c3e50;
 }
-
-hr{
-    border: 0;
-    height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
-code {
-	font-family:"Consolas", "Andale Mono", "Courier New", "Courier", monospace;
-	padding:0 2px;
-	color:#676767
+form label {
+  width: 100%;
 }
-pre {
-	font-size:14px;
-	line-height:1.3;
-	font-weight: normal;
-	white-space:pre;
-	border:0 none;
-	outline:0 none;
-	color: #ccc;
-	background: #333;
-	padding:10px 20px 15px 28px;
-	-webkit-border-radius: 10px;
-	   -moz-border-radius: 10px;
-	        border-radius: 10px;
-	margin:10px auto 40px;
-	overflow:auto;
+#post input,
+#post textarea {
+  width: 100%;
+  border:1px solid RGBA(0,0,0,0.15);
+  padding: 3px;
+  border-radius: 3px;
+  outline: none;
+}
+#post textarea {
+  resize: none;
 }
 </style>
 </head>
 <body translate="no">
-<button>&#9776;</button>
+<nav class="navbar" aria-label="Page navigation example">
+<ul class="pagination">
+<li class="page-item"><a class="page-link" href="#" id="sidebtn" data-toggle="" data-target="">&#9776;</a></li>
+<li class="page-item"><a class="page-link" href="#" id="modalbtn">Post</a></li>
+</ul>
+</nav>
 <aside id="aside">
-<div id="box">
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+<div id="aside_head">
+<input type="text" id="aside_search">
 </div>
-<div id="div">
-<div id="myUL">
-<li><a href="#isArray">isArray</a></li>
-<li><a href="#isObject">isObject</a></li>
-<li><a href="#isString">isString</a></li>
-<li><a href="#isNan">isNan</a></li>
-<li><a href="#isBoolean">isBoolean</a></li>
-<li><a href="#isNull">isNull</a></li>
-<li><a href="#isUndefined">isUndefined</a></li>
-<li><a href="#isDate">isDate</a></li>
-<li><a href="#isRegExp">isRegExp</a></li>
-<li><a href="#isUniform">isUniform</a></li>
-<li><a href="#isEven">isEven</a></li>
-<li><a href="#isMatch">isMatch</a></li>
-<li><a href="#isAlphaNumeric">isAlphaNumeric</a></li>
-<li><a href="#isElement">isElement</a></li>
-<li><a href="#isPrime">isPrime</a></li>
-<li><a href="#isArguments">isArguments</a></li>
-<li><a href="#isFunction">isFunction</a></li>
-<li><a href="#isError">isError</a></li>
-<li><a href="#isSymbol">isSymbol</a></li>
-<li><a href="#isMap">isMap</a></li>
-<li><a href="#isWeakMap">isWeakMap</a></li>
-<li><a href="#isSet">isSet</a></li>
-<li><a href="#isWeakSet">isWeakSet</a></li>
-</div>
+<div id="aside_body">
+<ul id="aside_list">
+</ul>
 </div>
 </aside>
 <main id="main">
-<div id="container">
-<div class="post">
-<div class="date"><a name="isArray">May 24 2018</a></div>
-<h2>isArray</h2>
-<p class="quote">
-Returns <code>true</code> if object is an Array.
-</p>
-<pre><code class="lang-javascript">
-function isArray(obj) {
-  return toString.call(obj) === "[object Array]";
-} 
-
-(function(){ return isArray(arguments); })();
-// false
-
-isArray([1,2,3])
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isObject">April 24 2018</a></div>
-<h2>isObject</h2>
-<p class="quote">
-Returns <code>true</code> if value is an Object. Note that JavaScript arrays and functions are objects, while (normal) strings and numbers are not.
-</p>
-<pre><code class="lang-javascript">
-function isObject(obj) {
-  return obj === Object(obj);
-}
-
-isObject({});
-// true
-
-isObject(1);
-// false
-  </code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isString">December 27 2019</a></div>
-<h2>isString</h2>
-<p class="quote">
-Returns <code>true</code> if object is a String.
-</p>
-<pre><code class="lang-javascript">
-function isString(obj) {
-  return !!(obj === "" || (obj && obj.charCodeAt && obj.substr));
-}
-
-isString("name");
-// true
-
-isString(1);
-// false
-    </code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isNumber">December 27 2019</a></div>
-<h2>isNumber</h2>
-<p class="quote">
-Returns <code>true</code> if object is a Number (including NaN).
-</p>
-<pre><code class="lang-javascript">
-function isNumber(obj) {
-  return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
-}
-
-isNumber(8.4 * 5);
-// true
-
-isNumber('1');
-// false
-    </code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isNan">December 27 2019</a></div>
-<h2>isNan</h2>
-<p class="quote">
-Returns <code>true</code> if object is NaN. <br>
-Note: this is not the same as the native isNaN function, which will also return true for many other not-number values, such as undefined.
-</p>
-<pre><code class="lang-javascript">
-function isNan(obj) {
-  return obj !== obj;
-}
-
-isNan(NaN);
-// true
-
-isNaN(undefined);
-// true
-
-isNan(undefined);
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isBoolean">December 27 2019</a></div>
-<h2>isBoolean</h2>
-<p class="quote">
-Returns <code>true</code> if object is either <code>true</code> or <code>false</code>.
-</p>
-<pre><code class="lang-javascript">
-function isBoolean(obj) {
-  return obj === true || obj === false;
-}
-
-isBoolean(null);
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isNull">December 27 2019</a></div>
-<h2>isNull</h2>
-<p class="quote">
-Returns <code>true</code> if the value of object is null.
-</p>
-<pre><code class="lang-javascript">
-function isNull(obj) {
-  return obj === null;
-}
-
-isNull(null);
-// true
-
-isNull(undefined);
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isUndefined">December 27 2019</a></div>
-<h2>isUndefined</h2>
-Returns <code>true</code> if value is undefined.
-<p class="quote">
-</p>
-<pre><code class="lang-javascript">
-function isUndefined(obj) {
-  return obj === void 0;
-}
-
-isUndefined(window.missingVariable);
-// true
-
-isUndefined(window);
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isDate">December 27 2019</a></div>
-<h2>isDate</h2>
-<p class="quote">
-Returns <code>true</code> if object is a Date.
-</p>
-<pre><code class="lang-javascript">
-function isDate(obj) {
-  return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear);
-}
-
-isDate(new Date());
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isRegExp">December 27 2019</a></div>
-<h2>isRegExp</h2>
-<p class="quote">
-Returns <code>true</code> if object is a RegExp.
-</p>
-<pre><code class="lang-javascript">
-function isRegExp(obj) {
-  return !!(
-    obj &&
-    obj.test &&
-    obj.exec &&
-    (obj.ignoreCase || obj.ignoreCase === false)
-  );
-}
-
-isRegExp(/test/);
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isUniform">December 27 2019</a></div>
-<h2>isUniform</h2>
-<p class="quote">
-</p>
-<pre><code class="lang-javascript">
-function isUniform(arr) {
-  var first = arr[0];
-  for (var i = 1; i < arr.length; i++) {
-    if (arr[i] !== first) {
-      return false;
-    }
-  }
-  return true;
-}
-
-isUniform(['1','1','1'])
-// true
-
-isUniform([1,1,1])
-// true
-
-isUniform(['1','2','3'])
-// false
-
-isUniform([1,2,3])
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isEven">December 27 2019</a></div>
-<h2>isEven</h2>
-<p class="quote">
-Returns <code>true</code> if the number is an even number.
-</p>
-<pre><code class="lang-javascript">
-function isEven(num) {
-  return num % 2 === 0;
-}
-
-isEven(2);
-// true
-
-isEven(3);
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isMatch">December 27 2019</a></div>
-<h2>isMatch</h2>
-<p class="quote">
-Tells you if the keys and values in properties are contained in object.
-</p>
-<pre><code class="lang-javascript">
-function isMatch(object, attrs) {
-  var keys = Object.keys(attrs),
-    length = keys.length;
-  if (object == null) return !length;
-  var obj = Object(object);
-  for (var i = 0; i < length; i++) {
-    var key = keys[i];
-    if (attrs[key] !== obj[key] || !(key in obj)) return false;
-  }
-  return true;
-}
-
-var obj = {name: 'test', number: 10};
-
-isMatch(obj, {number: 10});
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isAlphaNumeric">December 27 2019</a></div>
-<h2>isAlphaNumeric</h2>
-<p class="quote">
-Returns <code>true</code> if string is a Number or a Letter
-</p>
-<pre><code class="lang-javascript">
-function isAlphaNumeric(str) {
-  var code = str.charCodeAt(0);
-  if (
-    !(code > 47 && code < 58) && // numeric (0-9)
-    !(code > 64 && code < 91) && // uppercase (A-Z)
-    !(code > 96 && code < 123)
-  ) {
-    // lowercase (a-z)
-    return false;
-  }
-  return true;
-}
-
-isAlphaNumeric('1');
-// true
-
-isAlphaNumeric('a');
-// true
-
-isAlphaNumeric('?');
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isElement">December 27 2019</a></div>
-<h2>isElement</h2>
-<p class="quote">
-Returns <code>true</code> if object is a DOM element.
-</p>
-<pre><code class="lang-javascript">
-function isElement(obj) {
-  return !!(obj && obj.nodeType === 1);
-}
-
-isElement(document.body);
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isPrime">December 27 2019</a></div>
-<h2>isPrime</h2>
-<p class="quote">
-Returns <code>true</code> if value is a Prime Number.
-</p>
-<pre><code class="lang-javascript">
-function isPrime(value) {
-  for (var i = 2; i < value; i++) {
-    if (value % i === 0) {
-      return false;
-    }
-  }
-  return value > 1;
-}
-
-isPrime(5);
-// true
-
-isPrime(4);
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isArguments">December 27 2019</a></div>
-<h2>isArguments</h2>
-<p class="quote">
-Returns <code>true</code> if if object is an Arguments object.
-</p>
-<pre><code class="lang-javascript">
-function isArguments(obj){
-  return toString.call(obj) === "[object Arguments]";
-}
-
-(function(){ return isArguments(arguments); })(1, 2, 3);
-// true
-
-isArguments([1,2,3]);
-// false
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isFunction">December 27 2019</a></div>
-<h2>isFunction</h2>
-<p class="quote">
-Returns <code>true</code> if object is a Function.
-</p>
-<pre><code class="lang-javascript">
-function isArguments(obj){
-  return toString.call(obj) === "[object Function]";
-}
-
-isFunction(alert);
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isError">December 27 2019</a></div>
-<h2>isError</h2>
-<p class="quote">
-Returns <code>true</code> if object is a
-</p>
-<pre><code class="lang-javascript">
-function isError(obj){
-  return toString.call(obj) === "[object Error]";
-}
-
-try {
-  throw new TypeError("Example");
-} catch (o_O) {
-  isError(o_O);
-}
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isFSymbol">December 27 2019</a></div>
-<h2>isSymbol</h2>
-<p class="quote">
-Returns <code>true</code> if object is a Symbol.
-</p>
-<pre><code class="lang-javascript">
-function isSymbol(obj){
-  return toString.call(obj) === "[object Symbol]";
-}
-
-isSymbol(Symbol());
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isMap">December 27 2019</a></div>
-<h2>isMap</h2>
-<p class="quote">
-Returns <code>true</code> if object is a Map.
-</p>
-<pre><code class="lang-javascript">
-function isMap(obj){
-  return toString.call(obj) === "[object Map]";
-}
-
-isMap(new Map());
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isWeakMap">December 27 2019</a></div>
-<h2>isWeakMap</h2>
-<p class="quote">
-Returns <code>true</code> if object is a WeakMap.
-</p>
-<pre><code class="lang-javascript">
-function isWeakMap(obj){
-  return toString.call(obj) === "[object WeakMap]";
-}
-
-isWeakMap(new WeakMap());
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isSet">December 27 2019</a></div>
-<h2>isSet</h2>
-<p class="quote">
-Returns <code>true</code> if object is a Set.
-</p>
-<pre><code class="lang-javascript">
-function isSet(obj){
-  return toString.call(obj) === "[object Set]";
-}
-
-isSet(new Set());
-// true
-</code></pre>
-<hr>
-</div>
-<div class="post">
-<div class="date"><a name="isWeakSet">December 27 2019</a></div>
-<h2>isWeakSet</h2>
-<p class="quote">
-Returns <code>true</code> if object is a WeakSet.
-</p>
-<pre><code class="lang-javascript">
-function isWeakSet(obj){
-  return toString.call(obj) === "[object WeakSet]";
-}
-
-isWeakSet(new WeakSet());
-// true
-</code></pre>
-<hr>
-</div>
+<div id="main_body">
 </div>
 </main>
+
+<div id="modal" class="modal">
+
+<div class="modal-content">
+<span class="close">&times;</span>
+<p>Post</p>
+<div>
+<form id="post">
+<div>
+<label for="post_title">Title</label>
+<input type="text" id="post_title">
+</div>
+<div>
+<label for="post_quote">Quote</label>
+<input type="text" id="post_quote">
+</div>
+<div>
+<label for="post_code">Code</label>
+<textarea name="" rows="3" id="post_code"></textarea>
+</div>
+<hr>
+<button class="page-link">Submit</button>
+</form>
+</div>
+</div>
+</div>
 <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/prism.js'></script>
 <script id="rendered-js">
-document.querySelector('button').addEventListener('click', function(){
-  document.querySelector('#aside').classList.toggle('active')
-//  if(document.querySelector('#aside').classList.contains('hidden')){
-//    document.querySelector('#aside').classList.remove('hidden');
-//  } else {
-//    document.querySelector('#aside').classList.add('hidden');
-//  }
-})
+var db;
 
-function myFunction() {
+const request = window.indexedDB.open("posts", 1);
+
+const elms = [ 'sidebtn', 'modalbtn', 'main', 'main_body', 'aside', 'aside_list', 'post', 'post_title', 'post_quote', 'post_code', 'modal' ];
+elms.forEach(function(elm){ window[elm] = document.getElementById(elm); });
+
+/* open indexed db with some error handling 
+ *  IDB
+ * 'posts', 'post' 
+ */
+request.onerror = function() { console.log("Database failed to open"); };
+request.onsuccess = function() { console.log("Database opened succesfully"); db = request.result; };
+request.onupgradeneeded = function(e) { var db = e.target.result;
+  db.onerror = function(e) { console.log("Error loading Database"); };
+  var objectStore = db.createObjectStore("posts", { keyPath: "id", autoIncrement: true });
+  objectStore.createIndex("post", "post", { unique: false });
+  console.log("Database setup complete");    
+};
+
+/* Create DOM node function */
+function create(target, element, attrs){
+  const myElement = document.createElement(element);
+  for(var attr in attrs){
+    myElement.setAttribute(attr, attrs[attr])
+  } return target.appendChild(myElement);
+}
+/* Constructor for the data,  
+ * [{title:'',quote:'',code:''}] 
+ */
+function Post(title, quote, code){
+	this.title = title;
+  this.quote = quote;
+  this.code = code;
+  this.display = function(){
+    const post = create(main_body, 'div', { class : 'post' }),
+          date = create(post, 'div', { class : 'date' }),
+          h2 = create(post, 'h2', { }),
+          a = create(date, 'a', { name: encodeURIComponent(this.title) }),
+          quote = create(post, 'div', { class: 'quote' }),
+          pre = create(post, 'pre', { }),
+          code = create(pre, 'code', { class: 'lang-javascript' }),
+          hr = create(post, 'hr', {});   
+    const list = create(aside_list, 'li', { }),
+          link = create(list, 'a', { href : "#"+encodeURIComponent(this.title) });    
+    a.textContent = new Date().toDateString();
+    h2.textContent = this.title;
+    quote.innerHTML = this.quote;
+    code.textContent = this.code;
+    link.textContent = this.title;  
+  }  
+}
+// Post('Hello World!', 'A quick sample of the <code>Post</code> constructor', 'function test(){\n}');
+
+/* XMLHttpRequest 
+ * imports A JSON Post, and renders HTML,
+ * adds the Array of Posts to IndexedDB
+ */
+function getjson(){
+  const request = new XMLHttpRequest();
+  request.open("GET", "https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/posts.json");
+  request.responseType = "text";
+  request.send();
+  request.onload = function(){
+    var msg = request.response;
+    var parser = JSON.parse(msg);
+    populate(parser)
+  }
+  function populate(jsonObj){
+    var posts = jsonObj;
+    posts.forEach(function(post){
+      
+      var test = new Post(post.title,post.quote,post.code);
+      test.display();
+
+    });
+    Prism.highlightAll();
+  }
+}
+getjson()
+
+
+
+
+sidebtn.addEventListener('click', function(){
+  aside.classList.toggle('active');
+});
+document.getElementById('aside_search').addEventListener('keyup', function(){
     var input, filter, ul, li, a, i;
-    input = document.getElementById("myInput");
+    input = document.getElementById("aside_search");
     filter = input.value.toUpperCase();
-    ul = document.getElementById("myUL");
+    ul = document.getElementById("aside_list");
     li = ul.getElementsByTagName("li");
     for (i = 0; i < li.length; i++) {
         a = li[i].getElementsByTagName("a")[0];
@@ -658,155 +275,30 @@ function myFunction() {
         } else {
             li[i].style.display = "none";
         }
-    }
-}
-
-function each(obj, iterator, context) {
-  var breaker = {},
-    ArrayProto = Array.prototype,
-    ObjProto = Object.prototype,
-    hasOwnProperty = ObjProto.hasOwnProperty,
-    nativeForEach = ArrayProto.forEach;
-  if (nativeForEach && obj.forEach === nativeForEach) {
-    obj.forEach(iterator, context);
-  } else if (obj.length === +obj.length) {
-    for (var i = 0, l = obj.length; i < l; i++) {
-      if (i in obj && iterator.call(context, obj[i], i, obj) === breaker)
-        return;
-    }
-  } else {
-    for (var key in obj) {
-      if (hasOwnProperty.call(obj, key)) {
-        if (iterator.call(context, obj[key], key, obj) === breaker) return;
-      }
-    }
-  }
-}
-
-/* *** isArray()     *** */ 
-function isArray(obj) {
-  return toString.call(obj) === "[object Array]";
-}
-
-/* *** isObject()    *** */ 
-function isObject(obj) {
-  return obj === Object(obj);
-}
-
-/* *** isString()    *** */ 
-function isString(obj) {
-  return !!(obj === "" || (obj && obj.charCodeAt && obj.substr));
-}
-
-/* *** isNumber()    *** */ 
-function isNumber(obj) {
-  return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
-}
-
-/* *** isNaN()       *** */ 
-function isNan(obj) {
-  return obj !== obj;
-}
-
-/* *** isBoolean()   *** */ 
-function isBoolean(obj) {
-  return obj === true || obj === false;
-}
-
-/* *** isNull()      *** */ 
-function isNull(obj) {
-  return obj === null;
-}
-
-/* *** isUndefined() *** */ 
-function isUndefined(obj) {
-  return obj === void 0;
-}
-
-/* *** isDate()      *** */ 
-function isDate(obj) {
-  return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear);
-}
-
-/* *** isRegExp()    *** */ 
-function isRegExp(obj) {
-  return !!(
-    obj &&
-    obj.test &&
-    obj.exec &&
-    (obj.ignoreCase || obj.ignoreCase === false)
-  );
-}
-
-/* *** isUniform()   *** */ 
-function isUniform(arr) {
-  var first = arr[0];
-  for (var i = 1; i < arr.length; i++) {
-    if (arr[i] !== first) {
-      return false;
-    }
-  }
-  return true;
-}
-
-/* *** isEven()      *** */ 
-function isEven(num) {
-  return num % 2 === 0;
-}
-
-/* *** isMatch()     *** */
-function isMatch(object, attrs) {
-  var keys = Object.keys(attrs),
-    length = keys.length;
-  if (object == null) return !length;
-  var obj = Object(object);
-  for (var i = 0; i < length; i++) {
-    var key = keys[i];
-    if (attrs[key] !== obj[key] || !(key in obj)) return false;
-  }
-  return true;
-}
-
-/*  *** isAlphaNumeric() ***  */
-function isAlphaNumeric(str) {
-  var code = str.charCodeAt(0);
-  if (
-    !(code > 47 && code < 58) && // numeric (0-9)
-    !(code > 64 && code < 91) && // uppercase (A-Z)
-    !(code > 96 && code < 123)
-  ) {
-    // lowercase (a-z)
-    return false;
-  }
-  return true;
-}
-
-/*  *** isElement() ***  */
-function isElement(obj) {
-  return !!(obj && obj.nodeType === 1);
-}
-
-/*  *** isPrime() ***  */
-function isPrime(value) {
-  for (var i = 2; i < value; i++) {
-    if (value % i === 0) {
-      return false;
-    }
-  }
-  return value > 1;
-}
-
-each(["Arguments","Function","String","Number","Date","RegExp","Error","Symbol","Map","WeakMap","Set","WeakSet"], function(name) {
-    window["is" + name] = function(obj) {
-      return toString.call(obj) === "[object " + name + "]";
-    };
+    }  
 });
-// var arr = ["Arguments","Function","String","Number","Date","RegExp","Error","Symbol","Map","WeakMap","Set","WeakSet"];
-// arr.forEach(function(name) {
-//     window["is" + name] = function(obj) {
-//       return toString.call(obj) === "[object " + name + "]";
-//     };
-// });
-</script>
+/* modal control */
+modalbtn.onclick = function() {
+  modal.style.display = "block";
+}
+document.getElementsByClassName("close")[0].onclick = function() {
+  modal.style.display = "none";
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+post.addEventListener('submit', function(p){
+  p.preventDefault();
+  var test = new Post(post_title.value,post_quote.value,post_code.value);
+  test.display();
+  Prism.highlightAll();
+  post_title.value = "";
+  post_quote.value = "";
+  post_code.value = "";
+  modal.style.display = "none";
+})
+    </script>
 </body>
 </html>
