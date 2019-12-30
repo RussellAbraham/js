@@ -3,7 +3,8 @@
  * CodePen Demo
  * https://codepen.io/RJLeyra/pen/jdPyjb
  * Ofiicial Website for Underscore
-// https://underscorejs.org/
+ * https://underscorejs.org/
+*/ 
 (function() {
   var root = this;
   var breaker = {};
