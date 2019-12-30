@@ -33,7 +33,7 @@
       downloadLink.href = url;
       
       // remove the DOM node when it's used
-      downloadLink.onclick = _().cleanup;
+      downloadLink.onclick = _.cleanup;
       downloadLink.style.display = 'none';
       document.body.appendChild(downloadLink);
       downloadLink.click();
