@@ -128,7 +128,7 @@
   };
 
   /* May Want to add more functions here in the future  */
-  _.test = function(){ console.log("Test completed") }
+  _.test = function(x){ console.log(x) }
   
     
   // Object Functions
