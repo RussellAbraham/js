@@ -2,6 +2,8 @@
 console.log('I Worker, Connected ', this);
 
 self.onmessage = function(e){
+  var text = e.data;
+  var encrypt = btoa(text);
   var msg = 'I Worker, am working. \n'
   console.log(
     msg + 
@@ -11,7 +13,7 @@ self.onmessage = function(e){
     + e.data
   );
   
-  posted(e.data);
+  posted(encrypt);
 
 }
 
