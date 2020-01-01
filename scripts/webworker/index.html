@@ -15,7 +15,8 @@
   <nav class="navbar">
     <ul class="pagination">
       <li class="page-item"><a href="#" class="page-link">&#9776;</a></li>
-      <li class="page-item"><a class="page-link" href="#" id="" title="Stop The Worker">Stop Worker</a></li>
+      <li class="page-item"><a class="page-link" href="javascript:annoyer.start();" id="startbutton" title="Start The Worker">Start Worker</a></li>
+      <li class="page-item"><a class="page-link" href="javascript:annoyer.stop();" id="stopbutton" title="Stop The Worker">Stop Worker</a></li>
     </ul>
     
   </nav>
@@ -35,7 +36,7 @@
       <div class="col-md-3">
         <ul class="list-group">          
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <a>Amount </a>
+            <a id="target"></a>
             <span class="badge badge-primary badge-pill" id="badge"></span>
           </li>
         </ul>
@@ -61,16 +62,22 @@
     </div>
 
   </div>
+  
+  <!-- External JavaScript -->
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/jquery.min.js"></script>
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/underscore-min.js"></script>
   
+  <!-- Application Code-->
+  <script src="js/main.js"></script>
   <script src="js/script.js"></script>
   
+  <!-- Plugin Code -->
   <script>
     $(document).ready(function(){
       console.log('Welcome');
     });
   </script>
 
+  
 </body>
 </html>
