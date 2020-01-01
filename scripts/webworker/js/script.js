@@ -37,4 +37,5 @@ webworker.onmessage = function(e){
     "I Document, Received Message From " + this + "\n" +
     "Message: " + e.data
   );
+  setHTML(outputbody, "I Document, Received Message: " + "<code>" + e.data + "</code>");
 };
