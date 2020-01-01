@@ -1,21 +1,17 @@
+// small script to add random messages like advertisements to the page
 const ids = [
-    /* id of the stop button */
-    'startbutton', 'stopbutton',
-    /* id of first list item in the left column of the page */
+    'startbutton',
+    'stopbutton',
     'target',
-    /* id's of list item badges with the left column of the page */
-    'pagesbadge', 'postsbadge', 'databadge', 'uploadsbadge',
-    /* id's of the main card inside the left columns, forms are placed here */
-    'input', 'inputhead', 'inputbody', 'inputfoot',
-    /* id's of the hidden left column used for displaying stored data */
-    'hidden', 'hiddenhead', 'hiddenbody', 'hiddenfoot'
+    'badge',
+    'output',
+    'outputbody'
 ];
-// set global variables to get elements by id name
 ids.forEach(function(id){
     window[id] = document.getElementById(id)
 });
 
-// For updating badges or other elements
+// For updating badges and messages
 function setText(id, text){
     id.textContent = "";
     id.textContent = text
@@ -24,7 +20,6 @@ function setHTML(id, html){
     id.innerHTML = "";
     id.innerHTML = html
 }
-
 // blank.html calls this function onload,
 // encrypt a string to base64 with btoa()
 // open blank in a new window with the location hashed to the encrypted string
