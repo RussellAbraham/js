@@ -1,4 +1,6 @@
-const webworker = new Worker("https://russellabraham.github.io/javascript/scripts/webworker/js/worker.js");
+
+// "/" = "https://russellabraham.github.io/"
+const webworker = new Worker("./worker.js");
 
 const annoyer = {
   
