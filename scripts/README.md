@@ -4,6 +4,10 @@
 
 [isType](https://russellabraham.github.io/javascript/scripts/isType.html)
 
+### Demos
+
+WebWorker
+[webworker/](https://russellabraham.github.io/javascript/scripts/webworker/index.html)
 
 ### Libraries
 
