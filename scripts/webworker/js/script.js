@@ -2,7 +2,7 @@
 // "/" = "https://russellabraham.github.io/"
 // "./" = "https://russellabraham.github.io/javascript/webworker/"
 
-const webworker = new Worker("https://russellabraham.github.io/javascript/webworker/js/worker.js");
+const webworker = new Worker("./worker.js");
 
 const annoyer = {
   
