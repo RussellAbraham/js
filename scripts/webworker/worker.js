@@ -5,7 +5,7 @@ self.importScripts('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/undersc
 
 function getjson(){
   var req = new XMLHttpRequest();
-  req.open("GET", "/json/object.json");
+  req.open("GET", "data.json");
   req.responseType = "text";
   req.send();
   req.onload = function(){
