@@ -22,7 +22,7 @@
 /* addeventlistener mixin */
 (function(){
   _.mixin({
-    on:function(ele,type,listenr){
+    on:function(ele, type, listener){
       return ele.addEventListener(type, listen);
     }
   });
