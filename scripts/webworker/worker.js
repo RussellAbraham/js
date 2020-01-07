@@ -1,43 +1,44 @@
-// request json, parse and post to main thread
-console.log('I Worker, Connected ', this);
+// ok
+console.log('worker connected');
+importScripts('../node_modules/underscore/underscore.js');
 
-self.importScripts('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/underscore-min.js');
+if(importScripts){
+  console.log('imported')
+} else {
+  console.error('did not import')
+}
+
+// ok
+self.onmessage = function(){
+    // posted(e.data);
+    getjson()
+}
+
 
 function getjson(){
-  var req = new XMLHttpRequest();
-  req.open("GET", "data.json");
-  req.responseType = "text";
-  req.send();
-  req.onload = function(){
-    var res = req.response;
-    var jsonObj = JSON.parse(res);
-    postjson(jsonObj)
-  }
-  function postjson(jsonObj){
-    var arr = jsonObj['elements'];
-    var keys = JSON.stringify(arr, null, 2);
-    self.postMessage(keys);
-  }
+    var req = new XMLHttpRequest();
+    req.open("GET", "index.json");
+    req.responseType = "text";
+    req.send();
+    req.onload = function(){
+      var res = req.response;
+      var jsonObj = JSON.parse(res);
+      postjson(jsonObj)
+    }
+    function postjson(jsonObj){
+        //console.log(jsonObj);
+        self.postMessage(JSON.stringify(jsonObj), null, 2)
+        
+        //self.postMessage(jsonObj);
+        //var obj = _.keys(str);
+       // self.postMessage(obj)
+    }  
 }
 
-self.onmessage = function(e){
-  var text = e.data;
-  var encrypt = btoa(text);
-  var msg = 'I Worker, am working. \n'
-  console.log(
-    msg + 
-    e + 
-    '\n' + 
-    this 
-    + e.data
-  );
-  
-  posted(encrypt);
-  getjson();
-
-}
-
+// ok
 function posted(msg){
-  console.log('I Worker, have posted ', this)
-  self.postMessage(msg);
+    // annoyer.start();
+    console.log('@worker ')
+    var b64 = btoa(msg)
+    self.postMessage(b64);
 }
