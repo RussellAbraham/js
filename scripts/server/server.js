@@ -4,7 +4,12 @@ var path = require('path');
 
 http.createServer(function (request, response) {
     console.log('request ', request.url);
-
+    
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
     var filePath = '.' + request.url;
     if (filePath == './') {
         filePath = './index.html';
