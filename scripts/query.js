@@ -1,3 +1,21 @@
+function cgiJump(url, kvs) {
+  var url = url + "?";
+  for (var k in kvs) {
+    var v = kvs[k];
+    url += k + "=" + escape(v);
+  }
+  location = url;
+}
+
+function cgiReplace(url, kvs) {
+  var url = url + "?";
+  for (var k in kvs) {
+    var v = kvs[k];
+    url += k + "=" + escape(v);
+  }
+  location.replace(url);
+}
+
 function addhttp(url) {
   if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
     url = "http://" + url;
