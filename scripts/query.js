@@ -1,3 +1,4 @@
+
 function arguments_to_array(args) {
   var arr = new Array();
   for (var i = 0; i < args.length; ++i) {
@@ -6,6 +7,8 @@ function arguments_to_array(args) {
   return arr;
 }
 
+// form onsubmit return bcl_go(this);
+// send strings to match query parameters
 function bcl_go(e) {
   var cmd = e.input.value;
   bcl_run(cmd);
@@ -144,4 +147,87 @@ function getAllUrlParams(url) {
     }
   }
   return obj;
+}
+
+// form takes care of white space
+
+//google search
+function g() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://www.google.ca/search", {
+    q: search_string,
+  });
+}
+
+// search?q=javascript&tbm=vid
+// search?q=javascript&tbm=isch
+// search?q=javascript&tbm=nws
+// search?q=javascript&tbm=bks
+// search?q=javascript&tbm=fin
+// search?q=javascript&tbm=shop
+// flights
+
+//google images
+function g_f() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://www.google.com/flights", {
+    q: search_string,
+    
+  });
+}
+
+function g_m() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://www.google.com/maps", {
+    q: search_string,
+    
+  });
+}
+
+//wikipedia
+function wiki() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://en.wikipedia.org/wiki/Special:Search", {
+    search: search_string
+  });
+}
+
+//wolfram
+function wolf() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://www.wolframalpha.com/input", {
+    i: search_string
+  });
+}
+
+//duckduckgo
+function duck() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://duckduckgo.com", {
+    q: search_string
+  });
+}
+
+//youtube search
+function you_res() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://www.youtube.com/results", {
+    search_query: search_string
+  });
+}
+
+//youtube watch
+function you_wat() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://www.youtube.com/watch", {
+    v: search_string
+  });
+}
+
+// mdn search
+function mdn() {
+  var search_string = arguments_to_array(arguments).join(" ");
+  bcl_jump_cgi("https://developer.mozilla.org/en-US/search", {
+    q: search_string
+  });
 }
