@@ -1,7 +1,7 @@
 # Mutation Observer
 [Collection](https://codepen.io/collection/AVzKxz)
 
-# [index.html](https://russellabraham.github.io/javascript/scripts/client/mutation-observer/)
+# [TOC](https://russellabraham.github.io/javascript/scripts/client/mutation-observer/toc.html)
 
 ## Todolist indexedDB
  A Pen created at CodePen.io. Original URL: [https://codepen.io/RJLeyra/pen/RwNqdNX](https://codepen.io/RJLeyra/pen/RwNqdNX).
