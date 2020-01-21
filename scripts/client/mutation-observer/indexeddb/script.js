@@ -127,11 +127,7 @@ var idb = {
   
 }
 
-function add(){
-  
-}
-
-
+// For this demo I tried not to use normal event listeners to handle transactions with indexedDB
 // $('form').on('submit', function(e){
 //   e.preventDefault();
 //   idb.add($('input').val());
