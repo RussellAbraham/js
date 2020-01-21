@@ -36,5 +36,5 @@
  [https://codepen.io/RJLeyra/pen/BayGGZQ](https://codepen.io/RJLeyra/pen/BayGGZQ).
 
 ### Original Sources for this content 
-[Smashing Magazine](https://www.smashingmagazine.com/2019/04/mutationobserver-api-guide/)
-[Hacks.Mozilla](https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/)
+* [Smashing Magazine](https://www.smashingmagazine.com/2019/04/mutationobserver-api-guide/)
+* [Hacks.Mozilla](https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/)
