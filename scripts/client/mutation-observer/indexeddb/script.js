@@ -192,7 +192,7 @@ function func(mutations){
         if(mutation.target && [...mutation.removedNodes].length){
           console.log(`A child node ${mutation.target} has been removed!`, mutation.target); 
           console.log(mutation.removedNodes[0].innerHTML);
-          //idb.add(mutation.removedNodes[0].innerHTML);
+          // remove by key
         }
         
         // console.log('Mutation Detected: A child node has been added or removed.');
