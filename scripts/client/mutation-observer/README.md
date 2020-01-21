@@ -2,6 +2,9 @@
 
 [Collection](https://codepen.io/collection/AVzKxz)
 
+## Todolist indexedDB
+ A Pen created at CodePen.io. Original URL: [https://codepen.io/RJLeyra/pen/RwNqdNX](https://codepen.io/RJLeyra/pen/RwNqdNX).
+
 ## Customize resize event listener
  [https://codepen.io/RJLeyra/pen/NWPERBJ](https://codepen.io/RJLeyra/pen/NWPERBJ).
 
@@ -35,6 +38,6 @@
 ## Recording an Old Attribute Value
  [https://codepen.io/RJLeyra/pen/BayGGZQ](https://codepen.io/RJLeyra/pen/BayGGZQ).
 
-### Original Sources for this content 
+### Original Sources for some of this content 
 * [Smashing Magazine](https://www.smashingmagazine.com/2019/04/mutationobserver-api-guide/)
 * [Hacks.Mozilla](https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/)
