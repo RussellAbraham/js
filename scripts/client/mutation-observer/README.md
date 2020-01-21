@@ -3,10 +3,10 @@
 [Collection](https://codepen.io/collection/AVzKxz)
 
 ## Todolist indexedDB
- _A Pen created at CodePen.io. Original URL: [https://codepen.io/RJLeyra/pen/RwNqdNX](https://codepen.io/RJLeyra/pen/RwNqdNX).
+ A Pen created at CodePen.io. Original URL: [https://codepen.io/RJLeyra/pen/RwNqdNX](https://codepen.io/RJLeyra/pen/RwNqdNX).
 
-## Mutation Observer Deck of Cards
- _A Pen created at CodePen.io. Original URL: [https://codepen.io/RJLeyra/pen/xxbQeMR](https://codepen.io/RJLeyra/pen/xxbQeMR).
+## Deck of Cards Shuffle
+ A Pen created at CodePen.io. Original URL: [https://codepen.io/RJLeyra/pen/xxbQeMR](https://codepen.io/RJLeyra/pen/xxbQeMR).
  
 ## Customize resize event listener
  [https://codepen.io/RJLeyra/pen/NWPERBJ](https://codepen.io/RJLeyra/pen/NWPERBJ).
