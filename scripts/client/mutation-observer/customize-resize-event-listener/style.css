@@ -1,0 +1,22 @@
+body {
+  padding: 0 20px;
+  font-size: 1.2em;
+}
+
+.container {
+  min-height: 200px;
+}
+
+button {
+  margin: 3px;
+}
+
+ol {
+  box-sizing: border-box;
+  width: 110px;
+  height: 110px;
+  border: 1px solid red;
+  padding: 10px;
+  resize: both;
+  overflow: auto;
+}

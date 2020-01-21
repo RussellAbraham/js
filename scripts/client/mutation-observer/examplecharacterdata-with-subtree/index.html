@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - MutationObserver Example - characterData with subtree</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h2>MutationObserver Example - characterData with subtree</h2>
+
+<p>This page uses the MutationObserver API to watch for changes to the DOM tree. In this case, the MutationObserver is looking for character data changes on the targeted element and its subtree. This ensures that changes are detected for all the element's nodes, not just a single text node.</p>
+
+<p>Try using CTRL-B and CTRL-I on the editable text. This will create extra element nodes but the MutationObserver will still be valid for all the data inside the paragraph.</p>
+
+<p id="field" contenteditable="true" tabindex="0" class="f">Edit this text!</p>
+
+<button class="btnStart">Start Observing for Mutations</button> 
+<button class="btnStop" disabled>Stop Observing for Mutations</button>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - MutationObserver Example - Multiple Changes for a Single Observer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h2>MutationObserver Example - Multiple Changes for a Single Observer</h2>
+
+<p>This demo uses a single MutationObserver to observe DOM changes on two different targets. The one caveat here is that when you "stop" observing, the MutationObserver will stop observing for all specified targets.</p>
+
+<ul id="myList" class="list">
+  <li>Apples</li>
+  <li>Oranges</li>
+  <li>Bananas</li>
+  <li class="child">Peaches</li>
+</ul>
+
+<p><button class="btnStart">Start Observing (List 1)</button> 
+  <button class="btnStop" disabled>Stop Observing (List 1)</button></p>
+
+<p><button class="btnChild">Add/Remove Child (List 1)</button>
+
+<hr>
+
+<ul id="myList2" class="list">
+  <li>Dogs</li>
+  <li>Cats</li>
+  <li>Chickens</li>
+  <li class="child">Horses</li>
+</ul>
+
+<p><button class="btnStart2">Start Observing (List 2)</button> 
+  <button class="btnStop2" disabled>Stop Observing (List 2)</button></p>
+<p><button class="btnChild2">Add/Remove Child (List 2)</button></p>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

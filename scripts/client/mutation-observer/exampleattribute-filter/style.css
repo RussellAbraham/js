@@ -1,0 +1,13 @@
+body {
+  padding: 0 20px;
+  font-size: 1.2em;
+}
+
+.paragraph {
+  border: dashed 3px #aaa;
+  padding: 7px;
+}
+
+button {
+  margin: 3px;
+}

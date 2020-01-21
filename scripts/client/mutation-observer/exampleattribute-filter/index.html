@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - MutationObserver Example - Attribute Filter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h2>MutationObserver Example - Attribute Filter</h2>
+
+<p>This page uses the MutationObserver API to watch for changes to the DOM tree. In this case, the MutationObserver is looking for specific HTML attributes to be changed on the targeted element, indicated via the <code>attributeFilter</code> option.</p>
+
+<p>A "Start..." and a "Stop..." button are used to start and stop the MutationObserver. Console messages are displayed specifying which change took place and whether the MutationObserver is started or stopped.</p>
+
+<p id="myParagraph" class="paragraph">This paragraph element will be observed for changes to its attributes.</p>
+
+<p><button class="btnStart">Start Observing for Mutations</button>
+  <button class="btnStop" disabled>Stop Observing for Mutations</button></p>
+
+<select>
+  <option>hidden</option>
+  <option>contenteditable</option>
+  <option>data-par</option>
+  <option>draggable</option>
+</select>
+
+<button class="btnAttr">Toggle Selected Attribute</button>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

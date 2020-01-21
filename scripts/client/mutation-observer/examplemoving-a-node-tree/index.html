@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - MutationObserver Example - Moving a Node Tree</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h2>MutationObserver Example - Moving a Node Tree</h2>
+
+<p>This demo uses a Mutation Observer on a node that's part of a node tree that can be moved from its parent and appended to another parent. Notice that the Mutation Observer is still functional even after the node tree is moved.</p>
+
+<div class="container">
+  <ul id="myList" class="list">
+    <li>Apples</li>
+    <li>Oranges</li>
+    <li>Bananas</li>
+    <li>Peaches
+      <ul id="nestedList" class="list">
+        <li>Freestone</li>
+        <li>Clingstone</li>
+        <li>Peento</li>
+        <li class="child">Nectarine</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<p><button class="btnStart">Start Observing for Mutations</button> 
+  <button class="btnStop" disabled>Stop Observing for Mutations</button></p>
+<p><button class="btnChild">Add/Remove a Child Element</button> <button class="dcList">Move the Target List</button></p>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
