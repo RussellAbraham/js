@@ -1,20 +1,20 @@
 // global reference for the data we will be requesting
-const jokes = [];
+// const jokes = [];
 
-function dadJokes(url){
-  const req = new XMLHttpRequest();
-  req.open("GET", url)
-  req.responseType = "text";
-  req.send();
-  req.onload = function(){
-    var msg = req.response;
-    // var res = JSON.parse(msg);
-    callback(msg)
-  }
-  function callback(json){
-    console.log(json)
-  }
-}
+// function dadJokes(url){
+//   const req = new XMLHttpRequest();
+//   req.open("GET", url)
+//   req.responseType = "text";
+//   req.send();
+//   req.onload = function(){
+//     var msg = req.response;
+//     // var res = JSON.parse(msg);
+//     callback(msg)
+//   }
+//   function callback(json){
+//     console.log(json)
+//   }
+// }
 //dadJokes("https://icanhazdadjoke.com/")
 
 // add a response type
@@ -38,21 +38,16 @@ function dadJokes(url){
 
 
 // globals we might want
-const obj = {};
-const arr = [];
+// const obj = {};
 
-const firstReq = new XMLHttpRequest();
+
 
 // response type text support legacy
-firstReq.responseType = "text";
 
 
 
-firstReq.addEventListener('load', function() {
-	var msg = firstReq.response;
-  var res = JSON.parse(msg);
-	console.log(res);
-	callback(res);
+
+
 	//console.log('FIRST REQUEST WORKED!!!');
 	//console.log()
 	//const data = JSON.parse(this.responseText);
@@ -71,6 +66,15 @@ firstReq.addEventListener('load', function() {
 
 // filmReq.open('GET', filmURL);
 // filmReq.send();
+
+const arr = [];
+const firstReq = new XMLHttpRequest();
+firstReq.responseType = "text";
+firstReq.addEventListener('load', function() {
+	var msg = firstReq.response;
+  	var res = JSON.parse(msg);
+	console.log(res);
+	callback(res);
 });
 
 function callback(json){
@@ -81,7 +85,6 @@ function callback(json){
   });
 }
 
-
 firstReq.addEventListener('error', (e) => {
 	console.log('ERROR!!!!!!');
 });
@@ -89,4 +92,4 @@ firstReq.addEventListener('error', (e) => {
 firstReq.open('GET', 'https://swapi.co/api/planets/');
 firstReq.send();
 
-console.log('Request Sent!');
+// console.log('Request Sent!');
