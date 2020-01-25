@@ -92,4 +92,6 @@ firstReq.addEventListener('error', (e) => {
 firstReq.open('GET', 'https://swapi.co/api/planets/');
 firstReq.send();
 
+// should have our requested data pushed to `arr`
+
 // console.log('Request Sent!');
