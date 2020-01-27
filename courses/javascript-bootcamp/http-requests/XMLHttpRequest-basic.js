@@ -11,7 +11,7 @@ firstReq.responseType = "text";
 firstReq.addEventListener('load', function() {
 	console.log('IT WORKED!!!');
 	const data = JSON.parse(this.responseText);
-	for (let planet of data.results) {
+	for (var planet of data.results) {
 		console.log(planet.name);
 		
 		// push data to array
