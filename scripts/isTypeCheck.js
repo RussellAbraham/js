@@ -18,37 +18,27 @@ arrayCheck.forEach(function(type){
 function isObject(obj) {
   return obj === Object(obj);
 }
-
 /* *** isString()    *** */ 
 function isString(obj) {
   return !!(obj === "" || (obj && obj.charCodeAt && obj.substr));
 }
-
-/* *** isNumber()    *** */ 
-function isNumber(obj) {
-  return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
-}
-
-/* *** isNaN()       *** */ 
-function isNan(obj) {
-  return obj !== obj;
-}
-
 /* *** isBoolean()   *** */ 
 function isBoolean(obj) {
   return obj === true || obj === false;
 }
-
+/* *** isNumber()    *** */ 
+function isNumber(obj) {
+  return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
+}
 /* *** isNull()      *** */ 
 function isNull(obj) {
   return obj === null;
 }
-
 /* *** isUndefined() *** */ 
 function isUndefined(obj) {
   return obj === void 0;
 }
-    
+
 /* sort arguments into objects, push objects to container by type */
 function check(arg){
   if(isObject(arg)){
@@ -84,7 +74,7 @@ const checked = {
     boolean:typesChecked[2].container,
     number:typesChecked[3].container,
     nill:typesChecked[4].container,
-    undefinded:typesChecked[4].container,
+    undefinded:typesChecked[5].container,
 }
 
 
@@ -113,6 +103,11 @@ function each(obj, iterator, context) {
       }
     }
   }
+}
+
+/* *** isNaN()       *** */ 
+function isNan(obj) {
+  return obj !== obj;
 }
 
 /* *** isArray()     *** */ 
