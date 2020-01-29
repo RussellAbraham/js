@@ -1,33 +1,18 @@
-const typesToCheck = "Object, String, Boolean, Number, Null, Undefined";
-const arrayChec = typesToCheck.split(",");
+/* build array of types; todo: Add all additional types */
+const typeCheck = "Object,String,Boolean,Number,Null,Undefined",
+      arrayCheck = typeCheck.split(","),
+      typesChecked = [];
 
+/* build object, push object to typesChecked Array */
+each(arrayCheck, function(type, index, arrayCheck){
+  var obj = { type: type, date: Date.now() }
+});
 
-function each(obj, iterator, context) {
-  var breaker = {},
-    ArrayProto = Array.prototype,
-    ObjProto = Object.prototype,
-    hasOwnProperty = ObjProto.hasOwnProperty,
-    nativeForEach = ArrayProto.forEach;
-  if (nativeForEach && obj.forEach === nativeForEach) {
-    obj.forEach(iterator, context);
-  } else if (obj.length === +obj.length) {
-    for (var i = 0, l = obj.length; i < l; i++) {
-      if (i in obj && iterator.call(context, obj[i], i, obj) === breaker)
-        return;
-    }
-  } else {
-    for (var key in obj) {
-      if (hasOwnProperty.call(obj, key)) {
-        if (iterator.call(context, obj[key], key, obj) === breaker) return;
-      }
-    }
-  }
-}
-
-/* *** isArray()     *** */ 
-function isArray(obj) {
-  return toString.call(obj) === "[object Array]";
-}
+arrayCheck.forEach(function(type){
+  console.log(type);
+  var obj = { type: type, container: [] }
+  typesChecked.push(obj);
+});
 
 /* *** isObject()    *** */ 
 function isObject(obj) {
@@ -62,6 +47,82 @@ function isNull(obj) {
 /* *** isUndefined() *** */ 
 function isUndefined(obj) {
   return obj === void 0;
+}
+    
+/* sort arguments into objects, push objects to container by type */
+function check(arg){
+  if(isObject(arg)){
+    console.log('object', arg);
+    checked.object.push(arg); 
+  }
+  if(isBoolean(arg)){
+    console.log('boolean', arg);
+    checked.boolean.push(arg)
+  }
+  if(isString(arg)){        
+    console.log('string', arg);      
+    checked.string.push(arg);    
+  }
+  if(isNumber(arg)){    
+    console.log('number', arg);
+    checked.number.push(arg);
+  }    
+  if(isNull(arg)){
+    console.log('null', arg)
+    checked.nill.push(arg);
+  }
+  if(isUndefined(arg)){
+    console.log('undefined', arg);  
+    checked.undefined.push(arg);
+  }
+}
+
+/* global reference to any data we have parsed */
+const checked = {
+    object:typesChecked[0].container,
+    string:typesChecked[1].container,
+    boolean:typesChecked[2].container,
+    number:typesChecked[3].container,
+    nill:typesChecked[4].container,
+    undefinded:typesChecked[4].container,
+}
+
+
+
+
+
+
+/* additional functions */
+function each(obj, iterator, context) {
+  var breaker = {},
+    ArrayProto = Array.prototype,
+    ObjProto = Object.prototype,
+    hasOwnProperty = ObjProto.hasOwnProperty,
+    nativeForEach = ArrayProto.forEach;
+  if (nativeForEach && obj.forEach === nativeForEach) {
+    obj.forEach(iterator, context);
+  } else if (obj.length === +obj.length) {
+    for (var i = 0, l = obj.length; i < l; i++) {
+      if (i in obj && iterator.call(context, obj[i], i, obj) === breaker)
+        return;
+    }
+  } else {
+    for (var key in obj) {
+      if (hasOwnProperty.call(obj, key)) {
+        if (iterator.call(context, obj[key], key, obj) === breaker) return;
+      }
+    }
+  }
+}
+
+/* *** isArray()     *** */ 
+function isArray(obj) {
+  return toString.call(obj) === "[object Array]";
+}
+
+/* *** isNaN()       *** */ 
+function isNan(obj) {
+  return obj !== obj;
 }
 
 /* *** isDate()      *** */ 
@@ -137,6 +198,7 @@ function isPrime(value) {
   return value > 1;
 }
 
+/* todo: check performace, more types, standalone */
 each(["Arguments","Function","String","Number","Date","RegExp","Error","Symbol","Map","WeakMap","Set","WeakSet"], function(name) {
     window["is" + name] = function(obj) {
       return toString.call(obj) === "[object " + name + "]";
@@ -145,86 +207,4 @@ each(["Arguments","Function","String","Number","Date","RegExp","Error","Symbol",
 
 function isLocation(obj){
   return toString.call(obj) === "[object Location]";
-}
-
-// [native code] 
-
-
-function check(arg){
-
-  if(isBoolean(arg)){
-  
-    console.log('boolean', arg);
-    
-    checked.boolean.push(arg)
-    
-  }
-    if(isNull(arg)){
-        console.log('null', arg)
-    }
-    if(isNan(arg)){
-        console.log('NaN', arg)
-    }
-    if(isUndefined(arg)){
-        console.log('undefined', arg);
-      checked.undefined.push(arg);
-    }
-    if(isNumber(arg)){
-        console.log('number', arg);
-      checked.number.push(arg);
-    }
-    if(isPrime(arg)){
-        console.log('prime', arg)
-    }
-    if(isEven(arg)){
-        console.log('even', arg)
-    }    
-    if(isString(arg)){
-        console.log('string', arg);
-      checked.string.push(arg);
-    }
-    if(isSymbol(arg)){
-        console.log('symbol', arg)
-    }
-    if(isObject(arg)){
-        console.log('object', arg);
-      checked.object.push(arg);
-    }
-    if(isArray(arg)){
-        console.log('array', arg)
-    }
-    if(isElement(arg)){
-        console.log('element', arg)
-    }
-    if(isLocation(arg)){
-        console.log('location', arg)
-    }
-}
-
-/* build array of types */
-const typeCheck = "Object,String,Boolean,Number,Null,Undefined",
-      arrayCheck = typeCheck.split(","),
-      typesChecked = [];
-
-/* build object, push object to typesChecked Array */
-arrayCheck.forEach(function(type){
-  console.log(type);
-  var obj = { type: type, container: [] }
-  typesChecked.push(obj);
-});
-
-
-const checked = {
-    object: typesChecked[0].container,
-    string: typesChecked[1].container,
-    boolean: typesChecked[2].container,
-    number: typesChecked[3].container,
-    nill: typesChecked[4].container,
-    undefinded: typesChecked[4].container,
-}
-
-function doCheck(str){
-  
-  check(str);
-  
 }
