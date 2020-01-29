@@ -1,3 +1,5 @@
+const typesToCheck = "Object, String, Boolean, Number, Null, Undefined";
+const arrayChec = typesToCheck.split(",");
 
 
 function each(obj, iterator, context) {
@@ -149,9 +151,14 @@ function isLocation(obj){
 
 
 function check(arg){
-    if(isBoolean(arg)){
-        console.log('boolean', arg)
-    }
+
+  if(isBoolean(arg)){
+  
+    console.log('boolean', arg);
+    
+    checked.boolean.push(arg)
+    
+  }
     if(isNull(arg)){
         console.log('null', arg)
     }
@@ -159,10 +166,12 @@ function check(arg){
         console.log('NaN', arg)
     }
     if(isUndefined(arg)){
-        console.log('undefined', arg)
+        console.log('undefined', arg);
+      checked.undefined.push(arg);
     }
     if(isNumber(arg)){
-        console.log('number', arg)
+        console.log('number', arg);
+      checked.number.push(arg);
     }
     if(isPrime(arg)){
         console.log('prime', arg)
@@ -171,13 +180,15 @@ function check(arg){
         console.log('even', arg)
     }    
     if(isString(arg)){
-        console.log('string', arg)
+        console.log('string', arg);
+      checked.string.push(arg);
     }
     if(isSymbol(arg)){
         console.log('symbol', arg)
     }
     if(isObject(arg)){
-        console.log('object', arg)
+        console.log('object', arg);
+      checked.object.push(arg);
     }
     if(isArray(arg)){
         console.log('array', arg)
@@ -188,4 +199,32 @@ function check(arg){
     if(isLocation(arg)){
         console.log('location', arg)
     }
+}
+
+/* build array of types */
+const typeCheck = "Object,String,Boolean,Number,Null,Undefined",
+      arrayCheck = typeCheck.split(","),
+      typesChecked = [];
+
+/* build object, push object to typesChecked Array */
+arrayCheck.forEach(function(type){
+  console.log(type);
+  var obj = { type: type, container: [] }
+  typesChecked.push(obj);
+});
+
+
+const checked = {
+    object: typesChecked[0].container,
+    string: typesChecked[1].container,
+    boolean: typesChecked[2].container,
+    number: typesChecked[3].container,
+    nill: typesChecked[4].container,
+    undefinded: typesChecked[4].container,
+}
+
+function doCheck(str){
+  
+  check(str);
+  
 }
