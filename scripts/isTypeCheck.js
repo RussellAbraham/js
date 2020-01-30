@@ -140,17 +140,17 @@ function isWindow(obj){
   return obj != null && obj === obj.window;
 }
 /* *** isMatch()     *** */
-function isMatch(object, attrs) {
-  var keys = Object.keys(attrs),
-    length = keys.length;
-  if (object == null) return !length;
-  var obj = Object(object);
-  for (var i = 0; i < length; i++) {
-    var key = keys[i];
-    if (attrs[key] !== obj[key] || !(key in obj)) return false;
-  }
-  return true;
-}
+// function isMatch(object, attrs) {
+//   var keys = Object.keys(attrs),
+//     length = keys.length;
+//   if (object == null) return !length;
+//   var obj = Object(object);
+//   for (var i = 0; i < length; i++) {
+//     var key = keys[i];
+//     if (attrs[key] !== obj[key] || !(key in obj)) return false;
+//   }
+//   return true;
+// }
 ["Arguments","Function","Error","Symbol","Map","WeakMap","Set","WeakSet"].forEach(function(name){
     window["is" + name] = function(obj) {
       return toString.call(obj) === "[object " + name + "]";
@@ -186,9 +186,9 @@ function check(arg){
   if(isEmptyObject(arg)){
     console.log('emptyObject', arg);
   }
-  if(isMatch(arg)){
-    console.log('match', arg);
-  }      
+  // if(isMatch(arg)){
+  //   console.log('match', arg);
+  // }      
   if(isRegExp(arg)){
     console.log('regexp', arg);
   }
@@ -238,11 +238,6 @@ const checked = {
     nill:typesChecked[4].container,
     undefinded:typesChecked[5].container,
 }
-
-
-
-
-
 
 /* additional functions */
 function each(obj, iterator, context) {
