@@ -165,16 +165,13 @@ function isMatch(object, attrs) {
 }
 
 /*  *** isAlphaNumeric() ***  */
-function isAlphaNumeric(str) {
+function isAlphaNumeric(str){
   var code = str.charCodeAt(0);
-  if (
-    !(code > 47 && code < 58) && // numeric (0-9)
-    !(code > 64 && code < 91) && // uppercase (A-Z)
-    !(code > 96 && code < 123)
-  ) {
-    // lowercase (a-z)
-    return false;
-  }
+    if(!(code > 47 && code < 58) && // numeric (0-9)
+       !(code > 64 && code < 91) && // uppercase (A-Z)
+       !(code > 96 && code < 123)){ // lowercase (a-z)
+      return false;
+    }
   return true;
 }
 
@@ -193,13 +190,23 @@ function isPrime(value) {
   return value > 1;
 }
 
+/*  *** isLocation() ***  */
+function isLocation(obj){
+  return toString.call(obj) === "[object Location]";
+}
+
+/*  *** isCallable() ***  */
+function isCallable(obj){
+    return typeof obj === 'function';
+}
+/*  *** isConstructor() ***  */
+function isContstructor(obj){
+    return isCallable(obj);
+}
+
 /* todo: check performace, more types, standalone */
 each(["Arguments","Function","String","Number","Date","RegExp","Error","Symbol","Map","WeakMap","Set","WeakSet"], function(name) {
     window["is" + name] = function(obj) {
       return toString.call(obj) === "[object " + name + "]";
     };
 });
-
-function isLocation(obj){
-  return toString.call(obj) === "[object Location]";
-}
