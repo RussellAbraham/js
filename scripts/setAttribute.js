@@ -4,3 +4,9 @@ function setAttr(selector, attrs){
        myElement.setAttribute(attr, attrs[attr])
     }
 }
+/*
+ * setAttr("body", {
+ *    id: 'body',
+ *    class: 'body'
+ *});
+ */
