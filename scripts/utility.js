@@ -1,45 +1,49 @@
-<div id="box"></div>
-<script>
 
-var root = this;	
-var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
+var root = this;
+
+var ArrayProto = Array.prototype, 
+    ObjProto   = Object.prototype, 
+    FuncProto  = Function.prototype;
+
 var
   push             = ArrayProto.push,
   slice            = ArrayProto.slice,
   toString         = ObjProto.toString,
   hasOwnProperty   = ObjProto.hasOwnProperty;
+
 var
   nativeIsArray      = Array.isArray,
   nativeKeys         = Object.keys,
   nativeBind         = FuncProto.bind,
   nativeCreate       = Object.create;
+
 var 
-		argsTag 				= '[object Arguments]',
-    arrayTag 				= '[object Array]',
-    boolTag 				= '[object Boolean]',
-    dateTag 				= '[object Date]',
-    errorTag 				= '[object Error]',
-    funcTag 				= '[object Function]',
-    genTag 					= '[object GeneratorFunction]',
-    mapTag 					= '[object Map]',
+    argsTag 			= '[object Arguments]',
+    arrayTag 			= '[object Array]',
+    boolTag 			= '[object Boolean]',
+    dateTag 			= '[object Date]',
+    errorTag 			= '[object Error]',
+    funcTag 			= '[object Function]',
+    genTag 			= '[object GeneratorFunction]',
+    mapTag 			= '[object Map]',
     numberTag 			= '[object Number]',
     objectTag 			= '[object Object]',
     promiseTag 			= '[object Promise]',
-    regexpTag				= '[object RegExp]',
-    setTag 					= '[object Set]',
+    regexpTag			= '[object RegExp]',
+    setTag 			= '[object Set]',
     stringTag 			= '[object String]',
     symbolTag 			= '[object Symbol]',
     weakMapTag 			= '[object WeakMap]';
 var 
-	  arrayBufferTag  = '[object ArrayBuffer]',
-    dataViewTag		  = '[object DataView]',
+    arrayBufferTag  		= '[object ArrayBuffer]',
+    dataViewTag		  	= '[object DataView]',
     float32Tag 			= '[object Float32Array]',
     float64Tag 			= '[object Float64Array]',
-    int8Tag 				= '[object Int8Array]',
-    int16Tag 				= '[object Int16Array]',
-    int32Tag 				= '[object Int32Array]',
-    uint8Tag 				= '[object Uint8Array]',
-    uint8ClampedTag = '[object Uint8ClampedArray]',
+    int8Tag 			= '[object Int8Array]',
+    int16Tag 			= '[object Int16Array]',
+    int32Tag 			= '[object Int32Array]',
+    uint8Tag 			= '[object Uint8Array]',
+    uint8ClampedTag             = '[object Uint8ClampedArray]',
     uint16Tag 			= '[object Uint16Array]',
     uint32Tag 			= '[object Uint32Array]';
 	
