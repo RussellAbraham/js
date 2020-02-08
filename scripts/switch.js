@@ -1,3 +1,5 @@
+
+
 let data = [
     { title: 'Get All' },
     { title: 'Get One' },
@@ -54,9 +56,9 @@ let data = [
     if (!(container instanceof HTMLElement)) {
       throw new ReferenceError("No router view element available for rendering");
     }
-    switch (arg) {
+    switch (hash) {
       case "boolean":
-        console.log('boolean', arg);
+        console.log('boolean', hash);
         break;
       case "#display":
         container.innerHTML = displayTemplate;
