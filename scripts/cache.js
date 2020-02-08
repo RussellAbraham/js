@@ -1,3 +1,4 @@
+
 (function () {
   var CacheGlobal = function (object) {
     this.object = object;
@@ -37,12 +38,14 @@
       xhr.onload = function () {
         var msg = xhr.response;
         var parsed = JSON.parse(msg);
+	// push to global array, like back buffer
         root.push(parsed)
       }
     },
     push: function (data) {
       var root = this;
       data.forEach(function (obj) {
+	// map array to object keys      
         Cache.array.push(obj);
         root.map()
       })
@@ -50,18 +53,20 @@
 
     map: function () {
       var root = this;
+      // store objects by name/title
       Cache.array.map(function (data, i) {
         Cache.object[data.title] = data;
       })
       root.shift();
     },
-
+    // optional: clear the back buffer 
     shift: function () {
       Cache.array.forEach(function () {
         Cache.array.shift()
       })
     }
   };
+  // environments	
   if (typeof define === 'function' && define.amd) {
     define(function () {
       return {
@@ -80,7 +85,7 @@
   }
 })();
 
-
+// initialize
 var cmd = new Cmd();
 
 // get json data, library should cache objects for us
@@ -88,20 +93,7 @@ cmd.get("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/snippets.json");
 
 /* TextEditor Functions From Cached Objects */
 
-// helper function to render textarea and set event listeners
-function element(target, element, attrs, text){	
-	const myElement = document.createElement(element);
-	const myTextNode = document.createTextNode(text);
-	for(var attr in attrs){
-		myElement.setAttribute(attr, attrs[attr])
-	}
-  if(text){
-		myElement.appendChild(myTextNode);
-	}
-	return target.appendChild(myElement);
-}
-
-element(document.body, 'textarea', {
+cmd.html(document.body, 'textarea', {
   id: "text", 
   name: "text",
   placeholder: "Greetings: Try The Regex Replace From Cached Values",
@@ -148,6 +140,7 @@ function filter(event) {
     .replace(arr[10], Cache.object['PWA'].content)
 }
 
+// lots of the json is just js and can be run quickly
 function run(){
   var text = document.getElementById("text");
   var value = text.value;
