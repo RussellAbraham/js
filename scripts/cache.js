@@ -79,3 +79,86 @@
     window.Cmd = Cmd;
   }
 })();
+
+
+var cmd = new Cmd();
+
+// get json data, library should cache objects for us
+cmd.get("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/snippets.json");
+
+/* TextEditor Functions From Cached Objects */
+
+// helper function to render textarea and set event listeners
+function element(target, element, attrs, text){	
+	const myElement = document.createElement(element);
+	const myTextNode = document.createTextNode(text);
+	for(var attr in attrs){
+		myElement.setAttribute(attr, attrs[attr])
+	}
+  if(text){
+		myElement.appendChild(myTextNode);
+	}
+	return target.appendChild(myElement);
+}
+
+element(document.body, 'textarea', {
+  id: "text", 
+  name: "text",
+  placeholder: "Greetings: Try The Regex Replace From Cached Values",
+  onkeyup: "filter('text')",
+  onkeydown: "filter('text')",
+  // onkeypress,
+  // onblur
+});
+
+// bad regex, 
+// just for chain demo
+
+// when filter matches these character in textarea, replace
+var arr = [
+  /!\n/,
+  /!css\n/,
+  /!js\n/,
+  /!svg\n/,
+  /!json\n/,
+  /!cgi\n/,
+  /!base64\n/,
+  /!func\n/,
+  /!navbar\n/,
+  /!myWindow\n/,
+  /!html\n/
+];
+
+// The data used for snippets was created with html textarea, here we just get it back
+
+// filter function, event, listen to event, match regex pattern and replace with a string from cache
+function filter(event) {
+  var text = document.getElementById(event)
+  text.value = text.value
+    .replace(arr[0], Cache.object['HTML'].content)
+    .replace(arr[1], Cache.object['CSS'].content)
+    .replace(arr[2], Cache.object['JS'].content)
+    .replace(arr[3], "")
+    .replace(arr[4], JSON.stringify(Cache.object, null, 2))
+    .replace(arr[5], Cache.object['cgi'].content)
+    .replace(arr[6], "")
+    .replace(arr[7], "")
+    .replace(arr[8], Cache.object['navbar'].content)
+    .replace(arr[9], myWindow)
+    .replace(arr[10], Cache.object['PWA'].content)
+}
+
+function run(){
+  var text = document.getElementById("text");
+  var value = text.value;
+  var result;
+  try {
+    result = eval.call(window, value);
+    text.value = result;
+  } catch (er) {
+    result = er.stack;
+    text.value = result;
+  }
+  // callstack
+}
+
