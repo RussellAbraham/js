@@ -1,109 +1,107 @@
-(function () {
+var root = this;
 
-  var root = this;
+var ArrayProto = Array.prototype,
+  ObjProto = Object.prototype,
+  FuncProto = Function.prototype;
 
-  var ArrayProto = Array.prototype,
-    ObjProto = Object.prototype,
-    FuncProto = Function.prototype;
+var
+  push = ArrayProto.push,
+  slice = ArrayProto.slice,
+  toString = ObjProto.toString,
+  hasOwnProperty = ObjProto.hasOwnProperty;
 
-  var
-    push = ArrayProto.push,
-    slice = ArrayProto.slice,
-    toString = ObjProto.toString,
-    hasOwnProperty = ObjProto.hasOwnProperty;
+var
+  nativeIsArray = Array.isArray,
+  nativeKeys = Object.keys,
+  nativeBind = FuncProto.bind,
+  nativeCreate = Object.create;
 
-  var
-    nativeIsArray = Array.isArray,
-    nativeKeys = Object.keys,
-    nativeBind = FuncProto.bind,
-    nativeCreate = Object.create;
+var
+  argsTag = '[object Arguments]',
+  arrayTag = '[object Array]',
+  boolTag = '[object Boolean]',
+  dateTag = '[object Date]',
+  errorTag = '[object Error]',
+  funcTag = '[object Function]',
+  genTag = '[object GeneratorFunction]',
+  mapTag = '[object Map]',
+  numberTag = '[object Number]',
+  objectTag = '[object Object]',
+  promiseTag = '[object Promise]',
+  regexpTag = '[object RegExp]',
+  setTag = '[object Set]',
+  stringTag = '[object String]',
+  symbolTag = '[object Symbol]',
+  weakMapTag = '[object WeakMap]';
+var
+  arrayBufferTag = '[object ArrayBuffer]',
+  dataViewTag = '[object DataView]',
+  float32Tag = '[object Float32Array]',
+  float64Tag = '[object Float64Array]',
+  int8Tag = '[object Int8Array]',
+  int16Tag = '[object Int16Array]',
+  int32Tag = '[object Int32Array]',
+  uint8Tag = '[object Uint8Array]',
+  uint8ClampedTag = '[object Uint8ClampedArray]',
+  uint16Tag = '[object Uint16Array]',
+  uint32Tag = '[object Uint32Array]';
 
-  var
-    argsTag = '[object Arguments]',
-    arrayTag = '[object Array]',
-    boolTag = '[object Boolean]',
-    dateTag = '[object Date]',
-    errorTag = '[object Error]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]',
-    mapTag = '[object Map]',
-    numberTag = '[object Number]',
-    objectTag = '[object Object]',
-    promiseTag = '[object Promise]',
-    regexpTag = '[object RegExp]',
-    setTag = '[object Set]',
-    stringTag = '[object String]',
-    symbolTag = '[object Symbol]',
-    weakMapTag = '[object WeakMap]';
-  var
-    arrayBufferTag = '[object ArrayBuffer]',
-    dataViewTag = '[object DataView]',
-    float32Tag = '[object Float32Array]',
-    float64Tag = '[object Float64Array]',
-    int8Tag = '[object Int8Array]',
-    int16Tag = '[object Int16Array]',
-    int32Tag = '[object Int32Array]',
-    uint8Tag = '[object Uint8Array]',
-    uint8ClampedTag = '[object Uint8ClampedArray]',
-    uint16Tag = '[object Uint16Array]',
-    uint32Tag = '[object Uint32Array]';
-
-  var createAssigner = function (keysFunc, undefinedOnly) {
-    return function (obj) {
-      var length = arguments.length;
-      if (length < 2 || obj == null) return obj;
-      for (var index = 1; index < length; index++) {
-        var source = arguments[index],
-          keys = keysFunc(source),
-          l = keys.length;
-        for (var i = 0; i < l; i++) {
-          var key = keys[i];
-          if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
-        }
+var createAssigner = function (keysFunc, undefinedOnly) {
+  return function (obj) {
+    var length = arguments.length;
+    if (length < 2 || obj == null) return obj;
+    for (var index = 1; index < length; index++) {
+      var source = arguments[index],
+        keys = keysFunc(source),
+        l = keys.length;
+      for (var i = 0; i < l; i++) {
+        var key = keys[i];
+        if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
       }
-      return obj;
-    };
-  };
-
-  var optimizCallback = function (func, context, argCount) {
-    if (context === void 0) return func;
-    switch (argCount == null ? 3 : argCount) {
-      case 1:
-        return function (value) {
-          return func.call(context, value);
-        };
-      case 2:
-        return function (value, other) {
-          return func.call(context, value, other);
-        };
-      case 3:
-        return function (value, index, collection) {
-          return func.call(context, value, index, collection);
-        };
-      case 4:
-        return function (accumulator, value, index, collection) {
-          return func.call(context, accumulator, value, index, collection);
-        };
     }
-    return function () {
-      return func.apply(context, arguments);
-    };
+    return obj;
   };
-  /* *** times() *** */
-  function times(n, iteratee, context) {
-    var accum = Array(Math.max(0, n));
-    iteratee = optimizCallback(iteratee, context, 1);
-    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-    return accum;
-  };
+};
 
-  /* *** extend() *** */
-  function extend() {
-    createAssigner(allKeys)
+var optimizCallback = function (func, context, argCount) {
+  if (context === void 0) return func;
+  switch (argCount == null ? 3 : argCount) {
+    case 1:
+      return function (value) {
+        return func.call(context, value);
+      };
+    case 2:
+      return function (value, other) {
+        return func.call(context, value, other);
+      };
+    case 3:
+      return function (value, index, collection) {
+        return func.call(context, value, index, collection);
+      };
+    case 4:
+      return function (accumulator, value, index, collection) {
+        return func.call(context, accumulator, value, index, collection);
+      };
   }
+  return function () {
+    return func.apply(context, arguments);
+  };
+};
+/* *** times() *** */
+function times(n, iteratee, context) {
+  var accum = Array(Math.max(0, n));
+  iteratee = optimizCallback(iteratee, context, 1);
+  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+  return accum;
+};
+
+/* *** extend() *** */
+function extend() {
+  createAssigner(allKeys)
+}
 
 
-})();
+
 
 /**
  * Utility Functions 
