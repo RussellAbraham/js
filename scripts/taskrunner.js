@@ -23,3 +23,28 @@ const taskrunner = {
 }
 // taskrunner.start();
 // taskrunner.stop();
+
+// todo: run more tests on separate threads
+const factoryWorker = function(){
+  return {   
+    start: function(){    
+      var root = this;    	
+      if(root.timerId){      
+        return false;      
+      } else {      
+        root.timerId = setInterval(function(){        
+          console.log('from factory worker')        
+        }, 500)          
+      }        
+    },        
+    stop:function(){    
+      var root = this;    	
+      clearInterval(root.timerId);
+      console.log('factory worker may have stopped')
+    }    
+  }
+ 
+}
+
+
+ 
