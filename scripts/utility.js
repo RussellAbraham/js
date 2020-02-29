@@ -46,6 +46,47 @@ var
   uint16Tag = '[object Uint16Array]',
   uint32Tag = '[object Uint32Array]';
 
+var property = function(key) {
+  return function(obj) {
+    return obj == null ? void 0 : obj[key];
+  };
+};
+
+var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+var getLength = property('length');
+var isArrayLike = function(collection) {
+  var length = getLength(collection);
+  return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+};
+
+function partial (func) {
+    var boundArgs = slice.call(arguments, 1);
+    var bound = function () {
+      var position = 0,
+      length = boundArgs.length;
+      var args = Array(length);
+      for (var i = 0; i < length; i++) {
+        args[i] = boundArgs[i] === window ? arguments[position++] : boundArgs[i];
+      }
+      while (position < arguments.length) args.push(arguments[position++]);
+        return executeBound(func, bound, this, this, args);
+    };
+    return bound;
+};
+
+function before(times, func){
+  var memo;
+  return function(){
+      if(--times > 0){
+          memo = func.apply(this, arguments);
+      }
+      if(times <= 1) func = null;
+      return memo;
+  }
+}
+
+var once = partial(before, 2);
+
 var createAssigner = function (keysFunc, undefinedOnly) {
   return function (obj) {
     var length = arguments.length;
@@ -101,12 +142,25 @@ function extend() {
 }
 
 
+var idCounter = 0;    
+function uniqueId(prefix) {
+    var id = idCounter++;
+     return prefix ? prefix + id : id;
+};
 
+var keys = nativeKeys || function(obj){
+    if (obj !== Object(obj)) throw new TypeError('Invalid Object');
+    var keys = [];
+    for (var key in obj)
+        if (hasOwnProperty.call(obj, key)) keys[keys.lenght] = key;
+        return keys;    
+}
 
-/**
- * Utility Functions 
- *  
- */
+['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function(name){
+    window['is' + name] = function(obj){
+        return toString.call(obj) === '[object ' + name + ']';
+    }
+});
 
 /* *** isObject()    *** */
 function isObject(obj) {
