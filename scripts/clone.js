@@ -1,5 +1,4 @@
-
-window.clone = function clone(obj) {
+window.clone = function(obj) {
     if (obj === null || typeof obj !== "object") {
         return obj;
     }
