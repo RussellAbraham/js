@@ -1,5 +1,51 @@
 // continues running a function every tick of the timer
 
+const annoyer = {
+ 
+	phrases: ["literally", "cray cray", "I can't even", "Totes!", "YOLO", "Can't Stop, Won't Stop"],
+	
+	pickPhrase() {
+    const {
+      phrases
+    } = this;
+    const idx = Math.floor(Math.random() * phrases.length);
+    return phrases[idx]
+  },
+  start() {
+    //Use an arrow function to avoid getting a different 'this':
+    this.timerId = setInterval(() => {
+      console.log(this.pickPhrase())
+    }, 3000)
+  },
+  stop() {
+    clearInterval(this.timerId);
+    console.log("PHEW THANK HEAVENS THAT IS OVER!")
+  }
+}
+
+const taskrunner0 = {
+	array: ['one', 'two', 'three'],
+	pick : function(){
+		const ids = Math.floor(Math.random() * this.array.length);
+		return this.array[ids]
+	},
+  start: function () {
+    var self = this;  
+		this.timerId = setInterval(function () {
+    
+			console.log(self.pick())
+      
+		}, 1000);
+  
+	},
+  stop: function () {
+    clearInterval(this.timerId);
+    console.log('taskrunner may have stopped');
+    // clear the timerId so it can start again
+    this.timerId = "";
+  }
+}
+
 const taskrunner = {
   start: function () {
     // if the timerId exists, dont start another one
