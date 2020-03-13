@@ -736,3 +736,32 @@ function checks(arg) {
     console.log('undefined', arg);
   }
 }
+function checks(o) {
+	isObject(o) && console.log("object", o), 
+	isArray(o) && console.log("array", o), 
+	isLocation(o) && console.log("location", o), 
+	isCallable(o) && console.log("callable", o), 
+	isContstructor(o) && console.log("constructor", o), 
+	isElement(o) && console.log("element", o), 
+	isWindow(o) && console.log("window", o), 
+	isEmptyObject(o) && console.log("emptyObject", o), 
+	isRegExp(o) && console.log("regexp", o), 
+	isUniform(o) && console.log("uniform", o), 
+	isBoolean(o) && console.log("boolean", o), 
+	isString(o) && console.log("string", o), 
+	isDate(o) && console.log("date", o), 
+	isAlphaNumeric(String(o)) && console.log("alphanumeric", o), 
+	isNumber(o) && console.log("number", o), 
+	isPrime(o) && console.log("prime", o), 
+	isEven(o) && console.log("even", o), 
+	isFunction(o) && console.log("function", o), 
+	isStream(o) && console.log("stream", o), 
+	isPlainObject(o) && console.log("plain object", o), 
+	isBuffer(o) && console.log("buffer", o), 
+	isArrayBuffer(o) && console.log("array buffer", o), 
+	isURLSearchParams(o) && console.log("url param", o), 
+	isBlob(o) && console.log("blob", o), 
+	isFile(o) && console.log("file", o), 
+	isNull(o) && console.log("null", o), 
+	isUndefined(o) && console.log("undefined", o)
+}
