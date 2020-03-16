@@ -1,13 +1,16 @@
-function $GET(url){
-  $.ajax({
-	url : url,
-	type : "GET",
-	data : { "key" : "value" },
-	content : "application/json; charset=utf-8",
-    	async : true,
-	dataType : 'json',
-	success : function(data, status, xhr) {		
-	console.log(data, status, xhr);
-    }
-  });
-}
+const jqxhr = $.getJSON(url, function() {  
+	console.log( "success" ); 
+})	
+.done(function() { 
+	console.log( "second success" ); 
+}) 
+.fail(function() { 
+	console.log( "error" ); 
+})
+.always(function() { 
+	console.log( "complete" ); 	
+});
+
+jqxhr.always(function() {
+  console.log( "second complete" );
+});
