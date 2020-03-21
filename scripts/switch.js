@@ -90,6 +90,15 @@ let data = [
     }
   }
   
+function testSwitch(){
+    var input = arguments;
+    switch(input[0]){
+        case 'whatever': 
+            input[1] === 'something'     && console.log('good things');
+            input[1] === 'somethingelse' && console.log('good things');
+            break;
+}
+
   window.addEventListener("hashchange", onRouteChanged);
   window.addEventListener("load", onRouteChanged);
   
