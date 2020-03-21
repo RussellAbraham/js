@@ -10,7 +10,7 @@
                 response = JSON.parse(request.response);
                 populate(response);
             } else {
-                console.info('Network request failed ' + request.status + ':' + request.statusText)
+                console.info('Network request failed ' + request.status + ':' + request.statusText);
             }
         }
         request.send();
@@ -22,9 +22,11 @@
         request.responseType = 'blob';
         request.onload = function(){
             if(request.status === 200){
-                var blob = request.response;
-                var objUrl = window.URL.createObjectURL(blob);
-                populate(response);
+                var response = request.response;
+                var blob = window.URL.createObjectURL(response);
+                populate(blob);
+            } else {
+                console.info('Network request failed ' + request.status + ':' + request.statusText);            
             }
         }
         request.send();
