@@ -1,11 +1,3 @@
-var colors = [];
-
-function changeColors(color){
-	//loop through all squares
-	// for(var i = 0; i < ln.length; i++){
-	// 	 ln[i]
-	// }
-}
 
 function randomColor(){
 	var r = Math.floor(Math.random() * 256),//pick a "red" from 0 - 255
