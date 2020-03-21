@@ -6,19 +6,32 @@ var globalObject = typeof global !== 'undefined' ? global : this||window,
     // function toggle attributes
     dataToggle    = 'data-toggle',
     dataDismiss   = 'data-dismiss',
+    
+    
     dataSpy       = 'data-spy',
     dataRide      = 'data-ride',
   
-    // components
+    // add custom alert message plugin
     stringAlert     = 'Alert',
+    
     stringButton    = 'Button',
     stringCarousel  = 'Carousel',
     stringCollapse  = 'Collapse',
+    
+    // build script for mega dropdown menu
     stringDropdown  = 'Dropdown',
+    
+    // add backbone component to sync modal states
     stringModal     = 'Modal',
+    
+    
     stringPopover   = 'Popover',
     stringScrollSpy = 'ScrollSpy',
+    
+    // setup backbone component to sync tab states with indexedDB    
     stringTab       = 'Tab',
+    
+    
     stringTooltip   = 'Tooltip',
     stringToast     = 'Toast',
   
@@ -56,6 +69,7 @@ var globalObject = typeof global !== 'undefined' ? global : this||window,
     height         = 'height',
   
     // aria
+    // double check aria for compliance
     ariaExpanded = 'aria-expanded',
     ariaHidden   = 'aria-hidden',
     ariaSelected = 'aria-selected',
@@ -121,7 +135,7 @@ var globalObject = typeof global !== 'undefined' ? global : this||window,
     // tooltip / popover
     tipPositions = /\b(top|bottom|left|right)+/,
   
-    // modal
+    // backbone state modals 
     modalOverlay = 0,
     fixedTop = 'fixed-top',
     fixedBottom = 'fixed-bottom',
