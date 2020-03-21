@@ -1,6 +1,6 @@
 (function(){
 
-    var request, response;
+    var request, response, blob;
 
     function getjson(url){
         request = new XMLHttpRequest();
@@ -22,8 +22,8 @@
         request.responseType = 'blob';
         request.onload = function(){
             if(request.status === 200){
-                var response = request.response;
-                var blob = window.URL.createObjectURL(response);
+                response = request.response;
+                blob = window.URL.createObjectURL(response);
                 populate(blob);
             } else {
                 console.info('Network request failed ' + request.status + ':' + request.statusText);            
