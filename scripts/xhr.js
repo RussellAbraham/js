@@ -2,7 +2,7 @@
 
     var request, response;
 
-    function getjson(){
+    function getjson(url){
         request = new XMLHttpRequest();
         request.responseType = 'text';
         request.onload = function(){
@@ -16,7 +16,7 @@
         request.send();
     }
 
-    function getimg(){
+    function getimg(url){
         request = new XMLHttpRequest();
         request.open('GET', url);
         request.responseType = 'blob';
