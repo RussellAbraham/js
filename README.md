@@ -12,5 +12,5 @@ A collection of random javascript snippets and examples.
 
 <hr>
 
-![JavaScript](javascript.png)
+![JavaScript](https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/javascript.png)
 
