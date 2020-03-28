@@ -4,6 +4,7 @@
 
     function getjson(url){
         request = new XMLHttpRequest();
+        request.open('GET', url);
         request.responseType = 'text';
         request.onload = function(){
             if(request.status === 200){
@@ -33,7 +34,7 @@
     }
 
     function populate(obj){
-        self.postMessage(obj);
+        //self.postMessage(obj);
     }
 
 })();
