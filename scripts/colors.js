@@ -1,4 +1,3 @@
-
 function randomColor(){
 	var r = Math.floor(Math.random() * 256),//pick a "red" from 0 - 255
 	    g = Math.floor(Math.random() * 256),//pick a "green" from  0 -255
@@ -6,21 +5,6 @@ function randomColor(){
 	return "rgb(" + r + ", " + g + ", " + b + ")";
 }
 
-function Color(r, g, b, name){
-	this.r = r;
-	this.g = g;
-	this.b = b;
-	this.name = name;
-}
-
-Color.prototype = {
-	innerRGB : function(){},
-	rgb : function(){},
-	rgba : function(){},
-	hex : function(){}
-}
-
-// todo : redo this sugar as JavaScript Prototype
 class Color {
 	constructor(r, g, b, name) {
 		this.r = r;
