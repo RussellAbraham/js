@@ -16,6 +16,23 @@
         }
         request.send();
     }
+     
+    function getjson2(url){
+        request = new XMLHttpRequest();
+        request.responseType = 'text';
+        request.open("GET", url);
+        request.onreadystatechange = function(){
+            if(this.readyState === this.HEADERS_RECEIVED){
+                var headers = request.getAllResponseHeaders();
+                console.log(headers);
+            }
+        }
+        request.onload = function(){
+            response = JSON.parse(request.response);
+            populate(response);
+        }
+        request.send();
+    }
 
     function getimg(url){
         request = new XMLHttpRequest();
