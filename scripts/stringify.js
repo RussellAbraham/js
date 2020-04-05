@@ -1,3 +1,6 @@
+
+
+
 function sortci(a, b) {
   return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
 }
@@ -99,3 +102,79 @@ function stringify(o, simple, visited) {
   }
   return json;
 }
+
+
+function isObject(obj) {
+    return obj === Object(obj);
+}
+function isHash(obj) {
+	return( !!obj && (typeof(obj) === 'object') && (typeof(obj.length) === 'undefined') );
+}
+
+
+function isArray(obj) {
+    return toString.call(obj) === "[object Array]";
+}
+function isArrayLike(obj) {
+	if (typeof(obj) == 'array') return true;
+	return( !!obj && (typeof(obj) === 'object') && (typeof(obj.length) != 'undefined') );
+}
+
+
+function isString(obj) {
+    return !!(obj === "" || (obj && obj.charCodeAt && obj.substr));
+}
+
+function isBoolean(obj) {
+    return obj === true || obj === false;
+}
+
+function isNumber(obj) {
+    return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
+}
+
+function isNull(obj) {
+    return obj === null;
+}
+
+function isUndefined(obj) {
+    return obj === void 0;
+}
+
+function serialize(obj, r) {
+	
+  r || (r = ":");
+	
+  var string = "";
+	
+  if ("boolean" == typeof obj) string += obj ? "true" : "false";
+  
+	else if ("number" == typeof obj) string += obj;
+  
+	else if ("string" == typeof obj) string += '"' + obj
+    .replace(/([\"\\])/g, "\\$1")
+    .replace(/\r/g, "\\r")
+    .replace(/\n/g, "\\n") + '"';
+	
+  else if (isHash(obj)){
+		var i = 0, n = []; 
+    for (var t in obj) n[i] = (t.match(/^[A-Za-z]\w*$/) ? t : '"' + t + '"') + r + serialize(obj[t], r), i++;
+		string += "{" + n.join(",") + "}"
+	} else if (isArrayLike(obj)) {
+		n = [];
+		for (var o = 0, f = obj.length; o < f; o++) n[o] = serialize(obj[o], r);
+		string += "[" + n.join(",") + "]"
+	} else string += "0";
+  
+	return string
+
+}
+
+function looseJsonParse(obj){
+    return Function('"use strict";return (' + obj + ')')();
+}
+
+console.log(looseJsonParse(
+   "{a:(4-1), b:function(){}, c:new Date()}"
+));
+
