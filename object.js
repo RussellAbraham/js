@@ -24,3 +24,14 @@
 	}
 
 })(new Object())
+
+
+ (function(application){
+	application['api'] = function(){
+		return {
+			get : function(){},
+			set : function(){},
+			has : function(){}
+		}
+	}
+})(new Object());
