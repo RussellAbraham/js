@@ -452,172 +452,57 @@ function linearizeArray(array, typed_array_class) {
   return buffer;
 }
 
-/* Some encoding and decoding tools */
-//****** ENCODE in base 64 *******************
 
-var keyStr = "ABCDEFGHIJKLMNOP" +
-  "QRSTUVWXYZabcdef" +
-  "ghijklmnopqrstuv" +
-  "wxyz0123456789+/" +
-  "=";
+base64.fromArrayBuffer = function(arrayBuffer) {
+    var array = new Uint8Array(arrayBuffer);
+    return uint8ToBase64(array);
+};
 
-/* *** encode64 *** */
-function encode64(input) {
-  var output = "";
-  var chr1, chr2, chr3 = "";
-  var enc1, enc2, enc3, enc4 = "";
-  var i = 0;
+//------------------------------------------------------------------------------
 
-  do {
-    chr1 = input.charCodeAt(i++);
-    chr2 = input.charCodeAt(i++);
-    chr3 = input.charCodeAt(i++);
+/* This code is based on the performance tests at http://jsperf.com/b64tests
+ * This 12-bit-at-a-time algorithm was the best performing version on all
+ * platforms tested.
+ */
 
-    enc1 = chr1 >> 2;
-    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-    enc4 = chr3 & 63;
+var b64_6bit = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+var b64_12bit;
 
-    if (isNaN(chr2)) {
-      enc3 = enc4 = 64;
-    } else if (isNaN(chr3)) {
-      enc4 = 64;
+var b64_12bitTable = function() {
+    b64_12bit = [];
+    for (var i=0; i<64; i++) {
+        for (var j=0; j<64; j++) {
+            b64_12bit[i*64+j] = b64_6bit[i] + b64_6bit[j];
+        }
     }
+    b64_12bitTable = function() { return b64_12bit; };
+    return b64_12bit;
+};
 
-    output = output +
-      keyStr.charAt(enc1) +
-      keyStr.charAt(enc2) +
-      keyStr.charAt(enc3) +
-      keyStr.charAt(enc4);
-    chr1 = chr2 = chr3 = "";
-    enc1 = enc2 = enc3 = enc4 = "";
-  } while (i < input.length);
-
-  return output;
+function uint8ToBase64(rawData) {
+    var numBytes = rawData.byteLength;
+    var output="";
+    var segment;
+    var table = b64_12bitTable();
+    for (var i=0;i<numBytes-2;i+=3) {
+        segment = (rawData[i] << 16) + (rawData[i+1] << 8) + rawData[i+2];
+        output += table[segment >> 12];
+        output += table[segment & 0xfff];
+    }
+    if (numBytes - i == 2) {
+        segment = (rawData[i] << 16) + (rawData[i+1] << 8);
+        output += table[segment >> 12];
+        output += b64_6bit[(segment & 0xfff) >> 6];
+        output += '=';
+    } else if (numBytes - i == 1) {
+        segment = (rawData[i] << 16);
+        output += table[segment >> 12];
+        output += '==';
+    }
+    return output;
 }
 
-/* *** encode64Array *** */
-function encode64Array(input) {
-  var output = "";
-  var chr1, chr2, chr3 = "";
-  var enc1, enc2, enc3, enc4 = "";
-  var i = 0;
-
-  do {
-    chr1 = input[i++];
-    chr2 = input[i++];
-    chr3 = input[i++];
-
-    enc1 = chr1 >> 2;
-    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-    enc4 = chr3 & 63;
-
-    if (isNaN(chr2)) {
-      enc3 = enc4 = 64;
-    } else if (isNaN(chr3)) {
-      enc4 = 64;
-    }
-
-    output = output +
-      keyStr[enc1] +
-      keyStr[enc2] +
-      keyStr[enc3] +
-      keyStr[enc4];
-    chr1 = chr2 = chr3 = "";
-    enc1 = enc2 = enc3 = enc4 = "";
-  } while (i < input.length);
-
-  return output;
-}
-
-/* *** decode64 *** */
-function decode64(input) {
-  var output = "";
-  var chr1, chr2, chr3 = "";
-  var enc1, enc2, enc3, enc4 = "";
-  var i = 0;
-
-  // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-  var base64test = /[^A-Za-z0-9\+\/\=]/g;
-  if (base64test.exec(input)) {
-    alert("There were invalid base64 characters in the input text.\n" +
-      "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-      "Expect errors in decoding.");
-  }
-  input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-  do {
-    enc1 = keyStr.indexOf(input.charAt(i++));
-    enc2 = keyStr.indexOf(input.charAt(i++));
-    enc3 = keyStr.indexOf(input.charAt(i++));
-    enc4 = keyStr.indexOf(input.charAt(i++));
-
-    chr1 = (enc1 << 2) | (enc2 >> 4);
-    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-    chr3 = ((enc3 & 3) << 6) | enc4;
-
-    output = output + String.fromCharCode(chr1);
-
-    if (enc3 != 64) {
-      output = output + String.fromCharCode(chr2);
-    }
-    if (enc4 != 64) {
-      output = output + String.fromCharCode(chr3);
-    }
-
-    chr1 = chr2 = chr3 = "";
-    enc1 = enc2 = enc3 = enc4 = "";
-
-  } while (i < input.length);
-
-  return unescape(output);
-}
-
-/* *** decod64ToArray *** */
-function decode64ToArray(input) {
-  var output = new Uint8Array(input.length);
-
-  var chr1, chr2, chr3 = "";
-  var enc1, enc2, enc3, enc4 = "";
-  var i = 0;
-
-  // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-  var base64test = /[^A-Za-z0-9\+\/\=]/g;
-  if (base64test.exec(input)) {
-    alert("There were invalid base64 characters in the input text.\n" +
-      "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-      "Expect errors in decoding.");
-  }
-  input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-  var pos = 0;
-
-  do {
-    enc1 = keyStr.indexOf(input.charAt(i++));
-    enc2 = keyStr.indexOf(input.charAt(i++));
-    enc3 = keyStr.indexOf(input.charAt(i++));
-    enc4 = keyStr.indexOf(input.charAt(i++));
-
-    chr1 = (enc1 << 2) | (enc2 >> 4);
-    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-    chr3 = ((enc3 & 3) << 6) | enc4;
-
-    output[pos++] = chr1;
-
-    if (enc3 != 64) {
-      output[pos++] = chr2;
-    }
-    if (enc4 != 64) {
-      output[pos++] = chr3;
-    }
-
-    chr1 = chr2 = chr3 = "";
-    enc1 = enc2 = enc3 = enc4 = "";
-
-  } while (i < input.length);
-
-  return output.subarray(0, pos);
-}
+});
 
 
 /* *** hexEncode *** */
