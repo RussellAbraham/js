@@ -35,14 +35,14 @@
 	
 	}
 	
-	const api = {
+	const Count = {
 		reset : reset,
 		countUp : countUp,
 		countDown : countDown
 	}
 	
 	if(typeof root !== 'undefined'){
-		root.api = api;
+		root.Count = Count;
 	}
 	
 
