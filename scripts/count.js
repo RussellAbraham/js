@@ -2,6 +2,11 @@ var count = 0;
 var full = false;
 var max = 256;
 
+function reset(){
+  count = 0;
+  full = false;
+}
+
 function add(){
 	if(!full){
 		count++;
@@ -10,9 +15,4 @@ function add(){
 		}
 		console.log(count);
 	}
-}
-
-function reset(){
-  count = 0;
-  full = false;
 }
