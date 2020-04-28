@@ -6,6 +6,10 @@ var touch = {
   'move': msPointerSupported ? 'MSPointerMove' : 'touchmove',
   'end': msPointerSupported ? 'MSPointerUp' : 'touchend'
 };
+
+var doc = window.document;
+var html = doc.documentElement;
+
 // prefix support
 var prefix = (function prefix() {
   var regex = /^(Webkit|Khtml|Moz|ms|O)(?=[A-Z])/;
@@ -57,16 +61,9 @@ Component.prototype = {
 
 }
 
-
 /*
-
 var x = new Component();
-
 x._opened; // false;
-
 x.toggle();
-
 x._opened; // true;
-
 */
-
