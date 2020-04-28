@@ -46,8 +46,8 @@ function Component(options) {
     if (!this.main.classList.contains('component-main-' + this._side)){
       this.panel.classList.add('component-main-' + this._side);
     }
-    if (!this.menu.classList.contains('slideout-menu')){
-      this.menu.classList.add('slideout-menu');
+    if (!this.aside.classList.contains('component-aside')){
+      this.aside.classList.add('component-aside');
     }
     if (!this.aside.classList.contains('component-aside-' + this._side)){
       this.aside.classList.add('component-aside-' + this._side);
