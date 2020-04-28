@@ -30,3 +30,36 @@ function setContent(node, content) {
     ele.innerHTML = content;
   }
 }
+
+// 
+var ele;
+
+const selector = document.querySelector.bind(document);
+const b = 'beforeend';
+const a = 'afterbegin';
+
+function appendHtml(node, content){
+    ele = selector(node);
+    ele.appendChild(content);
+}
+
+function insertHtml(node, content){
+    ele = selector(node);
+    ele.insertBefore(content, ele.childNodes[0]);
+}
+
+function innerHtml(node, content){
+    ele = selector(node);
+    ele.innerHTML = content;
+}
+
+function adjacentHtml(node, x, content){
+    ele = selector(node);
+    if (ele) {
+        switch(x){
+            case 'b' : ele.insertAdjacentHTML('beforeend', content); break;
+            case 'a' : ele.insertAdjacentHTML('afterbegin', content); break;
+        }
+    }
+}
+
