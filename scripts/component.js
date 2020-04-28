@@ -34,21 +34,50 @@ function Component(options) {
     
     this.main = options.main;
     this.aside = options.aside;
-    
-    
-    
+  
+    this._touch = options.touch === undefined ? true : options.touch && true;
+    this._side = options.side || ''; /* string requires value */
+  
+    this._duration = parseInt(options.duration, 10) || 300;
+  
+    if (!this.main.classList.contains('component-main')){
+      this.main.classList.add('component-main');
+    }
+    if (!this.main.classList.contains('component-main-' + this._side)){
+      this.panel.classList.add('component-main-' + this._side);
+    }
+    if (!this.menu.classList.contains('slideout-menu')){
+      this.menu.classList.add('slideout-menu');
+    }
+    if (!this.aside.classList.contains('component-aside-' + this._side)){
+      this.aside.classList.add('component-aside-' + this._side);
+    }
+  
 }
 
 Component.prototype = {
 
-    open : function(){
-        var self = this;
-        this._opened = true;
+    open : function(){    
+      var self = this;
+      if (!html.classList.contains('component-open')) { html.classList.add('component-open'); }
+      this._opened = true;
+      setTimeout(function() {
+        self.main.style.transition = self.main.style['-webkit-transition'] = '';
+        /*  */
+      }, this._duration + 50);
+      return this;
     },
 
     close : function(){
-        var self = this;
-        this._opened = false;
+      var self = this;
+      if (!this.isOpen() && !this._opening) { return this; }
+      this._opened = false;
+      setTimeout(function() {
+        html.classList.remove('component-open');
+        self.main.style.transition = self.main.style['-webkit-transition'] = self.main.style[prefix + 'transform'] = self.main.style.transform = '';
+        /*  */
+      }, this._duration + 50);
+      return this;
     },
 
     toggle : function(){
