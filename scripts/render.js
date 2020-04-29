@@ -33,5 +33,36 @@ function adjacentHtml(node, side, content){
         }
     }
 }
-
+function insertAdjacentHTML(obj, where, htmlStr)
+{
+	if (gbBsIE || gbBsOpera7)
+	{
+		obj.insertAdjacentHTML(where, htmlStr);
+	}
+	else if (gbBsNS6 || gbBsSafari)
+	{
+		var r = obj.ownerDocument.createRange();
+		r.setStartBefore(obj);
+		var	parsedHTML = r.createContextualFragment(htmlStr);
+		
+		switch (where){
+		case 'beforeBegin':
+			obj.parentNode.insertBefore(parsedHTML,obj);
+			break;
+		case 'afterBegin':
+			obj.insertBefore(parsedHTML,obj.firstChild);
+			break;
+		case 'beforeEnd':
+			obj.appendChild(parsedHTML);
+			break;
+		case 'afterEnd':
+			if (obj.nextSibling){
+			obj.parentNode.insertBefore(parsedHTML,obj.nextSibling);
+			} else {
+			obj.parentNode.appendChild(parsedHTML);
+			}
+			break;
+		}
+	}
+}
 
