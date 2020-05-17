@@ -10,25 +10,26 @@ function extend(obj){
 
 //
 function extend(destination, from) {
-  for (var prop in from) {
-    if (from[prop]) {
-      destination[prop] = from[prop];
-    }
-  }
-  return destination;
+	for (var prop in from) {
+    		if (from[prop]) {
+      			destination[prop] = from[prop];
+    		}
+  	}
+	return destination;
 }
 
 //
-window.extend = function (obj, extObj) {
-    obj = obj || {};
-    if (arguments.length > 2) {
-        for (var a = 1; a < arguments.length; a++) {
-            window.extend(obj, arguments[a]);
-        }
-    } else {
-        for (var i in extObj) {
-            obj[i] = extObj[i];
-        }
-    }
-    return obj;
+function extend(obj, extObj) {
+    	obj = obj || {};
+    	if (arguments.length > 2) {
+        	for (var a = 1; a < arguments.length; a++) {
+            		this.extend(obj, arguments[a]);
+        	}
+    	} else {
+        	for (var i in extObj) {
+            		obj[i] = extObj[i];
+        	}
+    	}
+    	return obj;
 };
+
