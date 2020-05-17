@@ -9,6 +9,16 @@ function extend(obj){
 }
 
 //
+function extend(destination, from) {
+  for (var prop in from) {
+    if (from[prop]) {
+      destination[prop] = from[prop];
+    }
+  }
+  return destination;
+}
+
+//
 window.extend = function (obj, extObj) {
     obj = obj || {};
     if (arguments.length > 2) {
