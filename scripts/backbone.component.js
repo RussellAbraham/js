@@ -1,46 +1,30 @@
-// Need to optimize rendering with a fragment and make 'Confirm', 'Alert', and 'Prompt' for starters. 
-// Should'nt need to hardcode the tags in if it works out.
-
 (function($, _, Backbone) {
 
-
 	localforage.setDriver(localforage.INDEXEDDB);
-	    
-
-	
-  //Set custom template settings
-  var _interpolateBackup = _.templateSettings;
-  _.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g,
-    evaluate: /<%([\s\S]+?)%>/g
-  };
-
+  
   var template = _.template('\
     <div class="modal-dialog"><div class="modal-content">\
     <% if (title) { %>\
       <div class="modal-header">\
-				<h4>{{title}}</h4>\
+				<h4><%-title%></h4>\
         <% if (allowCancel) { %>\
           <a class="close">&times;</a>\
         <% } %>\
       </div>\
     <% } %>\
-    <div class="modal-body">{{content}}</div>\
+    <div class="modal-body"><%-content%></div>\
     <% if (showFooter) { %>\
       <div class="modal-footer">\
         <% if (allowCancel) { %>\
           <% if (cancelText) { %>\
-            <a href="#" class="btn cancel">{{cancelText}}</a>\
+            <a href="#" class="btn cancel"><%-cancelText%></a>\
           <% } %>\
         <% } %>\
-        <a href="#" class="btn ok btn-primary">{{okText}}</a>\
+        <a href="#" class="btn ok btn-primary"><%-okText%></a>\
       </div>\
     <% } %>\
     </div></div>\
   ');
-
-  //Reset to users' template settings
-  _.templateSettings = _interpolateBackup;
 
 
   var Modal = Backbone.View.extend({
@@ -96,11 +80,7 @@
       }
     },
 
-    /**
-     * Creates an instance of a Bootstrap Modal
-     *
-     * @see http://twitter.github.com/bootstrap/javascript.html#modals
-     *
+    /*
      * @param {Object} options
      * @param {String|View} [options.content]     Modal content. Default: none
      * @param {String} [options.title]            Title. Default: none
@@ -115,7 +95,7 @@
     initialize: function(options) {
       this.options = _.extend({
         title: null,
-        okText: 'OK',
+        okText: 'Close',
         focusOk: true,
         okCloses: true,
         cancelText: 'Cancel',
@@ -128,11 +108,6 @@
       }, options);
     },
 
-    /**
-     * Creates the DOM element
-     *
-     * @api private
-     */
     render: function() {
       var $el = this.$el,
           options = this.options,
@@ -273,47 +248,55 @@
     count: 0
   });
 
-
-  //EXPORTS
-  //CommonJS
   if (typeof require == 'function' && typeof module !== 'undefined' && exports) {
     module.exports = Modal;
   }
-
-  //AMD / RequireJS
   if (typeof define === 'function' && define.amd) {
     return define(function() {
       Backbone.BootstrapModal = Modal;
     })
   }
-
-  //Regular; add to Backbone.Bootstrap.Modal
   else {
     Backbone.BootstrapModal = Modal;
   }
 
 })(jQuery, _, Backbone);
+
+
 (function () {
 	
-    function GlobalBackboneModal(keys) {
-        this.keys = keys;
-    }
-    GlobalBackboneModal.prototype = {
-        keys: function (key) {
-            return this.keys[key]
-        }
-    }
+  
+	function GlobalBackboneModal(keys) {
+  
+		this.keys = keys;
+    
+	}
+  
+	GlobalBackboneModal.prototype = {
+  
+		keys: function (key) {
+    
+			return this.keys[key]
+      
+		}
+    
+	}
 	
-		var array = [],
-				object = {}
+	var array = [],
+			object = {}
 	
-		var fragment = new DocumentFragment();
+	var fragment = new DocumentFragment();
 	
-    const BackboneModal = new GlobalBackboneModal(object);
-    function Controller() {
-        this.test('alert');
-    }
-    Controller.prototype = {
+  
+	const BackboneModal = new GlobalBackboneModal(object);
+  
+	function Controller() {
+  
+		this.test('alert');
+    
+	}
+
+	Controller.prototype = {
 			test : function(string){
 				var self = this;
 				BackboneModal.keys.alert = self.alert;
@@ -335,6 +318,7 @@
 				var modal = new Backbone.BootstrapModal({
 					title : 'test',
           animate: true,
+					allowCancel:false,
           content: new ModalContent()
         }).open();
 				callback;
@@ -355,7 +339,7 @@
         window.Controller = Controller;
     }
 })();
-
+// everything below is basically a redefinition so I can stack modals, perhaps a Proxy would be better.. Dispatch.. ?
 var dispatch = {};
 
 _.extend(dispatch, Backbone.Events);
@@ -370,8 +354,6 @@ var
  	BackboneModalTab = BootstrappedModal.tab;
 
 
-// a string that can be parsed asynchronously
-var base64AlertTemplate = 'SGVsbG9Xb3JsZCE=';
 
 // converts `arguments` of a function to a real array 
 function arrayArguments(args){
@@ -426,142 +408,3 @@ document.querySelectorAll('.btn').forEach(function(btn){
 	})
 })
 
-
-$(function(){
-	
-  localforage.setDriver(localforage.INDEXEDDB);
-	
-	// Our basic **Todo** model has `title`, `order`, and `done` attributes.
-  var Todo = Backbone.Model.extend({
-    defaults: function() {
-      return {
-        title: "empty todo...",
-        order: Todos.nextOrder(),
-        done: false
-      };
-    },
-    toggle: function() {
-      this.save({done: !this.get("done")});
-    },
-    sync: Backbone.localforage.sync("todos-backbone")
-  });
-
-	var TodoList = Backbone.Collection.extend({
- 	 	model: Todo,
-		sync: Backbone.localforage.sync("todos-backbone"),
-    done: function() {
-      return this.where({done: true});
-    },
-		remaining: function() {
-      return this.where({done: false});
-    },
-		nextOrder: function() {
-      if (!this.length) return 1;
-      return this.last().get('order') + 1;
-    },
-		comparator: 'order'
-  });
-
-  var Todos = new TodoList;
-
-	var TodoView = Backbone.View.extend({
-  	tagName:  "li",
-		template: _.template($('#item-template').html()),
-    events: {
-      "click .toggle"   : "toggleDone",
-      "dblclick .view"  : "edit",
-      "click a.destroy" : "clear",
-      "keypress .edit"  : "updateOnEnter",
-      "blur .edit"      : "close"
-    },
-    initialize: function() {
-      this.listenTo(this.model, 'change', this.render);
-      this.listenTo(this.model, 'destroy', this.remove);
-    },
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      this.$el.toggleClass('done', this.model.get('done'));
-      this.input = this.$('.edit');
-      return this;
-    },
-    toggleDone: function() {
-      this.model.toggle();
-    },
-    edit: function() {
-      this.$el.addClass("editing");
-      this.input.focus();
-    },
-    close: function() {
-      var value = this.input.val();
-      if (!value) {
-        this.clear();
-      } else {
-        this.model.save({title: value});
-        this.$el.removeClass("editing");
-      }
-    },
-    updateOnEnter: function(e) {
-      if (e.keyCode == 13) this.close();
-    },
-    clear: function() {
-      this.model.destroy();
-    }
-  });
-
-  var AppView = Backbone.View.extend({
-    el: $("#todoapp"),
-    statsTemplate: _.template($('#stats-template').html()),
-    events: {
-      "keypress #new-todo":  "createOnEnter",
-      "click #clear-completed": "clearCompleted",
-      "click #toggle-all": "toggleAllComplete"
-    },
-    initialize: function() {
-      this.input = this.$("#new-todo");
-      this.allCheckbox = this.$("#toggle-all")[0];
-      this.listenTo(Todos, 'add', this.addOne);
-      this.listenTo(Todos, 'reset', this.addAll);
-      this.listenTo(Todos, 'all', this.render);
-      this.footer = this.$('footer');
-      this.main = $('#main');
-      Todos.fetch();
-    },
-    render: function() {
-      var done = Todos.done().length;
-      var remaining = Todos.remaining().length;
-      if (Todos.length) {
-        this.main.show();
-        this.footer.show();
-        this.footer.html(this.statsTemplate({done: done, remaining: remaining}));
-      } else {
-        this.main.hide();
-        this.footer.hide();
-      }
-      this.allCheckbox.checked = !remaining;
-    },
-    addOne: function(todo) {
-      var view = new TodoView({model: todo});
-      this.$("#todo-list").append(view.render().el);
-    },
-    addAll: function() {
-      Todos.each(this.addOne, this);
-    },
-    createOnEnter: function(e) {
-      if (e.keyCode != 13) return;
-      if (!this.input.val()) return;
-      Todos.create({title: this.input.val()});
-      this.input.val('');
-    },
-    clearCompleted: function() {
-      _.invoke(Todos.done(), 'destroy');
-      return false;
-    },
-    toggleAllComplete: function () {
-      var done = this.allCheckbox.checked;
-      Todos.each(function (todo) { todo.save({'done': done}); });
-    }
-  });
-
-  var App = new AppView;
-
-});
