@@ -18,6 +18,21 @@ function isUndefined(obj) {
   return obj === void 0;
 }
 
+['Arguments', 'Array', 'String'].forEach(function (name) {
+    this['is' + name] = function (obj) {
+        return toString.call(obj) === '[object ' + name + ']';
+    }
+});
+function isArrayLike(obj) { 
+    if (typeof(obj) == 'array') return true;
+    return( !!obj && (typeof(obj) === 'object') && (typeof(obj.length) != 'undefined') ); 
+}
+function isEmpty(obj) {
+    if (obj == null) return true;
+    if (isArrayLike(obj) && (isArray(obj) || isString(obj) || isArguments(obj))) return obj.length === 0;
+    return Object.keys(obj).length === 0;
+};
+
 function isType(arg){
   if(isObject(arg)){
     typeSwitch('object');
