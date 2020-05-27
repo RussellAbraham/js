@@ -1,14 +1,14 @@
 const Component = function () {
-    this.isRunning = false;
+    this.isConnected = false;
 }
 
 Component.prototype = {
 
     connect : function (){
-      if (this.isRunning) {
+      if (this.isConnected {
             return false;
         } else {
-            this.isRunning = true;
+            this.isConnected = true;
         }
     },
 
