@@ -1,4 +1,4 @@
-const XHTMLEntities = {
+const unicode = {
     quot: '\u0022',
     amp: '\u0026',
     apos: '\u0027',
@@ -253,7 +253,7 @@ const XHTMLEntities = {
     rang: '\u27E9'
 };
 
-var entities = {
+const entities = {
     amp: "&",
     quot: '"',
     apos: "'",
