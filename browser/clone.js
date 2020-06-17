@@ -1,10 +1,13 @@
-window.clone = function(obj) {
+var clone = function clone(obj) {
+
     if (obj === null || typeof obj !== "object") {
         return obj;
     }
+
     if (obj instanceof Date) {
         return new Date(obj.getTime());
     }
+
     if (Array.isArray(obj)) {
         var clonedArr = [];
         obj.forEach(function (element) {
@@ -12,11 +15,15 @@ window.clone = function(obj) {
         });
         return clonedArr;
     }
+
     var clonedObj = new obj.constructor();
+
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
-            clonedObj[prop] = window.clone(obj[prop]);
+            clonedObj[prop] = this.clone(obj[prop]);
         }
     }
+
     return clonedObj;
+
 }
