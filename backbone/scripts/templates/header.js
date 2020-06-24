@@ -1,4 +1,4 @@
-var HeaderTemplate = _.template(
+templates.header = _.template(
 	'<header class="navbar" id="header">'+	    
 	
 		'<nav class="btn-group">'+				
