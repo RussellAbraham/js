@@ -1,6 +1,8 @@
 function Upload1(url, file) {
+
+    // var fs = new FileSlicer(file);
+    // ArrayBuffer
     
-    var fs = new FileSlicer(file);
     var socket = new WebSocket(url);
 
     socket.onopen = function() {
