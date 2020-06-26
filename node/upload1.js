@@ -7,13 +7,22 @@ function Upload1(url, file) {
        socket.send(fs.getNextSlice());
     }
     
-    socket.onmessage = function(ms){
-        if(ms.data=="ok"){
-           fs.slices--;
-           if(fs.slices>0) socket.send(fs.getNextSlice());
-        }else{
-           // handle the error code here.
+    socket.onmessage = function(event){
+
+        var data = event.data;
+        
+        if(data === "ok"){
+
+            fs.slices--;
+           
+            if(fs.slices>0) socket.send(fs.getNextSlice());
+        
+        } else {
+        
+            // handle the error code here.
+        
         }
+    
     }
     
 }
