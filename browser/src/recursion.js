@@ -1,5 +1,5 @@
 
-// Pure Recursion
+// Pure Recursion Example
 
 function collection(arr){
 
@@ -9,16 +9,16 @@ function collection(arr){
         return array;
     }
 
-    if(array[0] % 2 !== 0){
-        array.push(array[0]);
+    if(arr[0] % 2 !== 0){
+        array.push(arr[0]);
     }
 
-    array = array.concat(collection(array.slice(1)))
+    array = array.concat(collection(arr.slice(1)))
 
     return array;
 }
 
-// Helper Method Recursion
+// Helper Method Recursion Example
 
 function collector(arr){
 
@@ -44,10 +44,104 @@ function collector(arr){
 
 }
 
+/* Helper Functions */
 
+function stringSortCase(alpha, beta){
+    return alpha.toLowerCase() < beta.toLowerCase() ? -1 : 1;
+}
 
+function isObjectLike(object){
+    return ( 
+        !!object && ( typeof ( object ) === 'object' ) && ( typeof ( object.length ) === 'undefined' )   
+    );
+}
 
+function isArrayLike(object){
+    if ( typeof ( object ) === 'array' ) return true;
+    return ( 
+        !! object && typeof ( object ) === 'object' ) && ( typeof ( object.length ) != 'undefined' )     
+    );
+}
 
+/* polyfill for...of values iterator, getValues( this.__proto__ ) */
+function _each(obj, iterator, context){ var breaker = {}; if (obj == null) return;      if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {  obj.forEach(iterator, context);  } else if (obj.length === +obj.length) {  for (var i = 0, l = obj.length; i < l; i++) {  if (i in obj && iterator.call(context, obj[i], i, obj) === breaker) return;  }  } else {  for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) {  if (iterator.call(context, obj[key], key, obj) === breaker) return; }  }  } }
+function _map(obj, iterator, context){    var results = []; if(obj == null) return results; if(Array.prototype.map && obj.map === Array.prototype.map) return obj.map(iterator, context); _each(obj, function(value, index, list) {  results[results.length] = iterator.call(context, value, index, list);  }); return results; }
+function cid(value){ return value }
+function getValues(obj){ 
+    return _map(obj, cid) 
+}
+
+// primitves
+function isObject(obj) { return obj === Object(obj); } 
+function isString(obj) { return !!(obj === "" || (obj && obj.charCodeAt && obj.substr)); } 
+function isBoolean(obj) { return obj === true || obj === false; } 
+function isNumber(obj) { return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed)); } 
+function isNull(obj) { return obj === null; } 
+function isUndefined(obj) { return obj === void 0; }  
+function isDate(obj) { return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear); } 
+
+var thrown = null;
+
+function forceCatchWithThrow(object){
+    /* determine data type of the argument passed, then throw it to outside catch with an added prefix and suffix */
+    function primitive(object){        		
+		try {			          			
+            if(isObject(object)){ 
+                throw 'Object : ' + object; 
+            } 			
+		}				
+        catch(er){
+            throw 'Error : ' + er.stack;   
+        }		    
+    }
+    
+    try { 
+        primitive ( object ) 
+    } 
+    
+    /* output result */
+    catch ( result ) {
+        thrown = result;
+        console.info( result );
+    }
+    
+    finally {
+        thrown = null;
+        console.info( 'complete' );
+    }
+    
+    
+}
+
+// Recursive parser, handles circular and native objects
+
+function stringify(object, plain, iterator){
+    
+    var string = '', 
+        type   = '';
+    
+    var keys   = [];
+    var values = [];
+    
+    var i, j;
+    
+    var circular = false;
+    
+    iterator = iterator || [];
+    
+    try {
+        
+        type = ({}.toString.call(object));
+    
+    } catch (er) { 
+    
+        type = '[object Object]';
+        
+        return er.stack; 
+    
+    }
+    
+}
 
 (function(){    
     // internal
