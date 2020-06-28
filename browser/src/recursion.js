@@ -1,3 +1,23 @@
+
+// Pure Recursion
+
+function collection(arr){
+
+    let array = []
+
+    if(array.length === 0){
+        return array;
+    }
+
+    if(array[0] % 2 !== 0){
+        array.push(array[0]);
+    }
+
+    array = array.concat(collection(array.slice(1)))
+
+    return array;
+}
+
 // Helper Method Recursion
 
 function collector(arr){
