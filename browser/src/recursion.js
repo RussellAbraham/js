@@ -45,6 +45,13 @@ function collector(arr){
 }
 
 /* Helper Functions */
+function toSource(func) { 
+	if ( func != null ) { 
+		try { return Function.prototype.toString.call( func ); } catch (er) { throw ''; }     
+		try { return ( func + '' ); } catch ( er ) { throw ''; }  
+	}     
+	return '';     
+}
 
 function stringSortCase(alpha, beta){
     return alpha.toLowerCase() < beta.toLowerCase() ? -1 : 1;
@@ -56,12 +63,13 @@ function isObjectLike(object){
     );
 }
 
-function isArrayLike(object){
-    if ( typeof ( object ) === 'array' ) return true;
-    return ( 
-        !! object && typeof ( object ) === 'object' ) && ( typeof ( object.length ) != 'undefined' )     
-    );
+function isArrayLike(object) {	
+	if ( typeof ( object ) == 'array' ) return true;
+  	return ( 
+		!!object && ( typeof ( object ) === 'object' ) && ( typeof ( object.length ) != 'undefined' ) 
+	);
 }
+
 
 /* polyfill for...of values iterator, getValues( this.__proto__ ) */
 function _each(obj, iterator, context){ var breaker = {}; if (obj == null) return;      if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {  obj.forEach(iterator, context);  } else if (obj.length === +obj.length) {  for (var i = 0, l = obj.length; i < l; i++) {  if (i in obj && iterator.call(context, obj[i], i, obj) === breaker) return;  }  } else {  for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) {  if (iterator.call(context, obj[key], key, obj) === breaker) return; }  }  } }
