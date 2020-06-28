@@ -83,34 +83,35 @@ function isDate(obj) { return !!(obj && obj.getTimezoneOffset && obj.setUTCFullY
 var thrown = null;
 
 function forceCatchWithThrow(object){
-    /* determine data type of the argument passed, then throw it to outside catch with an added prefix and suffix */
-    function primitive(object){        		
-		try {			          			
-            if(isObject(object)){ 
-                throw 'Object : ' + object; 
-            } 			
-		}				
-        catch(er){
-            throw 'Error : ' + er.stack;   
-        }		    
-    }
-    
-    try { 
-        primitive ( object ) 
-    } 
-    
-    /* output result */
-    catch ( result ) {
-        thrown = result;
-        console.info( result );
-    }
-    
-    finally {
-        thrown = null;
-        console.info( 'complete' );
-    }
-    
-    
+/* 
+    determine data type of the argument passed,     
+    then throw it to outside catch with an added prefix and suffix 
+*/
+	function primitive(object){        		
+		try {			          			            
+			if(isObject(object)){ throw '[ Object : ' + object + ']'; }
+		    	if(isBoolean(object)){ throw '[ Boolean : ' + object + ']'; }
+		    	if(isNumber(object)){ throw '[ Number : ' + object + ']'; }
+		    	if(isString(object)){ throw '[ String : ' + object + ']'; }
+		    	if(isUndefined(object)){ throw '[ Undefined : ' + object + ']'; }
+		    	if(isNull(object)){ throw '[ Null : ' + object + ']'; }	    	    
+		}      
+		catch(er){
+			throw 'Error : ' + er.stack;
+		}
+	}
+	try {
+		primitive ( object )
+	} 
+	/* output result */    
+	catch ( result ) {
+        	thrown = result;
+        	console.info( result );
+	}
+	finally {
+        	thrown = null;
+        	console.info( 'complete' );    
+	}        
 }
 
 // Recursive parser, handles circular and native objects
@@ -155,7 +156,7 @@ function stringify(object, plain, iterator){
     	if (typeof(obj) == 'array') return true;
     	return( !!obj && (typeof(obj) === 'object') && (typeof(obj.length) != 'undefined') );
     }
-    // external
+    // good function but output it hacked together... todo : sort results into proper object for return
     function stringify(o, simple, visited) {
       var json = '', i, vi, type = '', parts = [], names = [], circular = false;
       visited = visited || [];
