@@ -215,7 +215,7 @@ Object.keys(types).forEach(function(type){
     //return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
 //}
 /*
-Work in Progress on Recursive parser that handles circular and native objects, and outputs a serializable object
+Work in Progress on es5 compatible Recursive parser that handles circular and native objects, and outputs a serializable object
 */ 
 
 function stringify(obj, replacer, spaces, cycleReplacer) {
