@@ -43,7 +43,10 @@ function collector(arr) {
 
 }
 
+
+
 /* Helper Functions */
+
 function toSource(func) {
     if (func != null) {
         try {
@@ -59,9 +62,6 @@ function toSource(func) {
     }
     return '';
 }
-
-
-
 
 /* polyfill for...of values iterator, getValues( this.__proto__ ) */
 function _each(obj, iterator, context) {
@@ -146,59 +146,25 @@ function stringSortCase(alpha, beta) {
     return alpha.toLowerCase() < beta.toLowerCase() ? -1 : 1;
 }
 
-var thrown = null;
-
 function forceCatchWithThrow(object) {
-
     function primitive(object) {
+        var result;
         try {
-            if (isObject(object)) {
-                throw '[ Object : ' + object + ']';
-            }
-            if (isBoolean(object)) {
-                throw '[ Boolean : ' + object + ']';
-            }
-            if (isNumber(object)) {
-                throw '[ Number : ' + object + ']';
-            }
-            if (isString(object)) {
-                throw '[ String : ' + object + ']';
-            }
-            if (isUndefined(object)) {
-                throw '[ Undefined : ' + object + ']';
-            }
-            if (isNull(object)) {
-                throw '[ Null : ' + object + ']';
-            }
-        } catch (er) {
-            throw 'Error : ' + er.stack;
-        }
-    }
-    try {
-        primitive(object)
-    }
-    /* output result */
-    catch (result) {
-        thrown = result;
-        console.info(result);
-    } finally {
-        thrown = null;
-        console.info('complete');
-    }
+            if (isObject(object)) { throw '[ Object : ' + object + ']'; }
+            if (isBoolean(object)) { throw '[ Boolean : ' + object + ']'; }
+            if (isNumber(object)) { throw '[ Number : ' + object + ']'; }
+            if (isString(object)) { throw '[ String : ' + object + ']'; }
+            if (isUndefined(object)) { throw '[ Undefined : ' + object + ']'; }
+            if (isNull(object)) { throw '[ Null : ' + object + ']';}
+        } 
+        catch (result) { /* render(result) */ }    
+    }    
+    try { primitive(object) }    
+    catch (er) { return er.stack; }     
+    finally { }    
 }
 
-
-var ffs = [
-    '[object Array]',
-    '[object Boolean]',
-    '[object Date]',
-    '[object Function]',  
-    '[object Number]',
-    '[object Object]',
-    '[object String]'
-];
-
-var types = {
+Object.keys({
     object : '[object Object]',
     array : '[object Array]',
     boolean : '[object Boolean]',
@@ -206,11 +172,9 @@ var types = {
     function :'[object Function]',  
     number : '[object Number]',    
     string : '[object String]'
-}
+}).forEach(function(type){});
 
-Object.keys(types).forEach(function(type){
 
-});
 //type: function (o) {
     //return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
 //}
@@ -288,11 +252,13 @@ function stringify(object, plain, iterator) {
         string = '[circular]'
     }
 
-    // string
-    else if ( isString ( type ) ) { /* escape  */ }
+    else if ( isString ( type ) ) {
+        string = object.replace( /"/g, '\\"' ) + '';
+    }
 
-    // array
-    else if ( isArray ( type ) ) { /* */ }
+    else if ( isArray ( type ) ) {
+        iterator.push(object);
+    }
 
 
     // object - recursion
