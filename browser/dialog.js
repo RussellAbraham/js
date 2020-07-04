@@ -1,3 +1,49 @@
+function js(){
+	alert(eval(prompt()));
+}
+
+/* invoke built in dialogs */
+function todoList(){
+  
+	var todos = ["purchase time"];
+	
+  	var input = prompt("What would you like to do?");  
+	
+  	while(input !== "quit"){
+	  	if(input === "list") {
+	  		printList();
+	  	} else if(input === "new") {
+	  		addTodo();
+	  	} else if(input === "delete") {
+	  		deleteTodo();
+	  	} 		
+	  	input = prompt("What would you like to do?");
+  }
+
+  console.log("OK, YOU QUIT THE APP");
+  
+  function printList() {
+  	console.log("**********");
+  	todos.forEach(function(todo, index){
+  		console.log(index + ": " + todo);
+  	});
+  	console.log("**********");
+  }
+  
+  function addTodo(){
+  	var newTodo = prompt("Enter new todo");
+  	todos.push(newTodo);
+  	console.log(newTodo + " added to list")
+  }
+
+  function deleteTodo(){
+  	  var index = prompt("Enter index of todo to delete");
+  	  todos.splice(index, 1);
+    	console.log("Todo Removed")
+  }
+
+
+}
 
 function sendMessage() {
 	var imgPath, title, message;	
@@ -32,6 +78,8 @@ function element(target, element, attrs, text){
 	}
 	return target.appendChild(myElement);
 }
+
+/* Bootstrap Alert Messages. todo : use fragment, insertBefore */
 function AlertMessage(str, type, target){
   var myAlert = element(target, 'div', { class: 'alert alert-dismissible fade show', role: 'alert' }, str); 
   var myBtn = element(myAlert, 'button', { class: 'close', 'data-dismiss': 'alert', 'aria-label': 'Close' });  
@@ -47,12 +95,3 @@ function AlertMessage(str, type, target){
 }
 
 
-
-function doLoad(e) {
-	var btn = document.getElementById("btnNotify");
-	if (btn) {
-		btn.addEventListener("click", sendNotification, false);
-	}
-}
-
-window.addEventListener("load", doLoad, false);
