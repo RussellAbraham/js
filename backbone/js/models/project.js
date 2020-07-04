@@ -1,0 +1,1 @@
+var ProjectModel = Backbone.Model.extend({});
