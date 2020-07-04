@@ -1,5 +1,3 @@
-
-
 function sortci(a, b) {
   return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
 }
@@ -27,30 +25,3 @@ function stringify(o, simple, visited) {
 
 }
 
-function isArrayLike(obj) { if (typeof(obj) == 'array') return true;return( !!obj && (typeof(obj) === 'object') && (typeof(obj.length) != 'undefined') ); }
-function isObjectLike(obj) { return( !!obj && (typeof(obj) === 'object') && (typeof(obj.length) === 'undefined') ); }
-
-function serialize(obj, r) {
-	r || (r = ":");  
-	var string = ""; 
-	if ("boolean" == typeof obj) string += obj ? "true" : "false";  	
-	else if ("number" == typeof obj) string += obj;  
-	else if ("string" == typeof obj) string += '"' + obj.replace(/([\"\\])/g, "\\$1").replace(/\r/g, "\\r").replace(/\n/g, "\\n") + '"';	  
-	else if (isObjectLike(obj)){		
-		var i = 0, n = [];     
-		for (var t in obj) n[i] = (t.match(/^[A-Za-z]\w*$/) ? t : '"' + t + '"') + r + serialize(obj[t], r), i++;
-		string += "{" + n.join(",") + "}"	
-	} else if (isArrayLike(obj)) {
-		n = [];
-		for (var o = 0, f = obj.length; o < f; o++) n[o] = serialize(obj[o], r);
-		string += "[" + n.join(",") + "]"	
-	} else string += "0";  
-	return string
-
-}
-
-
-
-function looseJsonParse(obj){
-	return Function('"use strict";return (' + obj + ')')();    
-}
