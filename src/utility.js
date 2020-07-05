@@ -149,11 +149,14 @@ function uniqueId(prefix) {
 };
 
 var keys = nativeKeys || function(obj){
+
     if (obj !== Object(obj)) throw new TypeError('Invalid Object');
+  
     var keys = [];
+
     for (var key in obj)
-        if (hasOwnProperty.call(obj, key)) keys[keys.lenght] = key;
-        return keys;    
+        if (hasOwnProperty.call(obj, key)) keys[keys.length] = key;
+        return keys;
 }
 
 ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function(name){
