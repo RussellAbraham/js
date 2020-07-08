@@ -4,13 +4,12 @@ const geval = eval;
 (function () {
 
     var ul, li, input, code;
-
+    
     const textNode = document.createTextNode.bind(document);
 
     function domNode(string) {
         return document.createElement(string);
     }
-
 
     var csslink =
         'data:text/css,' +
@@ -37,24 +36,17 @@ const geval = eval;
         ul.className = 'console prompt';
         li = domNode('li');
         input = domNode('input');
-
         listen(input, {
-
-
             'keyup': function (event) {
-
                 if (event.which === 13) {
                     evaluator(event.target.value);
                     event.target.disabled = true;
                     event.target.className = 'disabled';
                 }
-
                 27 === event.which && (
                     event.target.blur()
                 )
-
             },
-
             'keydown': function (event) {
                 var val, beforeTab, afterTab, caratPos;
                 9 === event.which && (
@@ -67,16 +59,11 @@ const geval = eval;
                     input.setSelectionRange(caratPos + 1, caratPos + 1)
                 );
             }
-
-
         });
 
         li.appendChild(input);
-
         ul.appendChild(li);
-
         client_target.appendChild(ul);
-
         if (document.querySelectorAll('.console').length > 1) {
             input.focus();
         }
