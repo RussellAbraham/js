@@ -1,23 +1,24 @@
-const Component = function () {
-    this.isConnected = false;
+function Component(){
+  this.isConnected = false;
 }
+
 
 Component.prototype = {
 
     connect : function (){
-      if (this.isConnected {
-            return false;
-        } else {
-            this.isConnected = true;
-        }
+      this.isConnected = true;
     },
-
-    disconnect : function () {
+    
+    disconnect : function(){
       this.isConnected = false;
     },
-  
-  checkConnection : function(){
-    if(this.isConnected === false){ return 'Not Connected'; } else { return 'Connected' }
-  }
+
+    toggle : function(){
+      if (this.isConnected){
+        this.isConnected = false;
+      } else {
+          this.isConnected = true;  
+      }
+    }
 
 }

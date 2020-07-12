@@ -1,4 +1,4 @@
-window.clone = function(obj) {
+this.clone = function(obj) {
     if (obj === null || typeof obj !== "object") {
         return obj;
     }
@@ -15,7 +15,7 @@ window.clone = function(obj) {
     var clonedObj = new obj.constructor();
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
-            clonedObj[prop] = window.clone(obj[prop]);
+            clonedObj[prop] = this.clone(obj[prop]);
         }
     }
     return clonedObj;

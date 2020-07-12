@@ -1,8 +1,8 @@
 
 function Controller(model, view){
     var self = this;
-    self.model = this.model;
-    self.view = this.view;
+    self.model = model;
+    self.view = view;
 }
 
 define('Controller', function(require, exports, module){

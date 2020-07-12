@@ -12,11 +12,6 @@ function element(target, element, attrs, text){
 	return target.appendChild(myElement);
 }
 
-function insertTextNodeBefore(className, text) {
-  var newItem = document.createElement("pre");
-  var textnode = document.createTextNode(text);
-  newItem.className = "list-group-item " + className;
-  newItem.appendChild(textnode);
-  var list = document.getElementById("output");
-  list.insertBefore(newItem, list.childNodes[0]);
+function insertTextNodeBefore(text, node) {
+  node.insertBefore(text, node.childNodes[0]);
 } 
