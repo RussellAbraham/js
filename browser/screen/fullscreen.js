@@ -1,16 +1,20 @@
 
-(function() {
+(function(screen){
     
-	browser.screen.fullscreen = {
+	screen.fullscreen = {
+        
         on : function(){
 
         },
+
         off : function(){
 
         },
+
         toggle : function(){
             
         }
+        
     };
     
-})();
+})(browser.screen);
