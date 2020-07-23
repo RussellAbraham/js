@@ -22,3 +22,7 @@ Component.prototype = {
     }
 
 }
+
+function Aside(options){
+  options = options || {};
+}

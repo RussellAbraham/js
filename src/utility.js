@@ -46,6 +46,20 @@ var
   uint16Tag = '[object Uint16Array]',
   uint32Tag = '[object Uint32Array]';
 
+function _defineProperty(obj, key, value) { 
+  if (key in obj) { 
+    Object.defineProperty(obj, key, {  
+            value: value,  
+            enumerable: true,  
+            configurable: true, 
+            writable: true  
+        });  
+    } else {  
+        obj[key] = value;  
+    } 
+    return obj;  
+}
+
 var property = function(key) {
   return function(obj) {
     return obj == null ? void 0 : obj[key];
@@ -392,153 +406,6 @@ function getValues(obj) {
   }
   return values;
 };
-
-/* Some Array useful functions (also encoding) */
-
-/* pretty print of an array, no matter if it is typed, and clamping decimals*/
-function arrayToString(a, start_tag, end_tag) {
-  start_tag = start_tag || "";
-  end_tag = end_tag || "";
-
-  var str = "";
-  for (var i in a)
-    str += start_tag + a[i].toFixed(3) + end_tag + ",";
-  return str.substr(0, str.length - 1);
-}
-
-/* *** typedArrayToString *** */
-function typedArrayToString(array) {
-  var r = "";
-  for (var i = 0; i < array.length; i++)
-    if (array[i] == 0)
-      break;
-    else
-      r += String.fromCharCode(array[i]);
-  return r;
-}
-
-/* transform an string into a js array */
-function stringToArray(a) {
-  var array = a.split(",");
-  for (var i in array)
-    array[i] = parseFloat(array[i]);
-  return array;
-}
-
-/* transform an string into a typed-array */
-function stringToTypedArray(str, length) {
-  var r = new Uint8Array(length ? length : str.length);
-  for (var i = 0; i < str.length; i++)
-    r[i] = str.charCodeAt(i);
-  return r;
-}
-
-/* transform a typed array in a js array */
-function typedArrayToArray(array) {
-  var r = [];
-  r.length = array.length;
-  for (var i = 0; i < array.length; i++)
-    r[i] = array[i];
-  return r;
-}
-
-/* transform an array in this form: [[1,2],[3,4]] in a typed array: [1,2,3,4]*/
-function linearizeArray(array, typed_array_class) {
-  typed_array_class = typed_array_class || Float32Array;
-  var components = array[0].length;
-  var size = array.length * components;
-  var buffer = new typed_array_class(size);
-
-  for (var i = 0; i < array.length; ++i)
-    for (var j = 0; j < components; ++j)
-      buffer[i * components + j] = array[i][j];
-  return buffer;
-}
-
-
-base64.fromArrayBuffer = function(arrayBuffer) {
-    var array = new Uint8Array(arrayBuffer);
-    return uint8ToBase64(array);
-};
-
-//------------------------------------------------------------------------------
-
-/* This code is based on the performance tests at http://jsperf.com/b64tests
- * This 12-bit-at-a-time algorithm was the best performing version on all
- * platforms tested.
- */
-
-var b64_6bit = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-var b64_12bit;
-
-var b64_12bitTable = function() {
-    b64_12bit = [];
-    for (var i=0; i<64; i++) {
-        for (var j=0; j<64; j++) {
-            b64_12bit[i*64+j] = b64_6bit[i] + b64_6bit[j];
-        }
-    }
-    b64_12bitTable = function() { return b64_12bit; };
-    return b64_12bit;
-};
-
-function uint8ToBase64(rawData) {
-    var numBytes = rawData.byteLength;
-    var output="";
-    var segment;
-    var table = b64_12bitTable();
-    for (var i=0;i<numBytes-2;i+=3) {
-        segment = (rawData[i] << 16) + (rawData[i+1] << 8) + rawData[i+2];
-        output += table[segment >> 12];
-        output += table[segment & 0xfff];
-    }
-    if (numBytes - i == 2) {
-        segment = (rawData[i] << 16) + (rawData[i+1] << 8);
-        output += table[segment >> 12];
-        output += b64_6bit[(segment & 0xfff) >> 6];
-        output += '=';
-    } else if (numBytes - i == 1) {
-        segment = (rawData[i] << 16);
-        output += table[segment >> 12];
-        output += '==';
-    }
-    return output;
-}
-
-});
-
-
-/* *** hexEncode *** */
-function hexEncode(data) {
-  var b16_digits = '0123456789abcdef';
-  var b16_map = new Array();
-  for (var i = 0; i < 256; i++) {
-    b16_map[i] = b16_digits.charAt(i >> 4) + b16_digits.charAt(i & 15);
-  }
-
-  var result = new Array();
-  for (var i = 0; i < data.length; i++) {
-    result[i] = b16_map[data.charCodeAt(i)];
-  }
-
-  return result.join('');
-}
-
-/* *** hexEncodeArray *** */
-function hexEncodeArray(data) {
-  var b16_digits = '0123456789abcdef';
-  var b16_map = new Array();
-  for (var i = 0; i < 256; i++) {
-    b16_map[i] = b16_digits.charAt(i >> 4) + b16_digits.charAt(i & 15);
-  }
-
-  var result = new Array();
-  for (var i = 0; i < data.byteLength; i++) {
-    result[i] = b16_map[data[i]];
-  }
-
-  return result.join('');
-}
 
 /* *** checks() *** */
 function checks(arg) {
