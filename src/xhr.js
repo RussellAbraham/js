@@ -1,3 +1,75 @@
+function extend(object, props){
+	for(var prop in props){
+		if(props[prop]){
+			object[prop] = props[prop]
+		}
+	}
+	return object;
+}
+
+function listen(object, events){
+	for(var event in events){
+		object.addEventListener(event, events[event])
+	}
+}
+
+// 
+
+function Ajax(){
+	this.transport = new XMLHttpRequest();
+	this.data = new FormData();
+}
+
+Ajax.prototype = {
+	
+	get : function(options){	
+		var self = this;		
+		
+		this.options = extend({
+			url : '',
+			responseType : ''
+		}, options);
+		
+		listen(this.transport, {
+			'readystatechange' : function(){},
+			'error' : function(){},
+			'load' : function(){
+			    alert('ok')
+			}
+		});
+		
+		this.transport.open('GET', self.options.url);		
+		this.transport.send();
+		
+	},
+	
+	post : function(options){
+	    var self = this;
+
+	    this.options = extend({
+	        url : ''
+	    }, options);
+
+        listen(this.transport, {
+            'readystatechange' : function(){},
+			'error' : function(){},
+			'load' : function(){
+			    alert('ok')
+			}
+        });
+        // object to send, built in getters and setters
+        this.data.append('','');
+
+		this.transport.open('POST', self.options.url);		
+		// send form data object to specified url, 
+		// bind GET request within parser which will then POST when it has permission
+		this.transport.send(this.data);
+
+
+	}
+	
+}
+
 var request, response, blob;
 
 
