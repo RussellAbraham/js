@@ -1,3 +1,30 @@
+
+// Used for matching numbers
+var	core_pnum = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source,
+// Used for detecting and trimming whitespace
+core_rnotwhite = /\S/,
+core_rspace = /\s+/,
+
+    // Make sure we trim BOM and NBSP (here's looking at you, Safari 5.0 and IE)
+    rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
+
+    // A simple way to check for HTML strings
+    // Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
+    rquickExpr = /^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/,
+
+    // Match a standalone tag
+    rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
+
+    // JSON RegExp
+    rvalidchars = /^[\],:{}\s]*$/,
+    rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
+    rvalidescape = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,
+    rvalidtokens = /"[^"\\\r\n]*"|true|false|null|-?(?:\d\d*\.|)\d+(?:[eE][\-+]?\d+|)/g,
+
+    // Matches dashed string for camelizing
+    rmsPrefix = /^-ms-/,
+    rdashAlpha = /-([\da-z])/gi;
+
 //
 var x = /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/.exec(e);
 
