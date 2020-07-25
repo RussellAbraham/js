@@ -13,6 +13,21 @@ function listen(object, events){
 	}
 }
 
+function extend(object, props){
+	for(var prop in props){
+		if(props[prop]){
+			object[prop] = props[prop]
+		}
+	}
+	return object;
+}
+
+function listen(object, events){
+	for(var event in events){
+		object.addEventListener(event, events[event])
+	}
+}
+
 // 
 
 function Ajax(){
@@ -23,52 +38,88 @@ function Ajax(){
 Ajax.prototype = {
 	
 	get : function(options){	
-		var self = this;		
 		
-		this.options = extend({
-			url : '',
-			responseType : ''
-		}, options);
+		var self = this;				
 		
-		listen(this.transport, {
-			'readystatechange' : function(){},
-			'error' : function(){},
-			'load' : function(){
-			    alert('ok')
-			}
+		this.options = extend({ url : '', responseType : '' }, options);		
+		
+		listen(this.transport, {			
+			
+			'readystatechange' : function(){
+				if (this.readyState == this.HEADERS_RECEIVED) {			
+					var headers = request.getAllResponseHeaders();			
+					var arr = headers.trim().split(/[\r\n]+/);			
+					var headerMap = {};			
+					arr.forEach(function (line) {				
+						var parts = line.split(': ');				
+						var header = parts.shift();				
+						var value = parts.join(': ');				
+						headerMap[header] = value;			
+					});		
+				}				
+			},
+			
+			'error' : function(event){},
+			
+			'load' : function(){						
+				if(this.transport.status === 200){  
+					// ok
+				} else {
+					// handle error
+				}
+			}	
+			
 		});
 		
-		this.transport.open('GET', self.options.url);		
-		this.transport.send();
+		this.transport.open('GET', self.options.url, true);
+		this.transport.responseType = self.options.responseType;
+		this.transport.send(null);
 		
 	},
 	
-	post : function(options){
-	    var self = this;
-
-	    this.options = extend({
-	        url : ''
-	    }, options);
-
-        listen(this.transport, {
-            'readystatechange' : function(){},
-			'error' : function(){},
-			'load' : function(){
-			    alert('ok')
-			}
-        });
-        // object to send, built in getters and setters
-        this.data.append('','');
-
-		this.transport.open('POST', self.options.url);		
-		// send form data object to specified url, 
-		// bind GET request within parser which will then POST when it has permission
+	post : function(){
+		this.data.append('', '');
+		this.data.append('', '');
+		this.data.append('', '');
+		// 
+		this.transport.open('POST', '');		
 		this.transport.send(this.data);
-
-
 	}
 	
 }
+
+function Index(db){
+	this.db = db;
+}
+
+Index.prototype = {
+	
+	// handle errors.. check how to handle upgrades and versions
+	open : function(){},
+	
+	// create and add new object
+	create : function(){},
+
+	// iterate over key values
+	read : function(){},
+
+	// put new value then resolve
+	update : function(){},
+	
+	// delete single item by UID
+	destroy : function(){},
+	
+	// output a json file backup
+	export : function(){},
+	
+	// json data from XHR
+	import : function(){},
+	
+	// json data from file input
+	upload : function(){}
+	
+}
+
 
 var request, response, blob;
 
