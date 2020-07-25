@@ -8,7 +8,18 @@ var rgx = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([
 //
 var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec();
 
-
+function o(e) {
+    return /^[\x09\x0A\x0D\x20-\x7E]*$/.test(e)
+}
+function c(e) {
+    return /^([\x09\x0A\x0D\x20-\x7E]|[\xA0-\xFF])*$/.test(e)
+}
+function d(e) {
+    return /^([\x09\x0A\x0D\x20-\x7E]|[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}|\xED[\x80-\x9F][\x80-\xBF])*$/.test(e)
+}
+function w(e) {
+    return o(e) && /=/.test(e) && /^([^=]|=[0-9a-fA-F][0-9a-fA-F]|=\?|=\r?\n)+=?$/.test(e)
+}
 // 
 function getParameters(string) {
     string = string.split('+').join(' ');
