@@ -3,8 +3,8 @@
 const http = require('http');
 const path = require('path');
 const port = process.env.PORT || 8888;
-const url  = require('path');
-const fs   = require('path');
+const url  = require('url');
+const fs   = require('fs');
 const ip   = process.env.IP || "0.0.0.0";
 
 /*
