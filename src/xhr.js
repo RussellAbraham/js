@@ -13,23 +13,60 @@ function listen(object, events){
 	}
 }
 
-function extend(object, props){
-	for(var prop in props){
-		if(props[prop]){
-			object[prop] = props[prop]
+/* 
+(function(){
+
+	// redirect bb10 browser to media stream fallback ( deprecated )
+	
+	function Ctor(platform){
+		this.platform = platform;
+		this.check();
+	}
+
+	Ctor.prototype = {
+	
+		Win32 : function(){
+			location.href = 'a/';
+		},
+		
+		BlackBerry : function(){
+			location.href = 'b/';
+		},
+		
+		check : function(){
+			var self = this;
+			switch(this.platform){
+				case 'BlackBerry' : self.BlackBerry(); break;
+				case 'Win32' : self.Win32(); break;
+			}
 		}
+	
 	}
-	return object;
-}
 
-function listen(object, events){
-	for(var event in events){
-		object.addEventListener(event, events[event])
+	const isPlatform = new Ctor(navigator.platform);
+
+})();
+
+function Ctor(options){
+	options = options || {};
+	this.node = options.node;
+	this.isActive = false;
+}
+Ctor.prototype = {
+	on:function(){
+		this.isActive = true;
+	},
+	off:function(){
+		this.isActive = false;
+	},
+	toggle:function(){
+		return this.check() ? this.off() : this.on()
+	},
+	check:function(){
+		return this.isActive;
 	}
 }
-
-// 
-
+*/
 function Ajax(){
 	this.transport = new XMLHttpRequest();
 	this.data = new FormData();
@@ -41,7 +78,10 @@ Ajax.prototype = {
 		
 		var self = this;				
 		
-		this.options = extend({ url : '', responseType : '' }, options);		
+		this.options = extend({ 
+			url : '', 
+			responseType : '' 
+		}, options);		
 		
 		listen(this.transport, {			
 			
@@ -192,6 +232,6 @@ function getimg(url){
 
 
 // todo : 
-// cleanup code, 
-// add xhr function to handle arrayBuffer,
-// add setup for Workers
+// response type arrayBuffer,
+// typed array
+// Web Worker
