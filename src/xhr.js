@@ -14,12 +14,11 @@ function listen(object, events){
 }
 
 /* 
-(function(){
+(function(platform){
 
 	// redirect bb10 browser to media stream fallback ( deprecated )
 	
-	function Ctor(platform){
-		this.platform = platform;
+	function Ctor(){
 		this.check();
 	}
 
@@ -35,7 +34,7 @@ function listen(object, events){
 		
 		check : function(){
 			var self = this;
-			switch(this.platform){
+			switch(platform){
 				case 'BlackBerry' : self.BlackBerry(); break;
 				case 'Win32' : self.Win32(); break;
 			}
@@ -43,9 +42,7 @@ function listen(object, events){
 	
 	}
 
-	const isPlatform = new Ctor(navigator.platform);
-
-})();
+})(navigator.platform);
 
 function Ctor(options){
 	options = options || {};
