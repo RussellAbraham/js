@@ -43,7 +43,7 @@ function test2() {
 	}
 	void 0
 }
-
+// const selector = document.querySelector.bind(document)
 function preview(string){
     switch(string){
         
