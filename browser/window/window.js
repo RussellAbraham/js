@@ -43,3 +43,24 @@ function test2() {
 	}
 	void 0
 }
+
+function preview(string){
+    switch(string){
+        
+        case 'print' : (function(){
+            const printPage = window.open('','_blank','width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes');
+        printPage.document.open();
+        printPage.document.write("<!doctype html><html><head><title>Print<\/title><link rel=\"stylesheet\" href=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/bootstrap.css\"><\/head><body onload=\"print();\">" + selector('.edit').innerHTML + "<\/body><\/html>");
+        printPage.document.close();
+        })(); break;
+        
+        case 'preview' : (function(){
+            with(window.open('','_blank','width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes')){
+                document.write("<!doctype html><html><head><title>Print<\/title><link rel=\"stylesheet\" href=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/bootstrap.css\"><\/head><body>" + selector('.edit').innerHTML + "<\/body><\/html>");
+                document.close();
+            }
+            void 0
+        })(); break;
+            
+    }
+}
