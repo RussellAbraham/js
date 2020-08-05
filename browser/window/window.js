@@ -49,9 +49,9 @@ function preview(string){
         
         case 'print' : (function(){
             const printPage = window.open('','_blank','width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes');
-        printPage.document.open();
-        printPage.document.write("<!doctype html><html><head><title>Print<\/title><link rel=\"stylesheet\" href=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/bootstrap.css\"><\/head><body onload=\"print();\">" + selector('.edit').innerHTML + "<\/body><\/html>");
-        printPage.document.close();
+            printPage.document.open();
+            printPage.document.write("<!doctype html><html><head><title>Print<\/title><link rel=\"stylesheet\" href=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/bootstrap.css\"><\/head><body onload=\"print();\">" + selector('.edit').innerHTML + "<\/body><\/html>");
+            printPage.document.close();
         })(); break;
         
         case 'preview' : (function(){
