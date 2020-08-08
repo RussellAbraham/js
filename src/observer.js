@@ -1,15 +1,23 @@
-(function(fragment, observer){
-	const factory = function(){
-		return {
-			fragment : function(){
-				return fragment
-			},
-			observer : function(){
-				return observer
-			}
+function record(mutations, observer){
+	// mutations.forEach(function(){});
+	Object.values(mutations).forEach(function(mutation){
+		switch(mutation.type){
+			
+			case 'attributes' : 
+			//
+			break;
+
+			case 'characterData' :
+			//
+			break;
+
 		}
-	}
-	if(typeof window !== 'undefined'){
-		window.factory = factory;  
-	}
-})(new DocumentFragment(), window.MutationObserver || window.WebKitMutationObserver);
+	});
+
+}
+
+const config = {
+	attributes : true,
+	characterData : true
+}
+
