@@ -2,7 +2,7 @@
     
     browser.storage = {};
 
-    [].forEach(function(object){
+    ['local'].forEach(function(object){
         load('storage/' + object);
     });
 

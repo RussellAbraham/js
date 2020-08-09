@@ -2,7 +2,7 @@
 
     browser.timing = {};
 
-    [].forEach(function(object){
+    ['interval', 'timeout'].forEach(function(object){
         load('timing/' + object);
     });
 

@@ -1,0 +1,1 @@
+browser.storage.Local = function (){} 
