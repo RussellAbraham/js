@@ -97,7 +97,6 @@ const white = new Color(255, 255, 255, 'white');
 
 
 (function(){
-
 	
 	function Color(r, g, b, name) {
     		this.r = r;
