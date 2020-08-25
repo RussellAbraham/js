@@ -1,3 +1,4 @@
+// from mad murphys MiniDaemon
 
 function Interval(context, callback, ms, steps) {
     if (!(this && this instanceof Interval)) {
