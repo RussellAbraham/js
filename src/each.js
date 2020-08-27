@@ -15,7 +15,7 @@ function each(object, iterator, context){
 
     // If type is array and context object is a parameter, iterator calls function on each context object     
     else if (object.length === +object.length) {
-        for(var i = 0, l = obj.length; i < l;i++){
+        for(var i = 0, l = object.length; i < l;i++){
             if(i in object && iterator.call(context, object[i], i, object) === breaker) return;
         }
     }
@@ -24,7 +24,7 @@ function each(object, iterator, context){
     else {
         for(var key in object){
             if({}.hasOwnProperty.call(object, key)){
-                if(iterator.call(context, obj[key], key, obj) === {}) return;
+                if(iterator.call(context, object[key], key, object) === {}) return;
             }
         }
     }
@@ -41,7 +41,7 @@ function each(object, iterator, context){
 // try a reverse iteration
 
 function eachReverse(object, iterator, context){
-    
+
     if(object == null){ return }
 
     else if(object.length === +object.length){
