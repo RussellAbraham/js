@@ -3,23 +3,23 @@
  * @param  iterator
  * @param  context 
  */
-function each(object, iterator, context) {
-    if (object == null) {
-        return
-    }
-    if ([].forEach && object.forEach === [].forEach) {
-        object.forEach(iterator, context);
-    } else if (object.length === +object.length) {
-        for (var i = 0, l = object.length; i < l; i++) {
-            if (i in object && iterator.call(context, object[i], i, object) === breaker) return;
+function each(object, iterator, context){
+    if(object == null){ return }
+    if([].forEach && object.forEach === [].forEach){
+      object.forEach(iterator, context);  
+    } 
+    else if (object.length === +object.length) { var i;
+        for(i = 0, l = object.length; i < l;i++){
+            if(i in object && iterator.call(context, object[i], i, object) === {}) return;
         }
-    } else {
-        for (var key in object) {
-            if ({}.hasOwnProperty.call(object, key)) {
-                if (iterator.call(context, object[key], key, object) === {}) return;
+    }
+    else {
+        for(var key in object){
+            if({}.hasOwnProperty.call(object, key)){
+                if(iterator.call(context, object[key], key, object) === {}) return;
             }
         }
-    }
+    }    
 }
 
 /** 
@@ -37,16 +37,16 @@ function map(object, iterator, context) {
     return results;
 }
 
+function isObject(obj) {
+    return obj === Object(obj);
+}
+
 function keys(object) {
     if (object !== Object(object)) throw new TypeError('Invalid object');
     var keys = [];
     for (var key in object)
         if ({}.hasOwnProperty.call(object, key)) keys[keys.length] = key;
     return keys;
-}
-
-function isObject(obj) {
-    return obj === Object(obj);
 }
 
 function allKeys(object) {
@@ -64,20 +64,16 @@ function identity(object) {
     return object;
 }
 
-function values(object) {
+function getValues(object) {
     return map(object, identity);
 }
 
-
-
-/**@function eachReverse
+/** eachReverse
  * @param { object }
  * @param { iterator }
  * @param { context }
  */
-
 function eachReverse(object, iterator, context) {
-
     if (object == null) {
         return
     } else if (object.length === +object.length) {
