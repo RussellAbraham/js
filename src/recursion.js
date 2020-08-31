@@ -1,3 +1,5 @@
+
+
 // Pure Recursion Example
 
 function collection(arr) {
@@ -16,6 +18,7 @@ function collection(arr) {
 
     return array;
 }
+
 
 // Helper Method Recursion Example
 
@@ -43,173 +46,25 @@ function collector(arr) {
 
 }
 
-
-
-/* Helper Functions */
-
-function toSource(func) {
-    if (func != null) {
-        try {
-            return Function.prototype.toString.call(func);
-        } catch (er) {
-            throw '';
-        }
-        try {
-            return (func + '');
-        } catch (er) {
-            throw '';
-        }
-    }
-    return '';
-}
-
-/* polyfill for...of values iterator, getValues( this.__proto__ ) */
-function _each(obj, iterator, context) {
-    var breaker = {};
-    if (obj == null) return;
-    if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
-        obj.forEach(iterator, context);
-    } else if (obj.length === +obj.length) {
-        for (var i = 0, l = obj.length; i < l; i++) {
-            if (i in obj && iterator.call(context, obj[i], i, obj) === breaker) return;
-        }
-    } else {
-        for (var key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                if (iterator.call(context, obj[key], key, obj) === breaker) return;
-            }
-        }
-    }
-}
-
-function _map(obj, iterator, context) {
-    var results = [];
-    if (obj == null) return results;
-    if (Array.prototype.map && obj.map === Array.prototype.map) return obj.map(iterator, context);
-    _each(obj, function (value, index, list) {
-        results[results.length] = iterator.call(context, value, index, list);
-    });
-    return results;
-}
-
-function cid(value) {
-    return value
-}
-
-function getValues(obj) {
-    return _map(obj, cid)
-}
-
-// primitves
-function isObject(obj) {
-    return obj === Object(obj);
-}
-
-function isString(obj) {
-    return !!(obj === "" || (obj && obj.charCodeAt && obj.substr));
-}
-
-function isBoolean(obj) {
-    return obj === true || obj === false;
-}
-
-function isNumber(obj) {
-    return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
-}
-
-function isNull(obj) {
-    return obj === null;
-}
-
-function isUndefined(obj) {
-    return obj === void 0;
-}
-
-function isDate(obj) {
-    return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear);
-}
-
-function isObjectLike(object) {
-    return (
-        !!object && (typeof (object) === 'object') && (typeof (object.length) === 'undefined')
-    );
-}
-
-function isArrayLike(object) {
-    if (typeof (object) == 'array') return true;
-    return (
-        !!object && (typeof (object) === 'object') && (typeof (object.length) != 'undefined')
-    );
-}
-
-function stringSortCase(alpha, beta) {
-    return alpha.toLowerCase() < beta.toLowerCase() ? -1 : 1;
-}
-
-function forceCatchWithThrow(object) {
-    function primitive(object) {
-        var result;
-        try {
-            if (isObject(object)) { throw '[ Object : ' + object + ']'; }
-            if (isBoolean(object)) { throw '[ Boolean : ' + object + ']'; }
-            if (isNumber(object)) { throw '[ Number : ' + object + ']'; }
-            if (isString(object)) { throw '[ String : ' + object + ']'; }
-            if (isUndefined(object)) { throw '[ Undefined : ' + object + ']'; }
-            if (isNull(object)) { throw '[ Null : ' + object + ']';}
-        } 
-        catch (result) { /* render(result) */ }    
-    }    
-    try { primitive(object) }    
-    catch (er) { return er.stack; }     
-    finally { }    
-}
-
-Object.keys({
-    object : '[object Object]',
-    array : '[object Array]',
-    boolean : '[object Boolean]',
-    date : '[object Date]',
-    function :'[object Function]',  
-    number : '[object Number]',    
-    string : '[object String]'
-}).forEach(function(type){});
-
-
-//type: function (o) {
-    //return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
-//}
-/*
-Work in Progress on es5 compatible Recursive parser that handles circular and native objects, and outputs a serializable object
-*/ 
+ 
+// recursive parser es6
 
 function stringify(obj, replacer, spaces, cycleReplacer) {
   return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
 }
 
-function serializer(replacer, cycleReplacer) {
-  
+function serializer(replacer, cycleReplacer) {  
   var stack = [], keys = []
-
-  if (cycleReplacer == null) cycleReplacer = function(key, value) {
-  
-    if (stack[0] === value) return "[Circular ~]"
-  
-    return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
-  
+  if (cycleReplacer == null) cycleReplacer = function(key, value) {  
+    if (stack[0] === value) return "[Circular ~]"  
+    return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"  
   }
-
-  return function(key, value) {
-  
-    if (stack.length > 0) {
-  
+  return function(key, value) {  
+    if (stack.length > 0) {  
       var thisPos = stack.indexOf(this)
-
-      ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)
-      
-      ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)
-      
+      ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)      
+      ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)      
       if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
-
     }
 
     else stack.push(value)
@@ -220,7 +75,7 @@ function serializer(replacer, cycleReplacer) {
 
 }
 
-function stringify(object, plain, iterator) {
+function old_stringify(object, plain, iterator) {
 
     var output = {};
 
@@ -280,8 +135,10 @@ function stringify(object, plain, iterator) {
 
 }
 
+// native and circular stringify
+// shallow serialize object 
 (function () {
-    // internal
+
     function sortci(a, b) {
         return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
     }
@@ -294,7 +151,7 @@ function stringify(object, plain, iterator) {
         if (typeof (obj) == 'array') return true;
         return (!!obj && (typeof (obj) === 'object') && (typeof (obj.length) != 'undefined'));
     }
-    // good function but output it hacked together... todo : sort results into proper object for return
+
     function stringify(o, simple, visited) {
         var json = '',
             i, vi, type = '',
@@ -397,10 +254,5 @@ function stringify(object, plain, iterator) {
     function looseJsonParse(obj) {
         return Function('"use strict";return (' + obj + ')')();
     }
-    // export    
-    if (typeof window !== 'undefined') {
-        window.stringify = stringify;
-        window.serialize = serialize;
-        window.looseJsonParse = looseJsonParse;
-    }
+
 })();
