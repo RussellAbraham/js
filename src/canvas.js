@@ -1,5 +1,3 @@
-//todo:setup init to draw in steps with Interval
-
 (function(application){
     
     const canvas = document.getElementById("canvas");
@@ -29,61 +27,20 @@
 	    ctx.closePath();
 	    ctx.fill();
 	}	
-    
-    function Interval (context, callback, ms, steps) {
-		if (!(this && this instanceof Interval)) { return; }
-		if (arguments.length < 2) { throw new TypeError("Interval - not enough arguments"); }
-		if (context) { this.owner = context; }
-		this.task = callback;
-		if (isFinite(ms) && ms > 0) { this.rate = Math.floor(ms); }
-		if (steps > 0) { this.length = Math.floor(steps); }
-	}	
-	Interval.prototype = {
-		context : null,
-		callback : null,
-		ms : 100,
-		steps : Infinity,
-		SESSION : -1,
-		INDEX : 0,
-		PAUSED : true,
-		BACK : true
-	}
-	Interval.forceCall = function (object) {
-		object.INDEX += object.BACKW ? -1 : 1;
-		if (object.task.call(object.owner, object.INDEX, object.length, object.BACKW) === false || object.isAtEnd()) { object.pause(); return false; }
-		return true;
-	};
-	Interval.prototype.isAtEnd = function (){
-		return this.BACKW ? isFinite(this.length) && this.INDEX < 1 : this.INDEX + 1 > this.length;
-	};
-	Interval.prototype.synchronize = function () {
-		if (this.PAUSED) { return; }
-		clearInterval(this.SESSION);
-		this.SESSION = setInterval(Interval.forceCall, this.rate, this);
-	};
-	Interval.prototype.pause = function () {
-		clearInterval(this.SESSION);
-		this.PAUSED = true;
-	};
-	Interval.prototype.start = function (reverse) {
-		var bBackw = Boolean(reverse);
-		if (this.BACKW === bBackw && (this.isAtEnd() || !this.PAUSED)) { return; }
-		this.BACKW = bBackw;
-		this.PAUSED = false;
-		this.synchronize();
-	};
+
 	application['api'] = function(){
 		return {
-			Interval : Interval,
 			drawLine:drawLine,
 			drawArc:drawArc,
 			drawPieSlice:drawPieSlice,
-			ctx:ctx
+			ctx : ctx
 		}
 	}
+
 	if(typeof window !== 'undefined'){
 		window.app = application.api();
 	}
+
 })(new Object());
 
 var data = JSON.stringify({

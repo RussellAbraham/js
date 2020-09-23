@@ -1,14 +1,3 @@
-
-/* *** trim() *** */
-function trim(str) {
-  return str.replace(/^\s*/, '').replace(/\s*$/, '');
-}
-
-/* *** has() *** */
-function has(obj, key) {
-  return obj != null && hasOwnProperty.call(obj, key);
-}
-
 /* *** optimizCallback() *** */
 var optimizCallback = function (func, context, argCount) {
   if (context === void 0) return func;
@@ -31,85 +20,10 @@ function times(n, iteratee, context) {
   return accum;
 };
 
-var idCounter = 0;    
-
-function uniqueId(prefix) {
-    var id = idCounter++;
-     return prefix ? prefix + id : id;
-};
-/**
- * @param  object 
- * @param  iterator
- * @param  context 
- */
-function each(object, iterator, context){
-  if(object == null){ return }
-  if([].forEach && object.forEach === [].forEach){
-    object.forEach(iterator, context);  
-  } 
-  else if (object.length === +object.length) { var i;
-      for(i = 0, l = object.length; i < l;i++){
-          if(i in object && iterator.call(context, object[i], i, object) === {}) return;
-      }
-  }
-  else {
-      for(var key in object){
-          if({}.hasOwnProperty.call(object, key)){
-              if(iterator.call(context, object[key], key, object) === {}) return;
-          }
-      }
-  }    
-}
-
-/** 
-* @param object
-* @param iterator
-* @param context
-*/
-function map(object, iterator, context) {
-  var results = [];
-  if (object == null) return results;
-  if ([].map && object.map === [].map) return object.map(iterator, context);
-  each(object, function (value, index, list) {
-      return results[results.length] = iterator.call(context, value, index, list);
-  });
-  return results;
-}
-
-function isObject(obj) {
-  return obj === Object(obj);
-}
-
-function keys(object) {
-  if (object !== Object(object)) throw new TypeError('Invalid object');
-  var keys = [];
-  for (var key in object)
-      if ({}.hasOwnProperty.call(object, key)) keys[keys.length] = key;
-  return keys;
-}
-
-function allKeys(object) {
-  if (!isObject(object)) {
-      return [];
-  }
-  var keys = [];
-  for (var key in object) {
-      keys.push(key);
-  }
-  return keys;
-}
-
-function identity(object) {
-  return object;
-}
-
-function getValues(object) {
-  return map(object, identity);
-}
-
 var property = function(key) { return function(obj) {return obj == null ? void 0 : obj[key];};};
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 var getLength = property('length');
+
 var isArrayLike = function(collection) {
   var length = getLength(collection);
   return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
@@ -289,3 +203,42 @@ function isArrayBufferView(val) {
       return toString.call(obj) === '[object ' + name + ']';
   }
 });
+
+/* *** trim() *** */
+function trim(str) {
+  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+}
+
+/* *** has() *** */
+function has(obj, key) {
+  return obj != null && hasOwnProperty.call(obj, key);
+}
+
+var idCounter = 0;
+function uniqueId(prefix) {
+    var id = idCounter++;
+     return prefix ? prefix + id : id;
+};
+
+function keys(object) {
+  if (object !== Object(object)) throw new TypeError('Invalid object');
+  var keys = [];
+  for (var key in object)
+      if ({}.hasOwnProperty.call(object, key)) keys[keys.length] = key;
+  return keys;
+}
+
+function allKeys(object) {
+  if (!isObject(object)) {
+      return [];
+  }
+  var keys = [];
+  for (var key in object) {
+      keys.push(key);
+  }
+  return keys;
+}
+
+function identity(object) {
+  return object;
+}

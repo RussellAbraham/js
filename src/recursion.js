@@ -1,5 +1,3 @@
-
-
 // Pure Recursion Example
 
 function collection(arr) {
