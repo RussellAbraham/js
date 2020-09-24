@@ -1,6 +1,6 @@
 const hasOwnProperty = {}.hasOwnProperty;
 
-// Mutable, object whose value can change once created
+// Immutable, object whose value cannot change.
 function extend(target){
 	var i, len = arguments.length;
 	for(i = 0;i < len;i++){
@@ -15,7 +15,7 @@ function extend(target){
 }
 
 
-// Immutable, object whose value cannot change.
+// Mutable, object whose value can change once created
 function extend(){
 	let i, len = arguments.length;
 	const target = {};
