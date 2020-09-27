@@ -1,3 +1,7 @@
+var linkStringRegEx = /(?:[a-zA-Z][a-zA-Z0-9+.-]{2,}:\/\/|data:|www\.)[\w$\-_+*'=\|\/\\(){}[\]^%@&#~,:;.!?]{2,}[\w$\-_+*=\|\/\\({^%@&#~]/;
+var lineColumnRegEx = /:(\d+)(:(\d+))?$/;
+
+var match = url.match(/^([A-Za-z][A-Za-z0-9+.-]*):\/\/([^\/:]*)(?::([\d]+))?(?:(\/[^#]*)(?:#(.*))?)?$/i);
 
 // Used for matching numbers
 var	core_pnum = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source,

@@ -2,10 +2,10 @@ const hasOwnProperty = {}.hasOwnProperty;
 
 // Immutable, object whose value cannot change.
 function extend(target){
-	var i, len = arguments.length;
+	let i, len = arguments.length;
 	for(i = 0;i < len;i++){
-		var source = arguments[i];
-		for(var key in source){
+		let source = arguments[i];
+		for(let key in source){
 			if(hasOwnProperty.call(source, key)){
 				target[key] = source[key];
 			}
@@ -13,7 +13,6 @@ function extend(target){
 	}
 	return target;
 }
-
 
 // Mutable, object whose value can change once created
 function extend(){
@@ -21,7 +20,7 @@ function extend(){
 	const target = {};
 	for(i = 0;i < len;i++){
 		let source = arguments[i];
-		for(var key in source){
+		for(let key in source){
 			if(hasOwnProperty.call(source, key)){
 				target[key] = source[key];
 			}
@@ -29,8 +28,6 @@ function extend(){
 	}
 	return target;
 }
-
-
 
 function extend(obj){
 	[].slice.call(arguments, 1).forEach(function(source){
