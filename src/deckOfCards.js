@@ -1,59 +1,34 @@
 
-
 const suits = ['hearts', 'clubs', 'diamonds', 'spades'];
 const values = '2 3 4 5 6 7 8 9 10 J Q K A'.split(' ');
-
+	
 const limit = values.length * suits.length;
-
-function printGroups(){
-	var i;
-	for (i = limit - 1; i >= 0; i--) {
-	  var inst = values[Math.floor(i / suits.length)];
-	  var g = suits[Math.floor(i % suits.length)];
-	  console.log("".concat(inst, ":").concat(g));
-	}	
-}
-
-function build() {
-	const suits = ["hearts", "clubs", "diamonds", "spades"];
-	const values = "2 3 4 5 6 7 8 9 10 J Q K A".split(" ");
-	const limit = values.length * suits.length;
-	const output = [];
-
-	var i;
-
-	for (i = limit - 1; i >= 0; i--) {
-		var inst = values[Math.floor(i / suits.length)];
-		var g = suits[Math.floor(i % suits.length)];
-		output.push(inst + ":" + g);
+	
+function offs(){
+	const deck = [];
+	for (let value of values) {
+		for (let suit of suits) {
+			deck.push({value:value,suit:suit})
+		}
 	}
-	return {
-		output: output
-	};
+	return deck;
 }
 
-const makeDeck = () => {
-  return {
-    deck: [],
-    suits: ['hearts', 'diamonds', 'spades', 'clubs'],
-    values: '2,3,4,5,6,7,8,9,10,J,Q,K,A',
-    initializeDeck() {
-      const {
-        suits,
-        values,
-        deck
-      } = this;
-      for (let value of values.split(',')) {
-        for (let suit of suits) {
-          deck.push({
-            value,
-            suit
-          })
-        }
-      }
-      // return deck;
-    }
-  }
+function mins(){
+	const deck = [];
+	let i;
+	for (i = limit - 1; i >= 0; i--) {
+		let inst = values[Math.floor(i / suits.length)];
+		let g = suits[Math.floor(i % suits.length)];
+		deck.push({'suit':g,'value':inst})
+	}	
+	return deck;
 }
-const myDeck = makeDeck();
-myDeck.initializeDeck();
+	
+
+
+function test(callback){
+	console.log(performance.now());
+	_.times(500000, callback);
+	console.log(performance.now());
+}
