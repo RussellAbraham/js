@@ -46,9 +46,20 @@ function mins(){
 }
 	
 
-// excessive, but took it to 1mil, 10mil crashed
-function test(callback){
-	console.log(performance.now());
-	_.times(500000, callback);
-	console.log(performance.now());
+function testmin(){
+	let a = performance.now();
+	_.times(10000, mins);
+	let b = performance.now();
+	console.log(b - a);
+}
+
+function testof(){
+	let a = performance.now();
+	_.times(10000, offs);
+	let b = performance.now();
+	console.log(b - a);
+}
+
+function test(cb){
+	_.times(1000, cb);
 }
