@@ -26,7 +26,7 @@ function mins(){
 }
 	
 
-
+// excessive, but took it to 1mil, 10mil crashed
 function test(callback){
 	console.log(performance.now());
 	_.times(500000, callback);
