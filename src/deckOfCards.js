@@ -1,3 +1,6 @@
+// CodePen Demo
+// https://codepen.io/RJLeyra/debug/dyMxpQM
+
 "use strict";
 
 function _defineProperties(target, props) {
