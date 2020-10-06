@@ -1,3 +1,67 @@
+function Xtor(){
+	this.request = new XMLHttpRequest();
+	this.request.addEventListener('error', this.onRequestError.bind(this, true), false);
+	this.request.addEventListener('load', this.onRequestLoad.bind(this, true), false);		
+	this.request.addEventListener('readystatechange', this.onReadyStateChange.bind(this, true), false);		
+}	
+Xtor.prototype = {
+	get : function(options){
+		options = (options || {});
+		this.request.open('GET', options.url, true);
+		this.request.responseType = options.type;
+		this.request.send(null);			
+	},
+	onRequestError : function(event){},
+	onRequestLoad : function(event){
+		console.log(this.request.response);
+	},
+	onReadyStateChange : function(event){
+		if(this.request.readyState === this.request.HEADERS_RECEIVED){
+			var headers = this.request.getAllResponseHeaders();
+			console.log(headers);
+		}
+	}
+};
+
+const request = new XMLHttpRequest();
+
+function loadJson() {
+    request.open();
+    request.send();
+    request.onload = function () {
+        if (request.status === 200) {
+            return request.response;
+        } else {
+            throw new Error('could not GET');
+        }
+    }
+}
+
+function readyJson() {
+    request.onreadystatechange = function (response) {
+        if (request.resopnse === 4) {
+            if (request.status === 200) {
+
+            } else {
+
+            }
+        }
+    }
+}
+
+function fetchBlob() {
+    request.open();
+    request.responseType = 'blob';
+    request.onload - function () {
+        if (request.status === 200) {
+            var blob = URL.createObjectURL(request.response);
+            return blob;
+        } else {
+            throw new Error('')
+        }
+    }
+}
+
 function extend(object, props){
 	for(var prop in props){
 		if(props[prop]){
