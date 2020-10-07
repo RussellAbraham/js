@@ -39,14 +39,38 @@ function Line(options){
 	this.startY = options.startY; 
 	this.endX = options.endX;
 	this.endY = options.endY;
-	this.color = options.color
+	//this.color = options.color
 }
 
+const ctx = document.getElementById('canvas').getContext('2d');
+const data = [
+	{	
+		startX : 0,
+		startY : 0,
+		endX : 100,
+		endY : 100
+	},
+	{
+		startX : 0,
+		startY : 0,
+		endX : 100,
+		endY : 100
+	}
+]
+function lines(){
+	data.forEach(function(line){
+		var linetest = new Line();
+		linetest.draw();
+	});
+}
+
+
+
 Line.prototype.draw = function(){
-	this.options.ctx.beginPath();
-	this.options.ctx.moveTo(this.options.startX,this.options.startY);
-	this.options.ctx.lineTo(this.options.endX,this.options.endY);
-	this.options.ctx.stroke();
+	this.ctx.beginPath();
+	this.ctx.moveTo(this.startX,this.startY);
+	this.ctx.lineTo(this.endX,this.endY);
+	this.ctx.stroke();
 }
 
 function Arc(options){
