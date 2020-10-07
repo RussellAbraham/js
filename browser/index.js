@@ -2,6 +2,7 @@
 const browser = {}; 
 
 function load(){
+    var stack = [];
     function scriptNode(src, onload, onerror){
         var script = document.createElement('script');
         script.src = src + '.js';
@@ -10,10 +11,10 @@ function load(){
         return document.head.appendChild(script);
     }
     function scriptLoad(){
-        console.info('success loading : ', this);
+        stack.push(this);
     }
     function scriptError(){
-        console.error('failed loading : ', this);
+        stack.push(this);
     }
     [].slice.call(arguments).forEach(function(string){
         scriptNode(string, scriptLoad, scriptError);

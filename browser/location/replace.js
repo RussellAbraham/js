@@ -1,0 +1,3 @@
+browser.location.replace = function(){
+    
+}

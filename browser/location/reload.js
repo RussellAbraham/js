@@ -1,0 +1,3 @@
+browser.location.reload = function(){
+    
+}

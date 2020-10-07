@@ -2,7 +2,7 @@
     
     browser.storage = {};
 
-    ['local'].forEach(function(object){
+    ['session','local','webSQL','indexedDB'].forEach(function(object){
         load('storage/' + object);
     });
 

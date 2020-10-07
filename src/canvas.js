@@ -1,66 +1,66 @@
-(function(application){
-    
-    const canvas = document.getElementById("canvas");
-	const ctx = canvas.getContext("2d");
-    
-    canvas.width = 300;
-    canvas.height = 300;
-    
-	function drawLine(ctx, startX, startY, endX, endY, color){
-		ctx.beginPath();
-	    ctx.moveTo(startX,startY);
-	    ctx.lineTo(endX,endY);
-	    ctx.stroke();
-	}
-    
-    function drawArc(ctx, centerX, centerY, radius, startAngle, endAngle){
-	    ctx.beginPath();
-	    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-	    ctx.stroke();
-	}
-    
-    function drawPieSlice(ctx,centerX, centerY, radius, startAngle, endAngle, color ){
-	    ctx.fillStyle = color;
-	    ctx.beginPath();
-	    ctx.moveTo(centerX,centerY);
-	    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-	    ctx.closePath();
-	    ctx.fill();
-	}	
+const grid = [
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 
+    2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2,     
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1
+];
 
-	application['api'] = function(){
-		return {
-			drawLine:drawLine,
-			drawArc:drawArc,
-			drawPieSlice:drawPieSlice,
-			ctx : ctx
-		}
-	}
-
-	if(typeof window !== 'undefined'){
-		window.app = application.api();
-	}
-
-})(new Object());
-
-var data = JSON.stringify({
-	0 : [0,0,300,300],
-	1 : [0,75,300,300],
-	2 : [0,150,300,300],
-	3 : [0,300,300,0],
-	4 : [0,300,300,70],
-	5 : [0,300,300,150]
-});
-
-function drawlines(object){
-	Object.values(object).forEach(function(r){
-		app.drawLine(app.ctx, r[0], r[1], r[2], r[3]);		
-	});	
+function Texture(src){
+	this.image = new Image();
+	this.image.src = src;
+	this.image.crossOrigin = "Anonymous";
 }
 
-drawlines(JSON.parse(data));
+function Line(options){
+	options = (options || {});
+	this.ctx = options.ctx;
+	this.startX = options.startX;
+	this.startY = options.startY; 
+	this.endX = options.endX;
+	this.endY = options.endY;
+	this.color = options.color
+}
 
-/**/
-app.drawArc(app.ctx, 150,150,150, 0, Math.PI/3);
-app.drawPieSlice(app.ctx, 150,150,150, Math.PI/2, Math.PI/2 + Math.PI/4, '#ff0000');
+Line.prototype.draw = function(){
+	this.options.ctx.beginPath();
+	this.options.ctx.moveTo(this.options.startX,this.options.startY);
+	this.options.ctx.lineTo(this.options.endX,this.options.endY);
+	this.options.ctx.stroke();
+}
 
+function Arc(options){
+	options = (options || {});
+	this.ctx = options.ctx;
+	this.centerX = options.centerX;
+	this.centerY = options.centerY; 
+	this.radius = options.radius;
+	this.startAngle = options.startAngle;
+	this.endAngle = options.endAngle;
+}
+
+Arc.prototype.draw = function(){
+	this.ctx.beginPath();
+	this.ctx.arc(this.options.centerX, this.options.centerY, this.options.radius, this.options.startAngle, this.options.endAngle);
+	this.ctx.stroke();	
+}

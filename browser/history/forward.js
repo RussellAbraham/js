@@ -1,7 +1,3 @@
-function goBack() {
-    window.history.back()
-}
-
-function goForward() {
-  window.history.forward()
+browser.history.forward = function(){
+  
 }

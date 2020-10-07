@@ -2,7 +2,7 @@
 
     browser.location = {};
 
-    [].forEach(function(object){
+    ['reload', 'replace'].forEach(function(object){
         load('location/' + object);
     });
 

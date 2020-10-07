@@ -1,0 +1,3 @@
+browser.window.resizeTo = function(){
+    
+}

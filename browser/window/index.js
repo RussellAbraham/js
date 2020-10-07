@@ -2,7 +2,7 @@
 
     browser.window = {};
 
-    [].forEach(function(object){
+    ['stop', 'open','moveTo','resizeTo'].forEach(function(object){
         load('window/' + object);
     });
 

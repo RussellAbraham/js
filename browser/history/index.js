@@ -2,7 +2,7 @@
 
     browser.history = {};
 
-    [].forEach(function(object){
+    ['forward', 'back', 'pushState', 'replaceState'].forEach(function(object){
         load('history/' + object);
     });
 
