@@ -60,7 +60,7 @@ function Arc(options){
 }
 
 Arc.prototype.draw = function(){
-	this.ctx.beginPath();
-	this.ctx.arc(this.options.centerX, this.options.centerY, this.options.radius, this.options.startAngle, this.options.endAngle);
-	this.ctx.stroke();	
+	this.options.ctx.beginPath();
+	this.options.ctx.arc(this.options.centerX, this.options.centerY, this.options.radius, this.options.startAngle, this.options.endAngle);
+	this.options.ctx.stroke();	
 }
