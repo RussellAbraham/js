@@ -1,8 +1,43 @@
-// CodePen Demo
-// https://codepen.io/RJLeyra/debug/dyMxpQM
-
+// @ line 237
 "use strict";
+	
+var optimizCallback = function (func, context, argCount) {
+  if (context === void 0) return func;
+  switch (argCount == null ? 3 : argCount) {
+    case 1: return function (value) { return func.call(context, value); };
+    case 2: return function (value, other) { return func.call(context, value, other); };
+    case 3: return function (value, index, collection) { return func.call(context, value, index, collection); };
+    case 4: return function (accumulator, value, index, collection) { return func.call(context, accumulator, value, index, collection); };
+  }
+  return function () {
+    return func.apply(context, arguments);
+  };
+};
 
+function has(obj, key) {
+  return obj != null && hasOwnProperty.call(obj, key);
+}
+
+function identity(object){
+  return object;
+}
+
+function times(n, iteratee, context) {
+  var accum = Array(Math.max(0, n));
+  iteratee = optimizCallback(iteratee, context, 1);
+  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+  return accum;
+};
+
+function memoize(callback, address){
+  var cache = {}, key;
+  address || (address = identity);
+  return function(){
+    key = address.apply(this, arguments);
+    return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
+	}
+}
+	
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -198,51 +233,79 @@ var SinglyLinkedList = /*#__PURE__*/ function () {
   return SinglyLinkedList;
 }();
 
+
+const decks = new SinglyLinkedList();
+
 const suits = ["hearts", "clubs", "diamonds", "spades"];
+
 const values = "2 3 4 5 6 7 8 9 10 J Q K A".split(" ");
 
 const limit = values.length * suits.length;
 
-
-/* operation test using es6 for of */
-const deck1 = new SinglyLinkedList();
-function offs() {
-	for (let value of values) {
-		for (let suit of suits) {
-			deck1.push({ value: value, suit: suit });
-		}
+function buildDeck() {
+	
+	let i, 			
+	    deck = [],	
+	    slen = suits.length;
+	
+	for (i = limit - 1; i >= 0; i--) {		
+		let value = values[Math.floor(i / slen)];		
+		let suit = suits[Math.floor(i % slen)];		
+		deck.push({ 
+			suit : suit, 	
+			value : value 
+		});		
 	}
-	return deck1;
+	
+	return decks.push(
+		JSON.stringify(deck)
+	);
+	
 }
 
-/* operation test using for length minus */
-const deck2 = new SinglyLinkedList();
-function mins() {
-	let i;
-	for (i = limit - 1; i >= 0; i--) {
-		let inst = values[Math.floor(i / suits.length)];
-		let g = suits[Math.floor(i % suits.length)];
-		deck2.push({ suit: g, value: inst });
-	}
-	return deck2;
+/*
+{
+    NODE - methods
+  "head": {
+      JSON DATA
+    "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+    NODE - methods
+    "next": {
+        JSON DATA - no methods
+      "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+      NODE
+      "next": {
+        JSON DATA - no methods
+        "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+        "next": {
+          "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+          "next": {
+            "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+            "next": {
+              "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+              "next": {
+                "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+                "next": {
+                  "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+                  "next": {
+                    "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+                    "next": {
+                      "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+                      "next": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tail": {
+    "val": "[{\"suit\":\"spades\",\"value\":\"A\"},{\"suit\":\"diamonds\",\"value\":\"A\"},{\"suit\":\"clubs\",\"value\":\"A\"},{\"suit\":\"hearts\",\"value\":\"A\"},{\"suit\":\"spades\",\"value\":\"K\"},{\"suit\":\"diamonds\",\"value\":\"K\"},{\"suit\":\"clubs\",\"value\":\"K\"},{\"suit\":\"hearts\",\"value\":\"K\"},{\"suit\":\"spades\",\"value\":\"Q\"},{\"suit\":\"diamonds\",\"value\":\"Q\"},{\"suit\":\"clubs\",\"value\":\"Q\"},{\"suit\":\"hearts\",\"value\":\"Q\"},{\"suit\":\"spades\",\"value\":\"J\"},{\"suit\":\"diamonds\",\"value\":\"J\"},{\"suit\":\"clubs\",\"value\":\"J\"},{\"suit\":\"hearts\",\"value\":\"J\"},{\"suit\":\"spades\",\"value\":\"10\"},{\"suit\":\"diamonds\",\"value\":\"10\"},{\"suit\":\"clubs\",\"value\":\"10\"},{\"suit\":\"hearts\",\"value\":\"10\"},{\"suit\":\"spades\",\"value\":\"9\"},{\"suit\":\"diamonds\",\"value\":\"9\"},{\"suit\":\"clubs\",\"value\":\"9\"},{\"suit\":\"hearts\",\"value\":\"9\"},{\"suit\":\"spades\",\"value\":\"8\"},{\"suit\":\"diamonds\",\"value\":\"8\"},{\"suit\":\"clubs\",\"value\":\"8\"},{\"suit\":\"hearts\",\"value\":\"8\"},{\"suit\":\"spades\",\"value\":\"7\"},{\"suit\":\"diamonds\",\"value\":\"7\"},{\"suit\":\"clubs\",\"value\":\"7\"},{\"suit\":\"hearts\",\"value\":\"7\"},{\"suit\":\"spades\",\"value\":\"6\"},{\"suit\":\"diamonds\",\"value\":\"6\"},{\"suit\":\"clubs\",\"value\":\"6\"},{\"suit\":\"hearts\",\"value\":\"6\"},{\"suit\":\"spades\",\"value\":\"5\"},{\"suit\":\"diamonds\",\"value\":\"5\"},{\"suit\":\"clubs\",\"value\":\"5\"},{\"suit\":\"hearts\",\"value\":\"5\"},{\"suit\":\"spades\",\"value\":\"4\"},{\"suit\":\"diamonds\",\"value\":\"4\"},{\"suit\":\"clubs\",\"value\":\"4\"},{\"suit\":\"hearts\",\"value\":\"4\"},{\"suit\":\"spades\",\"value\":\"3\"},{\"suit\":\"diamonds\",\"value\":\"3\"},{\"suit\":\"clubs\",\"value\":\"3\"},{\"suit\":\"hearts\",\"value\":\"3\"},{\"suit\":\"spades\",\"value\":\"2\"},{\"suit\":\"diamonds\",\"value\":\"2\"},{\"suit\":\"clubs\",\"value\":\"2\"},{\"suit\":\"hearts\",\"value\":\"2\"}]",
+    "next": null
+  },
+  "length": 10
 }
-
-function testmin() {
-	let a = performance.now();
-	_.times(100, mins);
-	let b = performance.now();
-	console.log(b - a);
-}
-function testof() {
-	let a = performance.now();
-	_.times(100, offs);
-	let b = performance.now();
-	console.log(b - a);
-}
-
-testmin = _.memoize(testmin);
-testof = _.memoize(testof);
-
-function test(cb) {
-	_.times(100, cb);
-}
+*/
