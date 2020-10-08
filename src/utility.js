@@ -12,6 +12,77 @@ var optimizCallback = function (func, context, argCount) {
   };
 };
 
+function has(obj, key) {
+  return obj != null && hasOwnProperty.call(obj, key);
+}
+
+function identity(object){
+  return object;
+}
+
+function times(n, iteratee, context) {
+  var accum = Array(Math.max(0, n));
+  iteratee = optimizCallback(iteratee, context, 1);
+  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+  return accum;
+};
+
+function memoize(callback, address){
+  var cache = {}, key;
+  address || (address = identity);
+  return function(){
+    key = address.apply(this, arguments);
+    return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
+	}
+}
+	
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function")
+  }
+};
+
+var property = function(key) {
+  return function(obj) {
+    return obj == null ? void 0 : obj[key];
+  };
+};
+
+/* !! iteratee[key][value] !! */
+var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+var getLength = property('length');
+var isArrayLike = function(collection) {
+  var length = getLength(collection);
+  return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+};
+
+function memoize(callback, address){
+  var cache = {}, key;
+  address || (address = identity);
+  return function(){
+    key = address.apply(this, arguments);
+    return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
+  }
+}
+
+
+
 /* *** times() *** */
 function times(n, iteratee, context) {
   var accum = Array(Math.max(0, n));
