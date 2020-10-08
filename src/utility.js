@@ -1,41 +1,3 @@
-/* *** optimizCallback() *** */
-var optimizCallback = function (func, context, argCount) {
-  if (context === void 0) return func;
-  switch (argCount == null ? 3 : argCount) {
-    case 1: return function (value) { return func.call(context, value); };
-    case 2: return function (value, other) { return func.call(context, value, other); };
-    case 3: return function (value, index, collection) { return func.call(context, value, index, collection); };
-    case 4: return function (accumulator, value, index, collection) { return func.call(context, accumulator, value, index, collection); };
-  }
-  return function () {
-    return func.apply(context, arguments);
-  };
-};
-
-function has(obj, key) {
-  return obj != null && hasOwnProperty.call(obj, key);
-}
-
-function identity(object){
-  return object;
-}
-
-function times(n, iteratee, context) {
-  var accum = Array(Math.max(0, n));
-  iteratee = optimizCallback(iteratee, context, 1);
-  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-  return accum;
-};
-
-function memoize(callback, address){
-  var cache = {}, key;
-  address || (address = identity);
-  return function(){
-    key = address.apply(this, arguments);
-    return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
-	}
-}
-	
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -58,8 +20,81 @@ function _classCallCheck(instance, Constructor) {
   }
 };
 
-var property = function(key) {
-  return function(obj) {
+/* *** optimizCallback() *** */
+var optimizCallback = function (func, context, argCount) {
+  if (context === void 0) return func;
+  switch (argCount == null ? 3 : argCount) {
+    case 1:
+      return function (value) {
+        return func.call(context, value);
+      };
+    case 2:
+      return function (value, other) {
+        return func.call(context, value, other);
+      };
+    case 3:
+      return function (value, index, collection) {
+        return func.call(context, value, index, collection);
+      };
+    case 4:
+      return function (accumulator, value, index, collection) {
+        return func.call(context, accumulator, value, index, collection);
+      };
+  }
+  return function () {
+    return func.apply(context, arguments);
+  };
+};
+
+function has(obj, key) {
+  return obj != null && hasOwnProperty.call(obj, key);
+}
+
+function identity(object) {
+  return object;
+}
+
+function times(n, iteratee, context) {
+  var accum = Array(Math.max(0, n));
+  iteratee = optimizCallback(iteratee, context, 1);
+  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+  return accum;
+};
+
+function memoize(callback, address) {
+  var cache = {},
+    key;
+  address || (address = identity);
+  return function () {
+    key = address.apply(this, arguments);
+    return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function")
+  }
+};
+
+var property = function (key) {
+  return function (obj) {
     return obj == null ? void 0 : obj[key];
   };
 };
@@ -67,15 +102,16 @@ var property = function(key) {
 /* !! iteratee[key][value] !! */
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 var getLength = property('length');
-var isArrayLike = function(collection) {
+var isArrayLike = function (collection) {
   var length = getLength(collection);
   return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
 };
 
-function memoize(callback, address){
-  var cache = {}, key;
+function memoize(callback, address) {
+  var cache = {},
+    key;
   address || (address = identity);
-  return function(){
+  return function () {
     key = address.apply(this, arguments);
     return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
   }
@@ -91,11 +127,15 @@ function times(n, iteratee, context) {
   return accum;
 };
 
-var property = function(key) { return function(obj) {return obj == null ? void 0 : obj[key];};};
+var property = function (key) {
+  return function (obj) {
+    return obj == null ? void 0 : obj[key];
+  };
+};
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 var getLength = property('length');
 
-var isArrayLike = function(collection) {
+var isArrayLike = function (collection) {
   var length = getLength(collection);
   return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
 };
@@ -269,9 +309,9 @@ function isArrayBufferView(val) {
   return result;
 }
 
-['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function(name){
-  window['is' + name] = function(obj){
-      return toString.call(obj) === '[object ' + name + ']';
+['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function (name) {
+  window['is' + name] = function (obj) {
+    return toString.call(obj) === '[object ' + name + ']';
   }
 });
 
@@ -286,26 +326,27 @@ function has(obj, key) {
 }
 
 var idCounter = 0;
+
 function uniqueId(prefix) {
-    var id = idCounter++;
-     return prefix ? prefix + id : id;
+  var id = idCounter++;
+  return prefix ? prefix + id : id;
 };
 
 function keys(object) {
   if (object !== Object(object)) throw new TypeError('Invalid object');
   var keys = [];
   for (var key in object)
-      if ({}.hasOwnProperty.call(object, key)) keys[keys.length] = key;
+    if ({}.hasOwnProperty.call(object, key)) keys[keys.length] = key;
   return keys;
 }
 
 function allKeys(object) {
   if (!isObject(object)) {
-      return [];
+    return [];
   }
   var keys = [];
   for (var key in object) {
-      keys.push(key);
+    keys.push(key);
   }
   return keys;
 }
