@@ -1,3 +1,0 @@
-browser.history.replaceState = function(){
-  
-}

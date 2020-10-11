@@ -1,9 +1,0 @@
-(function(loc){
-    console.log({
-        'protocol':loc.protocol,
-        'pathname':loc.pathname,
-        'hostname':loc.hostname,
-        'port':loc.port,
-        'href':loc.href
-    });    
-})(window.location);

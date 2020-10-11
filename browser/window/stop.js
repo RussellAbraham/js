@@ -1,3 +1,0 @@
-browser.window.stop = function(){
-    
-}

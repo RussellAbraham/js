@@ -232,6 +232,39 @@ var SinglyLinkedList = /*#__PURE__*/ function () {
 
   return SinglyLinkedList;
 }();
+const cache = [];
+
+
+const groups = [];
+const items = 'a,b c,d e,f gh i,j k,l m,n o,p q,r s,t u,v w,x y,z'.split(' ');
+
+const limit = groups.length * items.length;
+
+function Data(key, value){
+    this.key = key;
+    this.value = value;
+}
+
+function stuff(){
+    let i, j;
+
+    for(i = limit - 1;i >= 0;i--){
+        let group = groups[Math.floor(i) / groupLength ];
+        let item = items[Math.floor(i) % groupLength];
+        cache.push(new Data(group, item))        
+    }
+
+    for(j = cache.length - 1;j >= 0;j--){
+        for(var key in cache[i]){
+            if(cache[i][key]){
+
+            }
+        }
+    }
+
+    localStorage.setItem('stuff', JSON.stringify(cache));
+
+}
 
 
 const decks = new SinglyLinkedList();
