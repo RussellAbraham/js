@@ -1,26 +1,21 @@
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
+const GLOBALS = JSON.stringify({
+  BACKSPACE: 8,
+  TAB: 9,
+  RETURN: 13,
+  ESC: 27,
+  SPACE: 32,
+  PAGE_UP: 33,
+  PAGE_DOWN: 34,
+  END: 35,
+  HOME: 36,
+  LEFT: 37,
+  UP: 38,
+  RIGHT: 39,
+  DOWN: 40,
+  DELETE: 46
+});
 
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function")
-  }
-};
-
-/* *** optimizCallback() *** */
+/* *** times() *** */
 var optimizCallback = function (func, context, argCount) {
   if (context === void 0) return func;
   switch (argCount == null ? 3 : argCount) {
@@ -45,15 +40,6 @@ var optimizCallback = function (func, context, argCount) {
     return func.apply(context, arguments);
   };
 };
-
-function has(obj, key) {
-  return obj != null && hasOwnProperty.call(obj, key);
-}
-
-function identity(object) {
-  return object;
-}
-
 function times(n, iteratee, context) {
   var accum = Array(Math.max(0, n));
   iteratee = optimizCallback(iteratee, context, 1);
@@ -61,9 +47,16 @@ function times(n, iteratee, context) {
   return accum;
 };
 
+/* *** memoize() *** */
+function has(obj, key) {
+  return obj != null && hasOwnProperty.call(obj, key);
+}
+function identity(object) {
+  return object;
+}
 function memoize(callback, address) {
-  var cache = {},
-    key;
+  const cache = {};
+  var key;
   address || (address = identity);
   return function () {
     key = address.apply(this, arguments);
@@ -71,34 +64,13 @@ function memoize(callback, address) {
   }
 }
 
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
 
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function")
-  }
-};
-
+/* *** isArrayLike() *** */
 var property = function (key) {
   return function (obj) {
     return obj == null ? void 0 : obj[key];
   };
 };
-
 /* !! iteratee[key][value] !! */
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 var getLength = property('length');
@@ -107,138 +79,128 @@ var isArrayLike = function (collection) {
   return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
 };
 
-function memoize(callback, address) {
-  var cache = {},
-    key;
-  address || (address = identity);
-  return function () {
-    key = address.apply(this, arguments);
-    return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
-  }
+/* *** isFunction() *** */
+function isFunction(val) {
+  return !!(obj && obj.constructor && obj.call && obj.apply);
 }
 
+/* *** isDate()      *** */
+function isDate(obj) {
+  return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear);
+}
 
-
-/* *** times() *** */
-function times(n, iteratee, context) {
-  var accum = Array(Math.max(0, n));
-  iteratee = optimizCallback(iteratee, context, 1);
-  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-  return accum;
-};
-
-var property = function (key) {
-  return function (obj) {
-    return obj == null ? void 0 : obj[key];
-  };
-};
-var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
-var getLength = property('length');
-
-var isArrayLike = function (collection) {
-  var length = getLength(collection);
-  return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
-};
+/* *** isRegExp()    *** */
+function isRegExp(obj) {
+  return !!(obj && obj.test && obj.exec && (obj.ignoreCase || obj.ignoreCase === false));
+}
 
 /* *** isObject()    *** */
 function isObject(obj) {
   return obj === Object(obj);
 }
-/* *** isObjectLike()    *** */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-/* *** isArray()    *** */
-function isArray(obj) {
-  return toString.call(obj) === "[object Array]";
-}
-/*  *** isLocation() ***  */
-function isLocation(obj) {
-  return toString.call(obj) === "[object Location]";
-}
-/*  *** isCallable() ***  */
-function isCallable(obj) {
-  return typeof obj === 'function';
-}
-/*  *** isConstructor() ***  */
-function isContstructor(obj) {
-  return isCallable(obj);
-}
-/*  *** isElement() ***  */
-function isElement(obj) {
-  return !!(obj && obj.nodeType === 1);
-}
-/* *** isDate()      *** */
-function isDate(obj) {
-  return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear);
-}
+
 /* *** isString()    *** */
 function isString(obj) {
   return !!(obj === "" || (obj && obj.charCodeAt && obj.substr));
 }
+
 /* *** isBoolean()   *** */
 function isBoolean(obj) {
   return obj === true || obj === false;
 }
+
 /* *** isNumber()    *** */
 function isNumber(obj) {
   return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
 }
-/* *** isWindow ** */
-function isWindow(obj) {
-  return obj != null && obj === obj.window;
-}
-/* *** isEven()      *** */
-function isEven(num) {
-  return num % 2 === 0;
-}
+
 /* *** isNull()      *** */
 function isNull(obj) {
   return obj === null;
 }
+
 /* *** isUndefined() *** */
 function isUndefined(obj) {
   return obj === void 0;
 }
-/* *** isRegExp()    *** */
-function isRegExp(obj) {
-  return !!(obj && obj.test && obj.exec && (obj.ignoreCase || obj.ignoreCase === false));
+
+/* *** isObjectLike()    *** */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
 }
+
+/* *** isArray()    *** */
+function isArray(obj) {
+  return toString.call(obj) === "[object Array]";
+}
+
+/*  *** isLocation() ***  */
+function isLocation(obj) {
+  return toString.call(obj) === "[object Location]";
+}
+
+/*  *** isCallable() ***  */
+function isCallable(obj) {
+  return typeof obj === 'function';
+}
+
+/*  *** isConstructor() ***  */
+function isContstructor(obj) {
+  return isCallable(obj);
+}
+
+/*  *** isElement() ***  */
+function isElement(obj) {
+  return !!(obj && obj.nodeType === 1);
+}
+
+/* *** isWindow ** */
+function isWindow(obj) {
+  return obj != null && obj === obj.window;
+}
+
+/* *** isEven()      *** */
+function isEven(num) {
+  return num % 2 === 0;
+}
+
 /* *** isFinite() *** */
 function isFinite(obj) {
   return isFinite(obj) && !isNaN(parseFloat(obj));
 }
+
 /* *** isBuffer() *** */
 function isBuffer(val) {
   return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor) &&
     typeof val.constructor.isBuffer === 'function' && val.constructor.isBuffer(val);
 }
+
 /* *** isArrayBuffer() *** */
 function isArrayBuffer(val) {
   return toString.call(val) === '[object ArrayBuffer]';
 }
+
 /* *** isFile() *** */
 function isFile(val) {
   return toString.call(val) === '[object File]';
 }
+
 /* *** isBlob() *** */
 function isBlob(val) {
   return toString.call(val) === '[object Blob]';
 }
 
-/* *** isFunction() *** */
-function isFunction(val) {
-  return !!(obj && obj.constructor && obj.call && obj.apply);
-}
 /* *** isStream() *** */
 function isStream(val) {
   return isObject(val) && isFunction(val.pipe);
 }
+
 /* *** isURLSearchParams() *** */
 function isURLSearchParams(val) {
   return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
 }
 
+/* *** isFormData() *** */
 function isFormData(val) {
   return (typeof FormData !== 'undefined') && (val instanceof FormData);
 }
@@ -309,39 +271,47 @@ function isArrayBufferView(val) {
   return result;
 }
 
+const x = {};
 ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function (name) {
-  window['is' + name] = function (obj) {
+  x['is' + name] = function (obj) {
     return toString.call(obj) === '[object ' + name + ']';
   }
 });
+
+/* *** toSource() *** */
+function toSource(func) { 
+	if ( func != null ) { 
+		try { return Function.prototype.toString.call( func ); } catch (er) { throw ''; }     
+		try { return ( func + '' ); } catch ( er ) { throw ''; }  
+	}     
+	return '';     
+}
 
 /* *** trim() *** */
 function trim(str) {
   return str.replace(/^\s*/, '').replace(/\s*$/, '');
 }
 
-/* *** has() *** */
-function has(obj, key) {
-  return obj != null && hasOwnProperty.call(obj, key);
-}
-
+/* *** uniqueId() *** */
 var idCounter = 0;
-
 function uniqueId(prefix) {
   var id = idCounter++;
   return prefix ? prefix + id : id;
 };
 
+/* *** allKeys() *** */
+function has(obj, key) {
+  return obj != null && hasOwnProperty.call(obj, key);
+}
 function keys(object) {
   if (object !== Object(object)) throw new TypeError('Invalid object');
   var keys = [];
   for (var key in object)
-    if ({}.hasOwnProperty.call(object, key)) keys[keys.length] = key;
+    if (has(object, key)) keys[keys.length] = key;
   return keys;
 }
-
 function allKeys(object) {
-  if (!isObject(object)) {
+  if (!obj === Object(obj)) {
     return [];
   }
   var keys = [];
@@ -349,8 +319,4 @@ function allKeys(object) {
     keys.push(key);
   }
   return keys;
-}
-
-function identity(object) {
-  return object;
 }
