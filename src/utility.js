@@ -80,7 +80,7 @@ var isArrayLike = function (collection) {
 };
 
 /* *** isFunction() *** */
-function isFunction(val) {
+function isFunction(obj) {
   return !!(obj && obj.constructor && obj.call && obj.apply);
 }
 

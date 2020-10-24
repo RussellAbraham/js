@@ -20,6 +20,24 @@ function load(){
         scriptNode(string, scriptLoad, scriptError);
     });
 }
+function loadJSON() {
+	function jsonNode(src, onload, onerror) {
+		const request = new XMLHttpRequest();
+		request.open("GET", src, true);
+		request.onload = onload;
+		request.onerror = onerror || onload;
+		return request.send(null);
+	}
+	function jsonLoad() {
+		// JSON.parse(this.response);
+	}
+	function jsonError() {
+		//
+	}
+	[].slice.call(arguments).forEach(function(string) {
+		jsonNode(string, jsonLoad, jsonError);
+	});
+}
 
 function init(){
     [ 'cookies', 'dialog', 'history', 'location', 'navigator', 'screen', 'storage', 'timing', 'window' ].forEach(function(object){
