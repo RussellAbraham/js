@@ -49,7 +49,7 @@ function times(n, iteratee, context) {
 
 /* *** memoize() *** */
 function has(obj, key) {
-  return obj != null && hasOwnProperty.call(obj, key);
+  return obj != null && {}.hasOwnProperty.call(obj, key);
 }
 function identity(object) {
   return object;
