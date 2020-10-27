@@ -1,6 +1,7 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('webgl');
 
+// 1, no max iterator
 function peek(){
 	Object.values([ctx.__proto__]).forEach(function(keys){
 		Object.keys(keys).forEach(function(values, index){
@@ -8,6 +9,47 @@ function peek(){
 		})
 	})
 }
+
+// 2, no max iterator
+function getValues(obj) {
+
+    function each(obj, iterator, context) {
+        var breaker = {};
+        if (obj == null) return;
+        if ([].forEach && obj.forEach === [].forEach) {
+            obj.forEach(iterator, context);
+        } else if (obj.length === +obj.length) {
+            for (var i = 0, l = obj.length; i < l; i++) {
+                if (i in obj && iterator.call(context, obj[i], i, obj) === breaker) return;
+            }
+        } else {
+            for (var key in obj) {
+                if ({}.hasOwnProperty.call(obj, key)) {
+                    if (iterator.call(context, obj[key], key, obj) === breaker) return;
+                }
+            }
+        }
+    }
+
+    function map(obj, iterator, context) {
+        var results = [];
+        if (obj == null) return results;
+        if ([].map && obj.map === [].map) return obj.map(iterator, context);
+        each(obj, function (value, index, list) {
+            results[results.length] = iterator.call(context, value, index, list);
+        });
+        return results;
+    }
+
+    function cid(value) {
+        return value
+    }
+
+    return map(obj, cid);
+
+}
+
+console.log(getValues([ctx.__proto__]));
 
 // crossorigin image request
 function Texture(src){

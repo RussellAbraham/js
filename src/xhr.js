@@ -23,6 +23,50 @@ Xtor.prototype = {
 	}
 };
 
+const assets = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/';
+
+function loadResource(options) {
+	options = (options || {});
+	return new Promise(function (resolve, reject) {		
+		var request = new XMLHttpRequest();		
+		request.open("GET", assets + options.url, true);	
+		request.responseType = options.type;
+		
+		request.onreadystatechange = function(){
+			if(this.readyState === this.HEADERS_RECEIVED){
+				console.info(request.getAllResponseHeaders());
+			}    
+		}
+		
+		request.onload = function () {		
+			if (request.status === 200) {			
+				resolve(request.response);	
+			} else {			
+				reject( Error(request.statusText) );			
+			}				
+		};
+		
+		request.onerror = function () {
+			reject(Error("request failed: "));
+		};		
+		
+		request.send(null);		
+		
+	});	
+}
+
+// example
+/*
+loadResource({ url : 'types.json', type : 'text' })
+.then(function(response){ 
+	console.log(Object.keys(JSON.parse(response)));
+	console.log(Object.values(JSON.parse(response))); 
+})
+.catch(function(er){
+	console.log(er.stack)
+})
+*/
+
 const request = new XMLHttpRequest();
 
 function loadJson() {
