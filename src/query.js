@@ -1,78 +1,58 @@
 
-function arguments_to_array(args) {
-  var arr = new Array();
-  for (var i = 0; i < args.length; ++i) {
+const api = {};
+
+function toArray(args) {
+  var arr = [], i, len = args.length;
+  for (i = 0; i < len; ++i) {
     arr[i] = args[i];
   }
   return arr;
 }
 
-// form onsubmit return bcl_go(this);
-// send strings to match query parameters
-function bcl_go(e) {
-  var cmd = e.input.value;
-  bcl_run(cmd);
-  e.input.focus();
-  return false;
+function parse(string) {
+  return string.split(/\s+/);
 }
 
-function bcl_parse(cmd) {
-  return cmd.split(/\s+/);
-}
-
-function bcl_remove_blank_words(words) {
-  // Remove leading and trailing blank words.
-  while (words.length > 0 && words[0] === "") {
-    words = words.slice(1);
+function format(array) {
+  while (array.length > 0 && array[0] === "") {
+    array = array.slice(1);
   }
-  while (words.length > 0 && words[words.length - 1] === "") {
-    words = words.slice(0, words.length - 1);
+  while (array.length > 0 && array[array.length - 1] === "") {
+    array = array.slice(0, array.length - 1);
   }
-  return words;
+  return array;
 }
 
-function bcl_run(cmd) {
-  words = bcl_parse(cmd);
-  words = bcl_remove_blank_words(words);
-
-  var last_cmd_word = null;
-
-  for (var i = 0; i < words.length; ++i) {
-    var fun_name = words.slice(0, i + 1).join("_");
-    if (window[fun_name] == undefined) {
+function reparse(string) {
+  var tokens = parse(string);
+  var array = format(tokens);
+  var last = null, i, len = array.length;
+  for (i = 0; i < len; ++i) {
+    var callback = array.slice(0, i + 1).join("_");
+    var parm = array.slice(0);
+    if (api[callback] == undefined) {
       break;
     } else {
-      last_cmd_word = i;
+      last = i;
     }
   }
-
-  if (last_cmd_word === null || words.length == 0) {
-    alert('No such command "' + words[0] + '"');
+  if (last === null || array.length == 0) {
+    alert('No such command "' + array[0] + '"');
     return;
   }
-
-  var fun_name = words.slice(0, last_cmd_word + 1).join("_");
-  var fun = window[fun_name];
-  var args = words.slice(last_cmd_word + 1);
-  fun.apply(this, args);
+  var callback = array.slice(0, last + 1).join("_");
+  var wrapper = api[callback];
+  var restArguments = array.slice(last + 1);
+  wrapper.apply(this, restArguments);
 }
 
-function bcl_jump_cgi(url, kvs) {
+function hop(url, kvs) {
   var url = url + "?";
   for (var k in kvs) {
     var v = kvs[k];
     url += k + "=" + escape(v);
   }
   location = url;
-}
-
-function bcl_replace_cgi(url, kvs) {
-  var url = url + "?";
-  for (var k in kvs) {
-    var v = kvs[k];
-    url += k + "=" + escape(v);
-  }
-  location.replace(url);
 }
 
 function addhttp(url) {
@@ -149,85 +129,62 @@ function getAllUrlParams(url) {
   return obj;
 }
 
-// form takes care of white space
 
-//google search
-function g() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://www.google.ca/search", {
-    q: search_string,
-  });
-}
-
-// search?q=javascript&tbm=vid
-// search?q=javascript&tbm=isch
-// search?q=javascript&tbm=nws
-// search?q=javascript&tbm=bks
-// search?q=javascript&tbm=fin
-// search?q=javascript&tbm=shop
-// flights
-
-//google images
-function g_f() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://www.google.com/flights", {
-    q: search_string,
-    
-  });
-}
-
-function g_m() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://www.google.com/maps", {
-    q: search_string,
-    
-  });
-}
-
-//wikipedia
-function wiki() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://en.wikipedia.org/wiki/Special:Search", {
-    search: search_string
-  });
-}
-
-//wolfram
-function wolf() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://www.wolframalpha.com/input", {
-    i: search_string
-  });
-}
-
-//duckduckgo
-function duck() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://duckduckgo.com", {
-    q: search_string
-  });
-}
-
-//youtube search
-function you_res() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://www.youtube.com/results", {
-    search_query: search_string
-  });
-}
-
-//youtube watch
-function you_wat() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://www.youtube.com/watch", {
-    v: search_string
-  });
-}
-
-// mdn search
-function mdn() {
-  var search_string = arguments_to_array(arguments).join(" ");
-  bcl_jump_cgi("https://developer.mozilla.org/en-US/search", {
-    q: search_string
-  });
+api.google = function() {
+	hop("https://www.google.ca/search", {
+		q: toArray(arguments).join(" ")
+	});
+};
+api.github = function() {
+	hop("https://github.com/search", {
+		q: toArray(arguments).join(" ")
+	});
+};
+api.debug = function() {
+	hop("https://cdpn.io/RJLeyra/debug/" + toArray(arguments));
+};
+api.bug = function() {
+	window.open(
+		"https://cdpn.io/RJLeyra/debug/" + toArray(arguments),
+		"_window" + Date.now(),
+		"height=400,width=600"
+	);
+};
+api.pen = function() {
+	hop("https://codepen.io/search/pens", {
+		q: toArray(arguments).join(" ")
+	});
+};
+api.mdn = function() {
+	hop("https://developer.mozilla.org/en-US/search", {
+		q: toArray(arguments).join(" ")
+	});
+};
+api.npm = function() {
+	hop("https://www.npmjs.com/search", {
+		q: toArray(arguments).join(" ")
+	});
+};
+api.y_s = function() {
+	hop("https://www.youtube.com/results", {
+		search_query: toArray(arguments).join(" ")
+	});
+};
+api.y_w = function() {
+	hop("https://www.youtube.com/watch", {
+		v: toArray(arguments).join(" ")
+	});
+};
+api.wiki = function() {
+	hop("https://en.wikipedia.org/wiki/Special:Search", {
+		search: toArray(arguments).join(" ")
+	});
+};
+api.wolf = function() {
+	hop("https://www.wolframalpha.com/input", {
+		i: toArray(arguments).join(" ")
+	});
+};
+api.forage = function(){
+	hop('https://000455151.codepen.website/');
 }
