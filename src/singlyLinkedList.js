@@ -1,4 +1,4 @@
-/* try : mvc pattern, splice, get, set, where  */
+/* try : mvc pattern, extend(SinglyLinkedList.prototype, Emitter, {  }); splice, get, set, where  */
 
 "use strict";
 
