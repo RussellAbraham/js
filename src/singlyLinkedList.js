@@ -1,3 +1,4 @@
+/* try : mvc pattern, splice, get, set, where  */
 
 "use strict";
 
