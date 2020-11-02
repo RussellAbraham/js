@@ -1,20 +1,11 @@
 #!/usr/bin/env node
 
-const http = require('http');
-const path = require('path');
-const port = process.env.PORT || 8888;
-const url  = require('url');
-const fs   = require('fs');
-const ip   = process.env.IP || "0.0.0.0";
-
-/*
-var http = require("http")
-  , path = require("path")
-  , url = require("url")
-  , fs = require("fs")
-  , port = process.env.PORT || 8888
-  , ip = process.env.IP || "0.0.0.0";
-*/
+var http = require('http');
+var path = require('path');
+var port = process.env.PORT || 8888;
+var url  = require('url');
+var fs   = require('fs');
+var ip   = process.env.IP || "0.0.0.0";
 
 function lookupMime(filename) {
     let ext = /[^\/\\.]*$/.exec(filename)[0];
@@ -34,7 +25,7 @@ function lookupMime(filename) {
 if (!fs.exists)
     fs.exists = path.exists;
 
-let allowSave = process.argv.indexOf("--allow-save") != -1;
+var allowSave = process.argv.indexOf("--allow-save") != -1;
 
 if (allowSave)
     console.warn("writing files from browser is enabled");
