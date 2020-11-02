@@ -23,6 +23,8 @@ Xtor.prototype = {
 	}
 };
 
+/*-----------------------------------------------*/
+
 const assets = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/';
 
 function loadResource(options) {
@@ -66,6 +68,8 @@ loadResource({ url : 'types.json', type : 'text' })
 	console.log(er.stack)
 })
 */
+
+/*-----------------------------------------------*/
 
 const request = new XMLHttpRequest();
 
@@ -121,6 +125,8 @@ function listen(object, events){
 	}
 }
 
+/*-----------------------------------------------*/
+
 /* 
 (function(platform){
 
@@ -172,6 +178,9 @@ Ctor.prototype = {
 	}
 }
 */
+
+/*-----------------------------------------------*/
+
 function Ajax(){
 	this.transport = new XMLHttpRequest();
 	this.data = new FormData();
@@ -232,6 +241,8 @@ Ajax.prototype = {
 	}
 	
 }
+
+/*-----------------------------------------------*/
 
 function Index(db){
 	this.db = db;
@@ -335,8 +346,45 @@ function getimg(url){
 
 })();
 
+/*-----------------------------------------------*/
 
-// todo : 
-// response type arrayBuffer,
-// typed array
-// Web Worker
+/* 
+  core request response mechanism for 'paging' navigation 
+  todo:
+  bootstrap
+*/
+
+const xhr = new XMLHttpRequest();
+
+xhr.open('GET', location, true);
+
+// accepted mime type, default is *
+xhr.setRequestHeader('ACCEPT', '*/*');
+
+// 
+xhr.setRequestHeader('X-CUSTOM', 'true');
+
+xhr.onreadystatechange = function(){
+	console.log(this.getAllResponseHeaders());
+}
+
+xhr.onload = function(){		
+	
+	const responseText = this.responseText;  	
+	
+	if (/<html/i.test(responseText)) {		
+		history.pushState({
+			head : responseText.match(/<head[^>]*>([\s\S.]*)<\/head>/i)[0],
+			body : responseText.match(/<body[^>]*>([\s\S.]*)<\/body>/i)[0]
+		},'test','test');		   
+	} 	
+	
+	console.log(history.state);
+	
+}
+
+xhr.send(null);
+
+setTimeout(function(){
+	history.back(1);
+}, 200);
