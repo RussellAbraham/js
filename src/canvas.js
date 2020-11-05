@@ -4,8 +4,8 @@ const ctxGL = canvas.getContext('webgl');
 
 const ctx = canvas.getContext('webgl');
 
-function peek(object){
-	Object.values([object.__proto__]).forEach(function(keys){
+function peek(context){
+	Object.values([context.__proto__]).forEach(function(keys){
 		Object.keys(keys).forEach(function(values, index){
 			console.log(''.concat(index, ' : ', values));
 		})
