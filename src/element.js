@@ -1,10 +1,4 @@
-const fragment = new DocumentFragment();
-
-let parent, child, io, types;
-
-function insertTextNodeBefore(text, node) {
-	node.insertBefore(text, node.childNodes[0]);
-}
+var parent, child, io, types;
 
 /* v1 */
 function element(target, element, attrs, text) {
@@ -26,30 +20,22 @@ function element(target, element, options) {
 	
 	parent = document.createElement(element);
 	
+	/* add attributes to the parent node if keys are present inside the call */
 	if(options.class){
 		parent.className = options.class;	
 	}
-	
+
+	/* Output value to the parent node if key is present */
 	if(options.text){
 		child = document.createTextNode(options.text);
 		parent.appendChild(child);
 	}
-	
+
+	else if(options.html){
+		parent.innerHTML = options.html;
+	}	
+
 	return target.appendChild(parent);
 	
 }
 
-
-/* use */
-
-function node(object, string){
-  parent = element(fragment, 'ul', { class : '' });
-  child = element(parent, 'li', { class : '' });
-	io = element(child, 'code', object, string);
-  return main.appendChild(fragment);
-}
-
-node({
-	class:'a', 
-	text: 'test' 
-});
