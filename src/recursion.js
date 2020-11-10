@@ -12,7 +12,6 @@ function collection(arr) {
     return array;
 }
 
-
 // Helper Method Recursion Example
 
 function collector(arr) {
