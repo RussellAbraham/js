@@ -40,6 +40,7 @@ var optimizCallback = function (func, context, argCount) {
     return func.apply(context, arguments);
   };
 };
+
 function times(n, iteratee, context) {
   var accum = Array(Math.max(0, n));
   iteratee = optimizCallback(iteratee, context, 1);
@@ -51,9 +52,11 @@ function times(n, iteratee, context) {
 function has(obj, key) {
   return obj != null && {}.hasOwnProperty.call(obj, key);
 }
+
 function identity(object) {
   return object;
 }
+
 function memoize(callback, address) {
   const cache = {};
   var key;
@@ -279,12 +282,20 @@ const x = {};
 });
 
 /* *** toSource() *** */
-function toSource(func) { 
-	if ( func != null ) { 
-		try { return Function.prototype.toString.call( func ); } catch (er) { throw ''; }     
-		try { return ( func + '' ); } catch ( er ) { throw ''; }  
-	}     
-	return '';     
+function toSource(func) {
+  if (func != null) {
+    try {
+      return Function.prototype.toString.call(func);
+    } catch (er) {
+      throw '';
+    }
+    try {
+      return (func + '');
+    } catch (er) {
+      throw '';
+    }
+  }
+  return '';
 }
 
 /* *** trim() *** */
@@ -294,6 +305,7 @@ function trim(str) {
 
 /* *** uniqueId() *** */
 var idCounter = 0;
+
 function uniqueId(prefix) {
   var id = idCounter++;
   return prefix ? prefix + id : id;
@@ -303,6 +315,7 @@ function uniqueId(prefix) {
 function has(obj, key) {
   return obj != null && hasOwnProperty.call(obj, key);
 }
+
 function keys(object) {
   if (object !== Object(object)) throw new TypeError('Invalid object');
   var keys = [];
@@ -310,6 +323,7 @@ function keys(object) {
     if (has(object, key)) keys[keys.length] = key;
   return keys;
 }
+
 function allKeys(object) {
   if (!obj === Object(obj)) {
     return [];
@@ -319,4 +333,60 @@ function allKeys(object) {
     keys.push(key);
   }
   return keys;
+}
+
+function format(ms){
+	if(ms < 0){ ms = -ms; }
+	const time = {
+    day : Math.floor(ms / 86400000),
+    hour : Math.floor(ms / 3600000) % 24,
+    minute : Math.floor(ms / 60000) % 60,
+    second : Math.floor(ms / 1000) % 60,
+    millisecond : Math.floor(ms) % 1000		
+	}
+	return Object.entries(time)
+	.filter(function(val){
+		 return val[1] !== 0;
+	})
+	.map(function(sliced){
+		var key = [].slice.call(sliced)[0];
+		var val = [].slice.call(sliced)[1];
+		return "".concat(val, " ").concat(key).concat(val !== 1 ? 's' : '');
+	})
+ 	.join(', ');
+};
+
+console.log(format(Date.now()));
+
+function jsEscape(string) {
+  return string
+    .replace(/(['\\])/g, '\\$1')
+    .replace(/[\f]/g, "\\f")
+    .replace(/[\b]/g, "\\b")
+    .replace(/[\n]/g, "\\n")
+    .replace(/[\t]/g, "\\t")
+    .replace(/[\r]/g, "\\r")
+    .replace(/[\u2028]/g, "\\u2028")
+    .replace(/[\u2029]/g, "\\u2029");
+}
+
+function htmlEscape(string) {
+  return String(string)
+    .replace(/\\"/g, '"')
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+}
+
+function uriEscape(string){
+  return encodeURIComponent(string).
+  replace(/%40/gi, '@').
+  replace(/%3A/gi, ':').
+  replace(/%24/g, '$').
+  replace(/%2C/gi, ',').
+  replace(/%20/g, '+').
+  replace(/%5B/gi, '[').
+  replace(/%5D/gi, ']');
 }
