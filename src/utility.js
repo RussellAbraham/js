@@ -390,3 +390,33 @@ function uriEscape(string){
   replace(/%5B/gi, '[').
   replace(/%5D/gi, ']');
 }
+
+
+
+function Embed(){
+  this.iframe = document.createElement("iframe");  
+  this.iframe.addEventListener('load', this.load.bind(this, true), false);
+}
+
+Embed.prototype.append = function(target){
+  function isElement(obj) {
+    return !!(obj && obj.nodeType === 1);
+  }
+  if(!target || !isElement(target)){ 
+    throw new Error('bad argument'); 
+  }
+  else {
+    target.appendChild(this.iframe);
+	  this.iframe.contentDocument.designMode='on'
+  }
+}
+
+new Embed().load();
+
+const iframe = document.createElement('iframe');
+
+iframe.addEventListener('load', function(event){
+	this.contentDocument.designMode='on'
+}, false);
+
+document.body.appendChild(iframe);
