@@ -68,7 +68,7 @@ http.createServer(function(req, res) {
 }).listen(port, ip);
 
 function writeHead(res, code, contentType) {
-    res.setHeader("Access-Control-Allow-Origin", "file://");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "PUT, GET, OPTIONS, HEAD");
     res.setHeader("Content-Type", contentType || "text/plain");
     res.statusCode = code;
