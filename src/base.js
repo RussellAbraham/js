@@ -87,25 +87,36 @@
 
 const Model = Base.extend({
     preinitialize: function () {
-        console.log("1");
+        console.log(1,"model pre initializing");
     },
     initialize: function () {
-        console.log("2");
+        console.log(2,"model initialized");
     }
 });
 
 const View = Base.extend({
     preinitialize: function () {
-        console.log(1);
+        console.log(3,'view pre initializing');
     },
     initialize: function () {
-        console.log(2);
+        console.log(4,'view initialized');
     }
 });
 
 function Main(){  
+	this.preinitialize.apply(this, arguments);      
 	this.model = new Model();
 	this.view = new View();
+	this.initialize.apply(this, arguments);	
 };
+
+Main.prototype = {
+    preinitialize: function () {
+        console.log(0, 'pre initializing main');
+    },
+    initialize: function () {
+        console.log(5,'initialized main');
+    }	
+}
 
 const app = new Main();
