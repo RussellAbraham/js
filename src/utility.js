@@ -1,4 +1,12 @@
-
+function dir(obj){
+	var result = [];
+	for(var prop in obj){
+		if(obj.hasOwnProperty(prop)){
+			result.push(obj[prop]);
+		}
+	}
+	return JSON.stringify(result);
+}
 /* *** times() *** */
 var optimizCallback = function (func, context, argCount) {
     if (context === void 0) return func;
