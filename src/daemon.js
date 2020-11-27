@@ -116,7 +116,9 @@ Interval.prototype.start = function (reverse) {
 	this.synchronize();	
 };
 	
+
 /*---------------------------------------*/
+
 function opacity (idx, length, reverse) {
 	this.style.opacity = idx / length;
 	if (reverse ? idx === 0 : idx === 1) {
@@ -125,39 +127,24 @@ function opacity (idx, length, reverse) {
 }
 
 const anchor = document.getElementById("id");
+
 const animate =  new Interval(anchor, opacity, 16, 64);
 
-//animate.start(false);
-//animate.start(true);
-//animate.pause();
-/*---------------------------------------*/
 
-
-/*---------------------------------------*/
 function opaque(){
+	
 	const request = new XMLHttpRequest();
-	request.open("GET", this, false);
-	request.responseType = 'text';
-	return new Promise(function(resolve, reject) {
-		request.onload = function() {
-			if (request.status === 200) {
-				resolve(request.response);
-			} else {
-				reject(Error(request.statusText));
-			}
-		};
-		request.onerror = function() {
-			reject(Error("request failed: "));
-		};
-		request.send(null);
-	});
+	
+	request.open('GET', this, false);
+	
+	request.onload = function(){
+		console.log(request.response);
+	}
+	
+	request.send(null);
+	
 }
 
-const SynchronousOctetStream = new Interval(window.URL.createObjectURL(new Blob([0],{type:'application/octet-stream'})), , 1000, 1);
-//SynchronousOctetStream.start(true);
-//SynchronousOctetStream.start(false);
-//SynchronousOctetStream.pause;
-/*---------------------------------------*/
+const octet = 'data:application/octet-stream, 0';
 
-
-
+const stream = new Interval(octet, opaque, 1000, 1);
