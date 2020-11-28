@@ -122,3 +122,17 @@ Model.prototype.getCount = function (callback) {
 	});
 	
 };
+
+function Controller(model, view) {
+	var self = this;
+	self.model = model;
+	self.view = view;
+}
+
+Controller.prototype.create = function(todo){
+	var self = this;
+	self.model.create(todo, function(){
+
+	});
+	
+}
