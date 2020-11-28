@@ -24,6 +24,7 @@ app.get('/', function(req, res){
 
 });
 
+/* declare the server as a constant or variable to shut down with close */
 const server = app.listen(port, function(){
     console.log(`Express Server at http://localhost:${port}`, this);
 });
