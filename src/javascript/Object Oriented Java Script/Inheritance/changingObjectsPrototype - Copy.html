@@ -1,0 +1,70 @@
+<html>
+<head>
+<script>
+
+Object.prototype._display = function(){
+	return this;
+};
+
+function toArray(args){
+	let arr = [], i, len = args.length;
+	for(i = 0;i < len;++i){
+		arr[i] = args[i];
+	}
+	return arr;
+}
+
+var project = {
+	name: "Road Work",
+	date : Date.now()
+};
+
+var project1 = {
+	name: "Mill Work",
+	date : Date.now(),
+	display:function(){
+		console.log(this.name);
+	}
+};
+
+var project2= Object.create(project,{
+	name: {
+		configurable:true,
+		enumerable:true,
+		value: "Bridge Work",
+		writable: true
+	},
+	date : {
+		value : Date.now()
+	}
+
+});
+
+var project3= Object.create(project,{
+	name: {
+		configurable:true,
+		enumerable:true,
+		value: "Tower Work",
+		writable: true
+	},
+	date : {
+		value : new Date()
+	}
+
+});
+
+function peek(){
+	return toArray(arguments).forEach(function(obj1){
+		Object.keys(obj1).forEach(function(obj2){
+			console.log(obj1[obj2]);
+		})
+	})
+}
+
+console.log(project._display());
+project1.display();
+project2.display();
+
+</script>
+</head>
+</html>

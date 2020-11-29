@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Open "myWindow" and move the new window to the top left corner of the screen:</p>
+
+<button onclick="openWin()">Open "myWindow"</button>
+<button onclick="moveWin()">Move "myWindow"</button>
+<button onclick="moveWin2()">Move2 "myWindow"</button>
+<button onclick="moveWin3()">Move3 "myWindow"</button>
+<button onclick="moveWin4()">Move4 "myWindow"</button>
+<script>
+var myWindow;
+
+function openWin() {
+  myWindow=window.open("", "myWindow", "width=100, height=100");
+  myWindow.document.write("<p>This is 'myWindow'</p>");
+}
+
+function moveWin() {
+  myWindow.moveTo(500, 100);
+  myWindow.focus();
+}
+function moveWin2() {
+  myWindow.moveTo(0, 0);
+  myWindow.focus();
+}
+function moveWin3() {
+  myWindow.moveTo(100, 0);
+  myWindow.focus();
+}
+function moveWin4() {
+  myWindow.moveTo(0, 100);
+  myWindow.focus();
+}
+</script>
+
+</body>
+</html>

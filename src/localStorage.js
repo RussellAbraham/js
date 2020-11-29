@@ -12,21 +12,25 @@ function Local(name, callback){
 };
 
 Local.prototype = Object.create(Ctor.prototype,{
-    constructor: {value:Local}
+    constructor: {
+		value : Local,
+		writeable : true,
+		enumerable : true,
+		configurable : true
+	}
 });
 
 Local.prototype.find = function (query, callback) {
 	if (!callback) { return; }
 	var buffer = JSON.parse(this.cache.getItem(this._dbName));
 	callback.call( this, buffer.filter(function (object) {
-			for (var q in query) {
-				if (query[q] !== object[q]) {
-					return false;
-				}
+		for (var q in query) {
+			if (query[q] !== object[q]) {					
+				return false;				
 			}
-			return true;
-		})
-	);
+		}
+		return true;
+	}));
 };
 
 Local.prototype.findAll = function (callback) {

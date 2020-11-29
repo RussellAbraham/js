@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Document</title>
+
+    <!-- Bootstrap CSS 4.3.5 -->
+    <link rel="stylesheet" href="https://assets.codepen.io/1674766/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <!-- Eruda Debugger -->
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1674766/eruda.minified.js"></script>
+    <script>
+        eruda.init();
+    </script>
+
+</head>
+
+<body>
+
+    
+    <script id="requireModule" type="text/js-module">
+    (function (root) {
+        var require, define;
+    
+        (function () {
+            const modules = {};
+            const requireStack = [];
+            const inProgressModules = {};
+            const separator = ".";
+            function build(module) {
+                var factory = module.factory,
+                    localRequire = function (id) {
+                        var resultantId = id;
+                        //Its a relative path, so lop off the last portion and add the id (minus "./")
+                        if (id.charAt(0) === ".") {
+                            resultantId =
+                                module.id.slice(0, module.id.lastIndexOf(separator)) +
+                                separator +
+                                id.slice(2);
+                        }
+                        return require(resultantId);
+                    };
+                module.exports = {};
+                delete module.factory;
+                factory(localRequire, module.exports, module);
+                return module.exports;
+            }
+    
+            require = function (id) {
+                if (!modules[id]) {
+                    throw "module " + id + " not found";
+                } else if (id in inProgressModules) {
+                    var cycle =
+                        requireStack.slice(inProgressModules[id]).join("->") + "->" + id;
+                    throw "Cycle in require graph: " + cycle;
+                }
+                if (modules[id].factory) {
+                    try {
+                        inProgressModules[id] = requireStack.length;
+                        requireStack.push(id);
+                        return build(modules[id]);
+                    } finally {
+                        delete inProgressModules[id];
+                        requireStack.pop();
+                    }
+                }
+                return modules[id].exports;
+            };
+    
+            define = function (id, factory) {
+                if (modules[id]) {
+                    throw "module " + id + " already defined";
+                }
+    
+                modules[id] = {
+                    id: id,
+                    factory: factory
+                };
+            };
+    
+            define.remove = function (id) {
+                delete modules[id];
+            };
+    
+            define.moduleMap = modules;
+        })();
+    define("debug", function (require, exports, module) {
+        const debug = {
+            logLevel: 0,
+            info: 1,
+            warning: 2,
+            error: 3,
+            exception: 4,
+            numMsgs: 0,
+            log: function (source, message, debugLevel) {
+                if (debugLevel >= this.logLevel) {
+                    return "DEBUG [" + source + "] " + message;
+                    debug.numMsgs = debug.numMsgs + 1;
+                }
+            },
+            size: function () {
+                return debug.numMsgs;
+            },
+            clear: function () {
+                debug.numMsgs = 0;
+            }
+        };
+        module.exports = debug;
+    });
+        if (typeof root !== "undefined") {
+            root.require = require;
+            root.define = define;
+        }
+    })(this);
+    
+    const debug = require("debug");
+        
+    // document 
+    if('document' in this){
+        console.log(
+            debug.log(window, "Scope [[this]]", 1)
+        );
+    }
+        
+    else {
+        postMessage(
+            debug.log(this, 'Scope[[this]]', 1)
+        )
+    }
+        
+    onmessage = function(event){
+        post(event.data);
+    }
+        
+    function post(data){
+        postMessage(data.concat(' received'));
+    }
+        
+    </script>
+    
+    <script id="workerModule" type="text/js-module">
+    onmessage = function(event){
+        post(event.data);
+    }	
+    function post(data){
+        postMessage(data.concat(' received'));		
+    }	
+    </script>
+
+    <main role="main" id="main">
+
+        <header class="navbar border-dark border-bottom"> </header>
+
+        <article class="jumbotron p-3" role="article">
+
+
+        </article>
+
+        <footer class="navbar fixed-bottom navbar-dark bg-dark"></footer>
+
+    </main>
+
+
+    <script src="https://assets.codepen.io/1674766/localforage.min.js"></script>
+    <script src="https://assets.codepen.io/1674766/promise.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
