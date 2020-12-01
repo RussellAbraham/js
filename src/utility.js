@@ -477,3 +477,49 @@ iframe.addEventListener('load', function (event) {
 }, false);
 
 document.body.appendChild(iframe);
+
+
+function htmlEscape(str) {
+	str = str + "";
+	return str.replace(/[^\w :\-\/.?=]/gi, function (c) {
+		return "&#" + +c.charCodeAt(0) + ";";
+	});
+}
+function getDocHeight(D) {
+	return Math.max(
+		D.body.scrollHeight,
+		D.documentElement.scrollHeight,
+		D.body.offsetHeight,
+		D.documentElement.offsetHeight,
+		D.body.clientHeight,
+		D.documentElement.clientHeight
+	);
+}
+function getDocWidth(D) {
+	return Math.max(
+		D.body.scrollWidth,
+		D.documentElement.scrollWidth,
+		D.body.offsetWidth,
+		D.documentElement.offsetWidth,
+		D.body.clientWidth,
+		D.documentElement.clientWidth
+	);
+}
+function findPos(obj) {
+	var left = 0,
+		top = 0;
+	if (obj.offsetParent) {
+		while (1) {
+			left += obj.offsetLeft;
+			top += obj.offsetTop;
+			if (!obj.offsetParent) {
+				break;
+			}
+			obj = obj.offsetParent;
+		}
+	} else if (obj.x && obj.y) {
+		left += obj.x;
+		top += obj.y;
+	}
+	return [left, top];
+}
