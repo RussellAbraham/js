@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+
+    <section id="login-area">
+
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input id="username" type="text" placeholder="Username">
+            <button type="submit">Submit</button>
+        </form>
+
+    </section>
+
+
+    <section id="chat-area">
+        <div id="users-area-text">
+            <h1>Online Users</h1>
+        </div>
+        <div id="online-users">
+            <ul id="users">
+                <li></li>
+            </ul>
+        </div>
+    </section>
+
+    
+
+    <script>
+        
+const socket = io();
+
+function updateUsers(){
+    for(var i = 0;i < list.length;i++){
+        $('#users').append(''+list[i]+'');
+    }
+}
+
+$('#login').on('submit', function(event){
+    event.preventDefault();
+    if($('').val() === '' || $('').val() === ' '){
+        alert();
+    }
+    else {
+        $username = $('').val();
+        $('').hide();
+        $('').show();
+        socket.emit('has connected', $username);
+    }
+});
+
+$('#message').on('submit', function(event){
+    event.preventDefault();
+    if($('').val() === '' || $('').val() === ' '){
+        alert();
+    }
+    else {
+        socket.emit('new message');
+    }
+});
+
+socket.on('has connected', function(data){
+    $('users').html();
+    updateUsers(data.usersList);
+    $('#messages').append();
+});
+
+socket.on('has disconnected', function(data){
+    $('users').html();
+    updateUsers(data.usersList);
+    $('#messages').append();
+});
+
+socket.on('new message', function(data){
+    $('#messages').append();
+});
+    </script>
+</body>
+</html>
