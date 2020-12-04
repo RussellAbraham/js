@@ -1,65 +1,17 @@
-"use strict";
-	
-var optimizCallback = function (func, context, argCount) {
-  if (context === void 0) return func;
-  switch (argCount == null ? 3 : argCount) {
-    case 1: return function (value) { return func.call(context, value); };
-    case 2: return function (value, other) { return func.call(context, value, other); };
-    case 3: return function (value, index, collection) { return func.call(context, value, index, collection); };
-    case 4: return function (accumulator, value, index, collection) { return func.call(context, accumulator, value, index, collection); };
-  }
-  return function () {
-    return func.apply(context, arguments);
-  };
-};
-
-function has(obj, key) {
-  return obj != null && hasOwnProperty.call(obj, key);
-}
-
-function identity(object){
-  return object;
-}
-
-function times(n, iteratee, context) {
-  var accum = Array(Math.max(0, n));
-  iteratee = optimizCallback(iteratee, context, 1);
-  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-  return accum;
-};
+/* try : mvc pattern, extend(SinglyLinkedList.prototype, Emitter, {  }); splice, get, set, where  */
 
 "use strict";
-
-function Ctor(){};
 
 function Node(value) {
 	this.value = value;
 	this.next = null;
-};
-
-Node.prototype = Object.create(Ctor.prototype, {
-	constructor : {
-		value : Node,
-		configurable : true,
-		writable : true,
-		enumerable : true
-	}
-});
-
+}
 
 function SinglyLinkedList() {
 	this.head = null;
 	this.tail = null;
 	this.length = 0;
 }
-SinglyLinkedList.prototype = Object.create(Ctor.prototype, {
-	constructor : {
-		value : SinglyLinkedList,
-		configurable : true,
-		writable : true,
-		enumerable : true
-	}
-});
 
 SinglyLinkedList.prototype = {
 	constructor: SinglyLinkedList,
@@ -182,7 +134,7 @@ SinglyLinkedList.prototype = {
 		return this;
 	},
 
-	print : function () {
+	print: function () {
 		var arr = [];
 
 		var current = this.head;
@@ -193,31 +145,5 @@ SinglyLinkedList.prototype = {
 		}
 
 		console.log(arr);
-	},
-	
-	toJSON : function(){
-		var arr = [];
-		var current = this.head;
-		while (current) {
-			arr.push(current.value);
-			current = current.next;
-		}
-		return arr[0];
 	}
-	
 };
-
-const decks = new SinglyLinkedList();
-const suits = ["hearts", "clubs", "diamonds", "spades"];
-const values = "2 3 4 5 6 7 8 9 10 J Q K A".split(" ");
-const limit = values.length * suits.length;
-
-function build() {
-	let i, deck = [], slen = suits.length;
-	for (i = limit - 1; i >= 0; i--) {		
-		let value = values[Math.floor(i / slen)];		
-		let suit = suits[Math.floor(i % slen)];		
-		deck.push({ suit : suit, value : value });		
-	}
-	return decks.push(deck);
-}

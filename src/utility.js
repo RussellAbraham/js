@@ -7,6 +7,11 @@ function dir(obj){
 	}
 	return JSON.stringify(result);
 }
+
+function names(obj){
+    return JSON.stringify(Object.getOwnPropertyNames(obj),null,2);
+}
+
 /* *** times() *** */
 var optimizCallback = function (func, context, argCount) {
     if (context === void 0) return func;
@@ -59,6 +64,25 @@ function memoize(callback, address) {
     }
 }
 
+var limit = function(func, wait, debounce) {
+	var timeout;  
+	return function() {  
+		var context = this;
+		var args = arguments;
+		var throttler = function() {  
+			timeout = null;      
+			func.apply(context, args);      
+		};    
+		if (debounce) clearTimeout(timeout);    
+		if (debounce || !timeout) timeout = setTimeout(throttler, wait);    
+	};  
+};
+function throttle(func, wait) {
+  return limit(func, wait, false);
+};
+function debounce(func, wait) {
+  return limit(func, wait, true);
+};
 var idCounter = 0;
 
 function uniqueId(prefix) {

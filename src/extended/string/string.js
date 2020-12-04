@@ -1,3 +1,69 @@
+
+String.prototype.noRegExp = function(a, b){
+    if (a instanceof RegExp) throw new TypeError("First argument to String.prototype." + b + " must not be a regular expression");
+};
+
+String.prototype.fromCodePoint = function(a){
+    for (var b = [], c = 0; c < arguments.length; ++c) b[c - 0] = arguments[c];
+    
+    // implement iterator protocol 
+    for (var c = "", b = $jscomp.makeIterator(b), d = b.next(); !d.done; d = b.next()) {
+
+        d = d.value;
+        d = +d;
+        if (0 > d || 1114111 < d || d !== Math.floor(d)) throw new RangeError("invalid_code_point " + d);
+        65535 >= d ? c += String.fromCharCode(d) : (d -= 65536, c += String.fromCharCode(d >>> 10 & 1023 | 55296), c += String.fromCharCode(d & 1023 | 56320))
+    }
+    return c    
+};
+String.prototype.codePointAt = function (a) {
+    var b = this.toString(),
+        c = b.length;
+    a = Number(a) || 0;
+    if (0 <= a && a < c) {
+        a |= 0;
+        var d = b.charCodeAt(a);
+        if (55296 > d || 56319 < d || a + 1 === c) return d;
+        a = b.charCodeAt(a + 1);
+        return 56320 > a || 57343 < a ? d : 1024 * (d - 55296) + a + 9216
+    }
+};
+
+String.prototype.repeat = function (a) {
+    var b = this.toString();
+    if (0 > a || 1342177279 < a) throw new RangeError("Invalid count value");
+    a |= 0;
+    for (var c = ""; a;)
+        if (a & 1 && (c += b), a >>>= 1) b += b;
+    return c
+};
+
+String.prototype.includes = function (a, b) {
+    b = void 0 === b ? 0 : b;
+    String.noRegExp(a, "includes");
+    return -1 !== this.toString().indexOf(a, b)
+};
+
+String.prototype.startsWith = function (a, b) {
+    b = void 0 === b ? 0 : b;
+    String.noRegExp(a, "startsWith");
+    var c = this.toString();
+    a += "";
+    for (var d = c.length, e = a.length, f = Math.max(0, Math.min(b | 0, c.length)), g = 0; g < e && f < d;)
+        if (c[f++] != a[g++]) return !1;
+    return g >= e
+};
+
+String.prototype.endsWith = function (a, b) {
+    String.noRegExp(a, "endsWith");
+    var c = this.toString();
+    a += "";
+    void 0 === b && (b = c.length);
+    for (var d = Math.max(0, Math.min(b | 0, c.length)), e = a.length; 0 < e && 0 < d;)
+        if (c[--d] != a[--e]) return !1;
+    return 0 >= e
+};
+
 /* Sanitize */
 
 function sanitizeHref(href) {
