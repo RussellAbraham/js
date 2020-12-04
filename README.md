@@ -1,5 +1,3 @@
-
-
 [Github Repository](https://github.com/RussellAbraham/js/)
 
 ------------------------------------------------------
@@ -10,49 +8,9 @@ https://www.ecma-international.org/ecma-262/
 
 ------------------------------------------------------
 
-NodeJS -v15.1.0
+# NodeJS
 
-https://nodejs.org/dist/latest-v15.x/docs/api/
-
-------------------------------------------------------
-
-# Traversy Media
-
-Github 
-
-https://github.com/bradtraversy
-
-Youtube
-
-https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA
-
-------------------------------------------------------
-
-# Colt Steele
-
-GitHub
-
-https://github.com/colt
-
-Udemy
-
-https://www.udemy.com/user/coltsteele/
-
-YouTube
-
-https://www.youtube.com/channel/UCrqAGUPPMOdo0jfQ6grikZw
-
-------------------------------------------------------
-
-# Bharath Thippireddy
-
-Udemy
-
-https://www.udemy.com/user/bharaththippireddy/
-
-Course
-
-https://www.udemy.com/course/advanced-and-object-oriented-javascript/
+https://nodejs.org/
 
 ------------------------------------------------------
 
@@ -100,10 +58,143 @@ https://www.html5rocks.com/en/
 https://codepen.io/
 
 ------------------------------------------------------
+# Standard objects by category
+
+## Value properties
+
+- These global properties return a simple value. They have no properties or methods.
+
+* [Infinity]()
+* [NaN]()
+* [undefined]()
+* [globalThis]()
+
+## Function properties
+
+- These global functions—functions which are called globally, rather than on an object—directly return their results to the caller.
+
+eval()
+uneval() 
+isFinite()
+isNaN()
+parseFloat()
+parseInt()
+encodeURI()
+encodeURIComponent()
+decodeURI()
+decodeURIComponent()
+    Deprecated
+        escape()
+        unescape()
+
+---
+
+## Fundamental objects
+
+- These are the fundamental, basic objects upon which all other objects are based. This includes general objects, booleans, functions, and symbols.
+
+Object
+Function
+Boolean
+Symbol
+
+## Error objects
+
+- Error objects are a special type of fundamental object. They include the basic Error type, as well as several specialized error types.
+
+Error
+AggregateError 
+EvalError
+InternalError
+RangeError
+ReferenceError
+SyntaxError
+TypeError
+URIError
+
+## Numbers and dates
+
+- These are the base objects representing numbers, dates, and mathematical calculations.
+
+Number
+BigInt
+Math
+Date
+
+Text processing
+These objects represent strings and support manipulating them.
+
+String
+RegExp
+Indexed collections
+These objects represent collections of data which are ordered by an index value. This includes (typed) arrays and array-like constructs.
+
+Array
+Int8Array
+Uint8Array
+Uint8ClampedArray
+Int16Array
+Uint16Array
+Int32Array
+Uint32Array
+Float32Array
+Float64Array
+BigInt64Array
+BigUint64Array
+Keyed collections
+These objects represent collections which use keys. The iterable collections (Map and Set) contain elements which are easily iterated in the order of insertion.
+
+Map
+Set
+WeakMap
+WeakSet
+Structured data
+These objects represent and interact with structured data buffers and data coded using JavaScript Object Notation (JSON).
+
+ArrayBuffer
+SharedArrayBuffer
+Atomics
+DataView
+JSON
+Control abstraction objects
+Control abstractions can help to structure code, especially async code (without using deeply nested callbacks, for example).
+
+Promise
+Generator
+GeneratorFunction
+AsyncFunction
+AsyncGenerator
+AsyncGeneratorFunction
+Reflection
+Reflect
+Proxy
+Internationalization
+Additions to the ECMAScript core for language-sensitive functionalities.
+
+Intl
+Intl.Collator
+Intl.DateTimeFormat
+Intl.ListFormat
+Intl.NumberFormat
+Intl.PluralRules
+Intl.RelativeTimeFormat
+Intl.Locale
+WebAssembly
+WebAssembly
+WebAssembly.Module
+WebAssembly.Instance
+WebAssembly.Memory
+WebAssembly.Table
+WebAssembly.CompileError
+WebAssembly.LinkError
+WebAssembly.RuntimeError
+Other
+arguments
 
 
-Cross Domain Messaging
+## Cross Domain Messaging
 
+```javascript
 
 DocumentFragment.prototype.append = function(element){
 	return this.appendChild(element);
@@ -517,44 +608,9 @@ function output(options) {
 		.concat(tail);
 	
 }
+```
 
-function ParseParameters(url) {
-	var queryString = url ? url.split("?")[1] : window.location.search.slice(1);
-	var obj = {};
-	if (queryString) {
-		queryString = queryString.split("#")[0];
-		var arr = queryString.split("&");
-		for (var i = 0; i < arr.length; i++) {
-			var a = arr[i].split("=");
-			var paramName = a[0];
-			var paramValue = typeof a[1] === "undefined" ? true : a[1];
-			paramName = paramName.toLowerCase();
-			if (typeof paramValue === "string") paramValue = paramValue.toLowerCase();
-			if (paramName.match(/\[(\d+)?\]$/)) {
-				var key = paramName.replace(/\[(\d+)?\]/, "");
-				if (!obj[key]) obj[key] = [];
-				if (paramName.match(/\[\d+\]$/)) {
-					var index = /\[(\d+)\]/.exec(paramName)[1];
-					obj[key][index] = paramValue;
-				} else {
-					obj[key].push(paramValue);
-				}
-			} else {
-				if (!obj[paramName]) {
-					obj[paramName] = paramValue;
-				} else if (obj[paramName] && typeof obj[paramName] === "string") {
-					obj[paramName] = [obj[paramName]];
-					obj[paramName].push(paramValue);
-				} else {
-					obj[paramName].push(paramValue);
-				}
-			}
-		}
-	}
-	return obj;
-}
-
-PS C:\Users\russe> heroku
+PS C:\application> heroku
  »   Warning: Our terms of service have changed: https://dashboard.heroku.com/terms-of-service
 CLI to interact with Heroku
 
@@ -607,7 +663,7 @@ COMMANDS
   update          update the Heroku CLI
   webhooks        list webhooks on an app
 
-https://cli-auth.heroku.com/auth/cli/callback?code=652811c5-3acf-44e2-a8b4-4a94f57b975e&state=70858f9c-5dc3-45fe-ad92-4e630ab33dd3
+
 
 
 1.
@@ -1199,7 +1255,7 @@ define("debug", function (require, exports, module) {
 
 ```
 
-## Function to Calcate the Scaling of a Block Style Element
+## Function to Calculate the Scaling of a Block Style Element
 
 ```javascript
     if (mutation.type === "childList") {
@@ -1243,6 +1299,9 @@ define("debug", function (require, exports, module) {
       console.log("style =\n", JSON.stringify(style, null, 4));
     }
 ```
+
+```javascript
+
 function S4() {  return ((1 + Math.random()) * 65536 | 0).toString(16).substring(1);  } 
 function guid() { return S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4(); }
 
@@ -1594,6 +1653,7 @@ function buildDeck() {
     );
 
 }
+```
 
 # Ingredients
 
@@ -1781,135 +1841,3 @@ define("debug", function (require, exports, module) {
     }
 ```
 
-# Standard objects by category
-
-## Value properties
-
-- These global properties return a simple value. They have no properties or methods.
-
-* [Infinity]()
-* [NaN]()
-* [undefined]()
-* [globalThis]()
-
-## Function properties
-
-- These global functions—functions which are called globally, rather than on an object—directly return their results to the caller.
-
-eval()
-uneval() 
-isFinite()
-isNaN()
-parseFloat()
-parseInt()
-encodeURI()
-encodeURIComponent()
-decodeURI()
-decodeURIComponent()
-    Deprecated
-        escape()
-        unescape()
-
----
-
-## Fundamental objects
-
-- These are the fundamental, basic objects upon which all other objects are based. This includes general objects, booleans, functions, and symbols.
-
-Object
-Function
-Boolean
-Symbol
-
-## Error objects
-
-- Error objects are a special type of fundamental object. They include the basic Error type, as well as several specialized error types.
-
-Error
-AggregateError 
-EvalError
-InternalError
-RangeError
-ReferenceError
-SyntaxError
-TypeError
-URIError
-
-## Numbers and dates
-
-- These are the base objects representing numbers, dates, and mathematical calculations.
-
-Number
-BigInt
-Math
-Date
-
-Text processing
-These objects represent strings and support manipulating them.
-
-String
-RegExp
-Indexed collections
-These objects represent collections of data which are ordered by an index value. This includes (typed) arrays and array-like constructs.
-
-Array
-Int8Array
-Uint8Array
-Uint8ClampedArray
-Int16Array
-Uint16Array
-Int32Array
-Uint32Array
-Float32Array
-Float64Array
-BigInt64Array
-BigUint64Array
-Keyed collections
-These objects represent collections which use keys. The iterable collections (Map and Set) contain elements which are easily iterated in the order of insertion.
-
-Map
-Set
-WeakMap
-WeakSet
-Structured data
-These objects represent and interact with structured data buffers and data coded using JavaScript Object Notation (JSON).
-
-ArrayBuffer
-SharedArrayBuffer
-Atomics
-DataView
-JSON
-Control abstraction objects
-Control abstractions can help to structure code, especially async code (without using deeply nested callbacks, for example).
-
-Promise
-Generator
-GeneratorFunction
-AsyncFunction
-AsyncGenerator
-AsyncGeneratorFunction
-Reflection
-Reflect
-Proxy
-Internationalization
-Additions to the ECMAScript core for language-sensitive functionalities.
-
-Intl
-Intl.Collator
-Intl.DateTimeFormat
-Intl.ListFormat
-Intl.NumberFormat
-Intl.PluralRules
-Intl.RelativeTimeFormat
-Intl.Locale
-WebAssembly
-WebAssembly
-WebAssembly.Module
-WebAssembly.Instance
-WebAssembly.Memory
-WebAssembly.Table
-WebAssembly.CompileError
-WebAssembly.LinkError
-WebAssembly.RuntimeError
-Other
-arguments
