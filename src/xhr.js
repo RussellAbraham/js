@@ -3,12 +3,8 @@ window.addEventListener('load', function(){
 	const worker = new Worker(URL.createObjectURL(new Blob(['self.onmessage=function(event){postMessage(event.data, [event.data]);}'],{type:'text/javascript'})))
 	
 	const composite = 'data:application/json, '.concat( encodeURIComponent ( JSON.stringify([
-		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
-		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
-		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
-		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
-		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
-		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null}
+		/* mock data */
+		{0:null}
 	]) ) );
 	
 	const request = new XMLHttpRequest();
