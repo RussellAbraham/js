@@ -1,3 +1,89 @@
+// data : application / octet-stream ; base64 , JTIyJTdCJTIwJTVDJTIyZWxlbWVudHMlNUMlMjIlM0ElMjAlNUIlMjAlN0IlMjAlNUMlMjJuYW1lJTVDJTIyJTNBJTIwJTVDJTIySHlkcm9nZW4lNUMlMjIlMkMlMjAlNUMlMjJhcHBlYXJhbmNlJTVDJTIyJTNBJTIwJTVDJTIyY29sb3JsZXNzJTIwZ2FzJTVDJTIyJTJDJTIwJTVDJTIyYXRvbWljX21hc3MlNUMlMjIlM0ElMjAxLjAwOCUyQyUyMCU1QyUyMmJvaWwlNUMlMjIlM0ElMjAyMC4yNzElMkMlMjAlNUMlMjJjYXRlZ29yeSU1QyUyMiUzQSUyMCU1QyUyMmRpYXRvbWljJTIwbm9ubWV0YWwlNUMlMjIlMkMlMjAlNUMlMjJjb2xvciU1QyUyMiUzQSUyMG51bGwlMkMlMjAlNUMlMjJkZW5zaXR5JTVDJTIyJTNBJTIwMC4wODk4OCUyQyUyMCU1QyUyMmRpc2NvdmVyZWRfYnklNUMlMjIlM0ElMjAlNUMlMjJIZW5yeSUyMENhdmVuZGlzaCU1QyUyMiUyQyUyMCU1QyUyMm1lbHQlNUMlMjIlM0ElMjAxMy45OSUyQyUyMCU1QyUyMm1vbGFyX2hlYXQlNUMlMjIlM0ElMjAyOC44MzYlMkMlMjAlNUMlMjJuYW1lZF9ieSU1QyUyMiUzQSUyMCU1QyUyMkFudG9pbmUlMjBMYXZvaXNpZXIlNUMlMjIlMkMlMjAlNUMlMjJudW1iZXIlNUMlMjIlM0ElMjAxJTJDJTIwJTVDJTIycGVyaW9kJTVDJTIyJTNBJTIwMSUyQyUyMCU1QyUyMnBoYXNlJTVDJTIyJTNBJTIwJTVDJTIyR2FzJTVDJTIyJTJDJTIwJTVDJTIyc291cmNlJTVDJTIyJTNBJTIwJTVDJTIyaHR0cHMlM0ElMkYlMkZlbi53aWtpcGVkaWEub3JnJTJGd2lraSUyRkh5ZHJvZ2VuJTVDJTIyJTJDJTIwJTVDJTIyc3BlY3RyYWxfaW1nJTVDJTIyJTNBJTIwJTVDJTIyaHR0cHMlM0ElMkYlMkZlbi53aWtpcGVkaWEub3JnJTJGd2lraSUyRkZpbGUlM0FIeWRyb2dlbl9TcGVjdHJhLmpwZyU1QyUyMiUyQyUyMCU1QyUyMnN1bW1hcnklNUMlMjIlM0ElMjAlNUMlMjJIeWRyb2dlbiUyMGlzJTIwYSUyMGNoZW1pY2FsJTIwZWxlbWVudCUyMHdpdGglMjBjaGVtaWNhbCUyMHN5bWJvbCUyMEglMjBhbmQlMjBhdG9taWMlMjBudW1iZXIlMjAxLiUyMFdpdGglMjBhbiUyMGF0b21pYyUyMHdlaWdodCUyMG9mJTIwMS4wMDc5NCUyMHUlMkMlMjBoeWRyb2dlbiUyMGlzJTIwdGhlJTIwbGlnaHRlc3QlMjBlbGVtZW50JTIwb24lMjB0aGUlMjBwZXJpb2RpYyUyMHRhYmxlLiUyMEl0cyUyMG1vbmF0b21pYyUyMGZvcm0lMjAoSCklMjBpcyUyMHRoZSUyMG1vc3QlMjBhYnVuZGFudCUyMGNoZW1pY2FsJTIwc3Vic3RhbmNlJTIwaW4lMjB0aGUlMjBVbml2ZXJzZSUyQyUyMGNvbnN0aXR1dGluZyUyMHJvdWdobHklMjA3NSUyNSUyMG9mJTIwYWxsJTIwYmFyeW9uaWMlMjBtYXNzLiU1QyUyMiUyQyUyMCU1QyUyMnN5bWJvbCU1QyUyMiUzQSUyMCU1QyUyMkglNUMlMjIlMkMlMjAlNUMlMjJ4cG9zJTVDJTIyJTNBJTIwMSUyQyUyMCU1QyUyMnlwb3MlNUMlMjIlM0ElMjAxJTJDJTIwJTVDJTIyc2hlbGxzJTVDJTIyJTNBJTIwJTVCJTIwMSUyMCU1RCUyQyUyMCU1QyUyMmVsZWN0cm9uX2NvbmZpZ3VyYXRpb24lNUMlMjIlM0ElMjAlNUMlMjIxczElNUMlMjIlMkMlMjAlNUMlMjJlbGVjdHJvbl9hZmZpbml0eSU1QyUyMiUzQSUyMDcyLjc2OSUyQyUyMCU1QyUyMmVsZWN0cm9uZWdhdGl2aXR5X3BhdWxpbmclNUMlMjIlM0ElMjAyLjIwJTJDJTIwJTVDJTIyaW9uaXphdGlvbl9lbmVyZ2llcyU1QyUyMiUzQSUyMCU1QiUyMDEzMTIuMCUyMCU1RCUyMCU3RCUyMCU1RCUyMCU3RCUyMg==
+
+window.addEventListener('load', function(){
+	
+	const worker = new Worker(URL.createObjectURL(new Blob(['self.onmessage=function(event){postMessage(event.data, [event.data]);}'],{type:'text/javascript'})))
+	
+	const composite = 'data:application/json, '.concat( encodeURIComponent ( JSON.stringify([{
+    "elements": [
+        {
+            "name": "Hydrogen", 
+            "appearance": "colorless gas", 
+            "atomic_mass": 1.008, 
+            "boil": 20.271, 
+            "category": "diatomic nonmetal", 
+            "color": null, 
+            "density": 0.08988, 
+            "discovered_by": "Henry Cavendish", 
+            "melt": 13.99, 
+            "molar_heat": 28.836, 
+            "named_by": "Antoine Lavoisier", 
+            "number": 1, 
+            "period": 1, 
+            "phase": "Gas", 
+            "source": "https://en.wikipedia.org/wiki/Hydrogen", 
+            "spectral_img": "https://en.wikipedia.org/wiki/File:Hydrogen_Spectra.jpg", 
+            "summary": "Hydrogen is a chemical element with chemical symbol H and atomic number 1. With an atomic weight of 1.00794 u, hydrogen is the lightest element on the periodic table. Its monatomic form (H) is the most abundant chemical substance in the Universe, constituting roughly 75% of all baryonic mass.", 
+            "symbol": "H", 
+            "xpos": 1, 
+            "ypos": 1, 
+            "shells": [
+                1
+            ],
+            "electron_configuration": "1s1",
+            "electron_affinity": 72.769,
+            "electronegativity_pauling": 2.20,
+            "ionization_energies": [
+                1312.0
+            ]
+        }
+    ]
+
+	}]) ) );
+	
+	const request = new XMLHttpRequest();
+	const reader = new FileReader();
+	const pre = document.querySelector('pre');
+	
+	var blob = null;
+	
+	request.open('GET',  composite, true);
+	request.responseType = 'arraybuffer';
+	
+	worker.addEventListener('message', function(event){
+		
+		console.log.apply(this, arguments);
+		
+		const fragment = document.createDocumentFragment();
+		
+		fragment.appendChild(document.createTextNode(event.data));
+		
+		reader.addEventListener('load', function(event){			
+			
+			fragment.appendChild(document.createTextNode(reader.result));		
+			
+			pre.appendChild(fragment);
+			
+		}, false);
+		
+		reader.readAsBinaryString(new Blob([event.data], {type:'application/json'}));	
+		
+	});
+	
+	request.addEventListener('readystatechange', function(){
+		console.log(this.getAllResponseHeaders());
+	}, false);
+	
+	request.addEventListener('load', function(){
+		worker.postMessage(this.response, [this.response]);		
+	}, false);
+	
+	request.send(null);
+	
+}, false);
+
+/**/
+
 window.addEventListener('load', function(){
 	
 	const worker = new Worker(URL.createObjectURL(new Blob(['self.onmessage=function(event){postMessage(event.data, [event.data]);}'],{type:'text/javascript'})))
@@ -27,7 +113,10 @@ window.addEventListener('load', function(){
 	request.send(null);
 	
 }, false);
+/* */
+
 	
+
 function Xtor(){
 	this.request = new XMLHttpRequest();
 	this.request.addEventListener('error', this.onRequestError.bind(this, true), false);
