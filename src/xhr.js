@@ -1,3 +1,37 @@
+window.addEventListener('load', function(){
+	
+	const worker = new Worker(URL.createObjectURL(new Blob(['self.onmessage=function(event){postMessage(event.data, [event.data]);}'],{type:'text/javascript'})))
+	
+	const composite = 'data:application/json, '.concat( encodeURIComponent ( JSON.stringify([
+		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
+		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
+		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
+		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
+		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},
+		{0:null},{0:null},{0:null},{0:null},{0:null},{0:null},{0:null}
+	]) ) );
+	
+	const request = new XMLHttpRequest();
+	
+	request.open('GET',  composite, true);
+	request.responseType = 'arraybuffer';
+	
+	worker.addEventListener('message', function(event){
+		console.log(event.data);
+	});
+	
+	request.addEventListener('readystatechange', function(){
+		console.log(this.getAllResponseHeaders());
+	}, false);
+	
+	request.addEventListener('load', function(){
+		worker.postMessage(this.response, [this.response]);		
+	}, false);
+	
+	request.send(null);
+	
+}, false);
+	
 function Xtor(){
 	this.request = new XMLHttpRequest();
 	this.request.addEventListener('error', this.onRequestError.bind(this, true), false);
