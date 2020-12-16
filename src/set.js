@@ -379,3 +379,59 @@ var Collection = Backbone.Collection = function(models, options) {
 
     return {value: void 0, done: true};
   };
+
+function extend(obj){
+	[].slice.call(arguments, 1).forEach(function(source){
+      		for (var prop in source) {
+	        		if (source[prop] !== void 0) obj[prop] = source[prop];
+      		}
+	});
+	return obj;
+}
+
+function createAssigner(keysFunc, defaults) {
+  return function (obj) {
+    var length = arguments.length;
+    if (defaults) obj = Object(obj);
+    if (length < 2 || obj == null) return obj;
+    for (var index = 1; index < length; index++) {
+      var source = arguments[index],
+        _keys = keysFunc(source),
+        l = _keys.length;
+      for (var i = 0; i < l; i++) {
+        var key = _keys[i];
+        if (!defaults || obj[key] === void 0) obj[key] = source[key];
+      }
+    }
+    return obj;
+  };
+}
+
+function create(prototype, props) {
+  var result = Object.create(prototype);
+  if (props) createAssigner(Object.keys)(result, props);
+  return result;
+}
+
+function inherits(protoProps, staticProps) {
+    var parent = this;
+    var child;
+    if (protoProps && {}.hasOwnProperty.call(protoProps, "constructor")) {
+      child = protoProps.constructor;
+    } else {
+      child = function () {
+        return parent.apply(this, arguments);
+      };
+    }
+
+    extend(child, parent, staticProps);
+    
+    child.prototype = create(parent.prototype, protoProps);
+    
+    
+    child.prototype.constructor = child;
+    child.__super__ = parent.prototype;
+    
+    return child;
+
+  };
