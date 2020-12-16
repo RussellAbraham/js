@@ -1,12 +1,61 @@
-/* This is code from Backbone js, to destructure and understand how the `set` functions of Model and Collection work.
+/* This is code from Backbone js, 
+ * I have made this file to learn how the `set` functions of Model and Collection work.
  * They provide an excellent abstraction for updating, and merging data sources
- * A custom splice function for Collection `set` 
- * ES6 iteration protocol is re implemented at the bottom
- * Their prototypes have copies of the framework/libraries Event Emitter, 
- * this allows the decoupling or forking of processes which will know when changes to either happen
- * to use it, publish subscribe pattern must be implemented and an interface for notification output
+ * It *should* run in all major browsers, IE, Android KitKat, and Webkit 10.3
 */
 
+/*
+ * With both Underscore and Backbone as whole libraries, a handful of es6 features are provided and run with optimal performance.
+ * Perhaps further optimization of these constructs can be made. 
+ * Such as reducing random access and copy operations.
+ * This part of backbone is compliant with a other JS environments like NodeJS.
+ * Without its Event Emitter, or any for that matter these constructs will not function. 
+*/
+
+/*
+	Under the impression that, 
+	if you are to bother including preinitialize and initialize, 
+	a point to use both of these should be made.
+	They follow order of operations consistently.
+	
+	Can preinitialize be used as a preprocessing function, or maybe like http headers.
+	
+	Initialize is a must if you extend({}) the construct instead of instancing a new one.	
+
+	Something to keep in mind here. 
+	
+	The `get` and `set` of the model can at times seem clunky, especially when the logic needed is not too high. 
+	One obvious approach I stumbled upon is to wrap get and set with shortcut functions. 
+	Ok so a named get and set for the models default data values. myModel.getName or myModel.setName
+	
+	I dont't like that solution unless the return values become automatic with a generator function included in a Backbone View. 
+	Took me about 2 years to notice this with the content I was studying.. embarrasing. 
+	
+	I apply this approach all the time when I see it now, and and am more productive because of it. 
+	
+	Backbone.Model.extend({
+		// more typical examples would just use an object literal instead of a function returning an object literal.. 
+		// this lets us pass the data to new instances of the model, in a collection, within a nested View interface
+		// summarized : abstraction.. not your problem anymore
+		defaults : function(){
+			return {
+				title : ''
+			}
+		}
+	})
+	// View with function to instance a new nested view, containing the model data, from values of the top level view.
+	function generate(){
+		return {
+			title : document.querySelector('form input').value
+		}
+	}
+	function onSubmit(){
+		reparseFunction(generate())
+	}
+	
+	When attribution is setup well with [model|collection|view] its great, otherwise a few lines to wrap the existing get/set is pointless for optimization.. readability however.
+	
+*/
 
   // Backbone **Models** are the basic data object in the framework --
   // frequently representing a row in a table in a database on your server.
