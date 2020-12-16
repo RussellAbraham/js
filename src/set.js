@@ -8,7 +8,8 @@
  * With both Underscore and Backbone as whole libraries, a handful of es6 features are provided and run with optimal performance.
  * Perhaps further optimization of these constructs can be made. 
  * Such as reducing random access and copy operations.
- * This part of backbone is compliant with a other JS environments like NodeJS.
+ * Creating and interface for Underscore and Backbone in webworkers and other JS environments like NodeJS is the same, 
+ * though requirejs will throw an error if the amd wrapper around backbone is configured to expect jquery.
  * Without its Event Emitter, or any for that matter these constructs will not function. 
 */
 
@@ -28,7 +29,7 @@
 	One obvious approach I stumbled upon is to wrap get and set with shortcut functions. 
 	Ok so a named get and set for the models default data values. myModel.getName or myModel.setName
 	
-	I dont't like that solution unless the return values become automatic with a generator function included in a Backbone View. 
+	I don't like that solution unless the return values become automatic with a generator function included in a Backbone View. 
 	Took me about 2 years to notice this with the content I was studying.. embarrasing. 
 	
 	I apply this approach all the time when I see it now, and and am more productive because of it. 
@@ -435,7 +436,38 @@ var Collection = Backbone.Collection = function(models, options) {
     return {value: void 0, done: true};
   };
 
+/* 
+ * This extend function is from the latest underscore, my understanding of mutability and immutability are not great, but I beleive the concept applies here. 
+ *
+ * this one returns the same object passed as the first argument, 
+ * extending it with the 1st index of the arguments keyword, but formatted as comma separated values first, then loops through the names ussing `for in`
+ *
+ * see ./extend.js, 5 examples in that file all slightly different. 
+ *
+ * todo : breakdown differences in those extend functions and define clearly how immutability and mutability apply to them.
+ *
+*/
 function extend(obj){
+	// the from object, arguments array sliced to comma separated string, first index passed as argument to the forEach
+
+	// loop through enumerable properties of source
+	// copy the attributes.. 
+	// but the use of void 0 is a tad confusing, i think it short circuits to = and doesn't bother with the '!==' operator.
+	
+	// I would hav written it like so.
+	/*
+		for(var prop in props){
+			if(props[prop]){
+				obj[prop] = props[prop]
+			}
+		}
+		
+		return obj;
+	*/
+	
+	// the Emitter object from backbone is extended to the prototypes of all 4 primitive constructs it provides, 
+	// and those constructs can support massive systems, so I would really like to know if,why,and how mutability might affect the implementation 
+	
 	[].slice.call(arguments, 1).forEach(function(source){
       		for (var prop in source) {
 	        		if (source[prop] !== void 0) obj[prop] = source[prop];
