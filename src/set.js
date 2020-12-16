@@ -1,4 +1,11 @@
-/* This is code from Backbone js, the `set` function of Model and Collection */
+/* This is code from Backbone js, to destructure and understand how the `set` functions of Model and Collection work.
+ * They provide an excellent abstraction for updating, and merging data sources
+ * A custom splice function for Collection `set` 
+ * ES6 iteration protocol is re implemented at the bottom
+ * Their prototypes have copies of the framework/libraries Event Emitter, 
+ * this allows the decoupling or forking of processes which will know when changes to either happen
+ * to use it, publish subscribe pattern must be implemented and an interface for notification output
+*/
 
 
   // Backbone **Models** are the basic data object in the framework --
