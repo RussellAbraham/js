@@ -43,14 +43,20 @@
 			}
 		}
 	})
+	
 	// View with function to instance a new nested view, containing the model data, from values of the top level view.
 	function generate(){
 		return {
 			title : document.querySelector('form input').value
 		}
 	}
-	function onSubmit(){
-		reparseFunction(generate())
+	function addOne(model){
+		var view = new View({ model : model })
+		this.$el.html(view.render.el);
+	}
+	function create(){
+		// closer to home, the object returned has passed through 4 interfaces. Main View Component, a single view, the Collection, and a single model
+		this.collection.create(generate());
 	}
 	
 	When attribution is setup well with [model|collection|view] its great, otherwise a few lines to wrap the existing get/set is pointless for optimization.. readability however.
