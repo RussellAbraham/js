@@ -92,7 +92,7 @@ Deprecated
 
 ## Fundamental objects
 
-- These are the fundamental, basic objects upon which all other objects are based. This includes general objects, booleans, functions, and symbols.
+These are the fundamental, basic objects upon which all other objects are based. This includes general objects, booleans, functions, and symbols.
 
 * Object
 * Function
