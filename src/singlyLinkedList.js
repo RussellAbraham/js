@@ -284,7 +284,13 @@ SinglyLinkedList.prototype = {
 		return global.decks.push(deck);
 	}
 
-	times(10, build);
-
+	/*
+		Structured list performs consistently.
+		Dynamic functions perform consistently.
+		
+		If you didnt notice, dont try to run this code
+		
+	*/
+	// times(10, build);
 
 })(this);

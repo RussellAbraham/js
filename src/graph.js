@@ -1,14 +1,20 @@
+
 function Graph(){
     this.adjacencyList = {};
 }
 
+// chmod
+Graph.prototype = Object.create(Object.prototype, {
+	constructor : {
+		value : Graph,
+		enumerable : true,
+		writeable : true,
+		configurable : true
+	}
+});
+
 Graph.prototype = {
-	
-    // setting constructor, new instance of Graph has Graph as its constructor
-    // without, constructor will be Object {}	
-	
-    constructor : Graph,
-	
+
     addVertex : function(vertex){
         if(!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
     },
@@ -38,6 +44,11 @@ Graph.prototype = {
 }
 
 const g = new Graph();
+
+console.log(g instanceof Graph);
+
+console.log(g instanceof Object);
+
 
 g.addVertex('left');
 g.addVertex('middle');
