@@ -1,36 +1,6 @@
 "use strict";
-	
-var optimizCallback = function (func, context, argCount) {
-  if (context === void 0) return func;
-  switch (argCount == null ? 3 : argCount) {
-    case 1: return function (value) { return func.call(context, value); };
-    case 2: return function (value, other) { return func.call(context, value, other); };
-    case 3: return function (value, index, collection) { return func.call(context, value, index, collection); };
-    case 4: return function (accumulator, value, index, collection) { return func.call(context, accumulator, value, index, collection); };
-  }
-  return function () {
-    return func.apply(context, arguments);
-  };
-};
 
-function has(obj, key) {
-  return obj != null && hasOwnProperty.call(obj, key);
-}
-
-function identity(object){
-  return object;
-}
-
-function times(n, iteratee, context) {
-  var accum = Array(Math.max(0, n));
-  iteratee = optimizCallback(iteratee, context, 1);
-  for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-  return accum;
-};
-
-"use strict";
-
-function Ctor(){};
+function Ctor() {};
 
 function Node(value) {
 	this.value = value;
@@ -38,11 +8,11 @@ function Node(value) {
 };
 
 Node.prototype = Object.create(Ctor.prototype, {
-	constructor : {
-		value : Node,
-		configurable : true,
-		writable : true,
-		enumerable : true
+	constructor: {
+		value: Node,
+		configurable: true,
+		writable: true,
+		enumerable: true
 	}
 });
 
@@ -53,11 +23,11 @@ function SinglyLinkedList() {
 	this.length = 0;
 }
 SinglyLinkedList.prototype = Object.create(Ctor.prototype, {
-	constructor : {
-		value : SinglyLinkedList,
-		configurable : true,
-		writable : true,
-		enumerable : true
+	constructor: {
+		value: SinglyLinkedList,
+		configurable: true,
+		writable: true,
+		enumerable: true
 	}
 });
 
@@ -182,7 +152,7 @@ SinglyLinkedList.prototype = {
 		return this;
 	},
 
-	print : function () {
+	print: function () {
 		var arr = [];
 
 		var current = this.head;
@@ -194,8 +164,8 @@ SinglyLinkedList.prototype = {
 
 		console.log(arr);
 	},
-	
-	toJSON : function(){
+
+	toJSON: function () {
 		var arr = [];
 		var current = this.head;
 		while (current) {
@@ -204,20 +174,117 @@ SinglyLinkedList.prototype = {
 		}
 		return arr[0];
 	}
-	
+
 };
 
-const decks = new SinglyLinkedList();
-const suits = ["hearts", "clubs", "diamonds", "spades"];
-const values = "2 3 4 5 6 7 8 9 10 J Q K A".split(" ");
-const limit = values.length * suits.length;
 
-function build() {
-	let i, deck = [], slen = suits.length;
-	for (i = limit - 1; i >= 0; i--) {		
-		let value = values[Math.floor(i / slen)];		
-		let suit = suits[Math.floor(i % slen)];		
-		deck.push({ suit : suit, value : value });		
+(function (global) {
+
+	const suits = ["hearts", "clubs", "diamonds", "spades"];
+	const values = "2 3 4 5 6 7 8 9 10 J Q K A".split(" ");
+	const limit = values.length * suits.length;
+
+	var optimizCallback = function (func, context, argCount) {
+		if (context === void 0) return func;
+		switch (argCount == null ? 3 : argCount) {
+			case 1:
+				return function (value) {
+					return func.call(context, value);
+				};
+			case 2:
+				return function (value, other) {
+					return func.call(context, value, other);
+				};
+			case 3:
+				return function (value, index, collection) {
+					return func.call(context, value, index, collection);
+				};
+			case 4:
+				return function (accumulator, value, index, collection) {
+					return func.call(context, accumulator, value, index, collection);
+				};
+		}
+		return function () {
+			return func.apply(context, arguments);
+		};
+	};
+
+	function has(obj, key) {
+		return obj != null && hasOwnProperty.call(obj, key);
 	}
-	return decks.push(deck);
-}
+
+	function identity(object) {
+		return object;
+	}
+	// build new SinglyLinkedList()
+	function memoize(callback, address) {
+		const cache = {};
+		var key;
+		address || (address = identity);
+		return function () {
+			key = address.apply(this, arguments);
+			return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
+		}
+	}
+	function times(n, iteratee, context) {
+		var accum = Array(Math.max(0, n));
+		iteratee = optimizCallback(iteratee, context, 1);
+		for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+		return accum;
+	};
+	
+	// extract the object code
+	function stringify(obj, replacer, spaces, cycleReplacer) {
+		return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
+	  }
+	  
+	  function serializer(replacer, cycleReplacer) {  
+		var stack = [], keys = []
+		if (cycleReplacer == null) cycleReplacer = function(key, value) {  
+		  if (stack[0] === value) return "[Circular ~]"  
+		  return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"  
+		}
+		return function(key, value) {  
+		  if (stack.length > 0) {  
+			var thisPos = stack.indexOf(this)
+			~thisPos ? stack.splice(thisPos + 1) : stack.push(this)      
+			~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)      
+			if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
+		  }
+	  
+		  else stack.push(value)
+	  
+		  return replacer == null ? value : replacer.call(this, key, value)
+	  
+		}
+	  
+	  }
+
+	// todo: 
+	// use memoization to 
+	// assist building parrallel deck lists 
+	// and output the JSON with the stringify function here.
+	// this will iterate it as an Object instead of traversing the pointers like the internal function 
+
+	function build() {
+
+		if(!global.decks){
+			global.decks = new SinglyLinkedList();
+		}
+		let i, deck = [],
+			slen = suits.length;
+		for (i = limit - 1; i >= 0; i--) {
+			let value = values[Math.floor(i / slen)];
+			let suit = suits[Math.floor(i % slen)];
+			deck.push({
+				suit: suit,
+				value: value
+			});
+		}
+		return global.decks.push(deck);
+	}
+
+	times(10, build);
+
+
+})(this);
