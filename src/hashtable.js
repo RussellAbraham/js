@@ -1,5 +1,5 @@
-function HashTable(size) {
-    this.size = size = 53;
+function HashTable() {
+    var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 53;
     this.keyMap = new Array(size);
 };
 
