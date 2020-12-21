@@ -62,7 +62,7 @@ https://codepen.io/
 
 ## Value properties
 
-- These global properties return a simple value. They have no properties or methods.
+These global properties return a simple value. They have no properties or methods.
 
 * [Infinity]()
 * [NaN]()
@@ -71,7 +71,7 @@ https://codepen.io/
 
 ## Function properties
 
-- These global functions—functions which are called globally, rather than on an object—directly return their results to the caller.
+These global functions—functions which are called globally, rather than on an object—directly return their results to the caller.
 
 * eval()
 * uneval() 
@@ -83,9 +83,10 @@ https://codepen.io/
 * encodeURIComponent()
 * decodeURI()
 * decodeURIComponent()
-*     Deprecated
-*         escape()
-*         unescape()
+
+Deprecated
+* escape()
+* unescape()
 
 ---
 
@@ -100,7 +101,7 @@ https://codepen.io/
 
 ## Error objects
 
-- Error objects are a special type of fundamental object. They include the basic Error type, as well as several specialized error types.
+Error objects are a special type of fundamental object. They include the basic Error type, as well as several specialized error types.
 
 * Error
 * AggregateError 
@@ -122,7 +123,8 @@ https://codepen.io/
 * Date 
 
 ### Text processing
-* These objects represent strings and support manipulating them.
+
+These objects represent strings and support manipulating them.
 
 * String
 * RegExp
