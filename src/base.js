@@ -32,14 +32,15 @@
         return true;
     };
 
-    /* *** low level helper for older environments *** */
+    /* ***  *** */
+
     var property = function (key) {
         return function (obj) {
             return obj == null ? void 0 : obj[key];
         };
     };
 
-    /* ruleset for functions that pass input through arraylike, if no, should provide a throw and figure out a fix */
+    /* max index for arraylike */
     var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
     var getLength = property('length');
     var isArrayLike = function (collection) {
@@ -221,7 +222,6 @@
 
     var extendOwn = createAssigner(Object.keys);
 
-
     function Ctor() {};
 
     function baseCreate(prototype) {
@@ -301,7 +301,7 @@
     };
 
     /* Accsessor Properties, I don't know if stricter configuration should be done yet  */
-    global.Model.prototype = Object.create(Ctor.prototype, {
+    global.Model.prototype = create(Ctor.prototype, {
         constructor: {
             configurable: true,
             enumerable: true,
@@ -325,7 +325,7 @@
     };
 
     /* Accsessor Properties, I don't know if stricter configuration should be done yet or at all  */
-    global.View.prototype = Object.create(Ctor.prototype, {
+    global.View.prototype = create(Ctor.prototype, {
         constructor: {
             configurable: true,
             enumerable: true,
