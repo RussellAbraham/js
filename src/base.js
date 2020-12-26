@@ -47,9 +47,10 @@
         return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
     };
 
-    /* this function is going to optimize the custom forEach and map functions 
+    /* this function is going to optimize callbacks for collection iteration 
        that in turn allow the mutable extend function to glue the Emitter to framework objects shared prototypes
     */
+
     var optimizeCb = function (func, context, argCount) {
         if (context === void 0) return func;
         switch (argCount == null ? 3 : argCount) {
@@ -74,9 +75,10 @@
             return func.apply(context, arguments);
         };
     };
+
     function identity(object) {
         return object;
-    }
+    };
     
     function matcher(attrs) {
         attrs = extendOwn({}, attrs);
@@ -118,7 +120,6 @@
         };
     }
 
-
     function createPredicateIndexFinder(dir) {
         return function (array, predicate, context) {
             predicate = cb(predicate, context);
@@ -132,7 +133,6 @@
     };
 
     var findIndex = createPredicateIndexFinder(1);
-
 
     function sortedIndex(array, obj, iteratee, context) {
         iteratee = cb(iteratee, context, 1);
@@ -268,9 +268,6 @@
 
     function triggerEvents() {};
 
-
-
-
     Events.on = function () {};
     Events.once = function () {};
 
@@ -308,7 +305,7 @@
         constructor: {
             configurable: true,
             enumerable: true,
-            value: Model,
+            value: Model,//__proto__ if inheritor needs lookup, resolves here before Object 
             writable: true
         }
     });
@@ -327,12 +324,12 @@
         this.initialize.apply(this, arguments);
     };
 
-    /* Accsessor Properties, I don't know if stricter configuration should be done yet  */
+    /* Accsessor Properties, I don't know if stricter configuration should be done yet or at all  */
     global.View.prototype = Object.create(Ctor.prototype, {
         constructor: {
             configurable: true,
             enumerable: true,
-            value: View,
+            value: View,//__proto__ if inheritor needs lookup, resolves here before Object
             writable: true
         }
     });
