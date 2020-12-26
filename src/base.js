@@ -3,8 +3,10 @@
 (function (global) {
 
     var ObjProto = Object.prototype;
+    var ArrProto = Array.prototype;
     var hasOwnProperty = ObjProto.hasOwnProperty;
-
+    var slice = ArrProto.slice;
+    
     function has(obj, key) {
         return obj != null && hasOwnProperty.call(obj, key);
     };
