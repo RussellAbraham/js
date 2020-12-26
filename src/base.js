@@ -18,6 +18,18 @@
         return !!(obj && obj.constructor && obj.call && obj.apply);
     };
 
+    function isMatch(object, attrs) {
+        var keys = Object.keys(attrs),
+            length = keys.length;
+        if (object == null) return !length;
+        var obj = Object(object);
+        for (var i = 0; i < length; i++) {
+            var key = keys[i];
+            if (attrs[key] !== obj[key] || !(key in obj)) return false;
+        }
+        return true;
+    };
+
     /* *** low level helper for older environments *** */
     var property = function (key) {
         return function (obj) {
@@ -60,69 +72,82 @@
             return func.apply(context, arguments);
         };
     };
-
+    function identity(object) {
+        return object;
+    }
+    
+    function matcher(attrs) {
+        attrs = extendOwn({}, attrs);
+        return function (obj) {
+            return isMatch(obj, attrs);
+        };
+    };
+    
     var cb = function (value, context, argCount) {
-        if (value == null) return _.identity;
+        if (value == null) return identity;
         if (isFunction(value)) return optimizeCb(value, context, argCount);
-        if (isObject(value)) return _.matcher(value);
+        if (isObject(value)) return matcher(value);
         return property(value);
     };
 
-  // Generator function to create the indexOf and lastIndexOf functions
-  function createIndexFinder(dir, predicateFind, sortedIndex) {
-    return function(array, item, idx) {
-      var i = 0, length = getLength(array);
-      if (typeof idx == 'number') {
-        if (dir > 0) {
-            i = idx >= 0 ? idx : Math.max(idx + length, i);
-        } else {
-            length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
-        }
-      } else if (sortedIndex && idx && length) {
-        idx = sortedIndex(array, item);
-        return array[idx] === item ? idx : -1;
-      }
-      if (item !== item) {
-        idx = predicateFind(slice.call(array, i, length), _.isNaN);
-        return idx >= 0 ? idx + i : -1;
-      }
-      for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
-        if (array[idx] === item) return idx;
-      }
-      return -1;
-    };
-  }
-
-
-  function createPredicateIndexFinder(dir) {
-    return function(array, predicate, context) {
-      predicate = cb(predicate, context);
-      var length = getLength(array);
-      var index = dir > 0 ? 0 : length - 1;
-      for (; index >= 0 && index < length; index += dir) {
-        if (predicate(array[index], index, array)) return index;
-      }
-      return -1;
-    };
-  };
-
-  var findIndex = createPredicateIndexFinder(1);
-
-
-  function sortedIndex(array, obj, iteratee, context) {
-    iteratee = cb(iteratee, context, 1);
-    var value = iteratee(obj);
-    var low = 0, high = getLength(array);
-    while (low < high) {
-      var mid = Math.floor((low + high) / 2);
-      if (iteratee(array[mid]) < value) low = mid + 1; else high = mid;
+    // Generator function to create the indexOf and lastIndexOf functions
+    function createIndexFinder(dir, predicateFind, sortedIndex) {
+        return function (array, item, idx) {
+            var i = 0,
+                length = getLength(array);
+            if (typeof idx == 'number') {
+                if (dir > 0) {
+                    i = idx >= 0 ? idx : Math.max(idx + length, i);
+                } else {
+                    length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
+                }
+            } else if (sortedIndex && idx && length) {
+                idx = sortedIndex(array, item);
+                return array[idx] === item ? idx : -1;
+            }
+            if (item !== item) {
+                idx = predicateFind(slice.call(array, i, length), _.isNaN);
+                return idx >= 0 ? idx + i : -1;
+            }
+            for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
+                if (array[idx] === item) return idx;
+            }
+            return -1;
+        };
     }
-    return low;
-  }; 
 
-  var indexOf = createIndexFinder(1, findIndex, sortedIndex);
-  
-  function createAssigner(keysFunc, undefinedOnly) {
+
+    function createPredicateIndexFinder(dir) {
+        return function (array, predicate, context) {
+            predicate = cb(predicate, context);
+            var length = getLength(array);
+            var index = dir > 0 ? 0 : length - 1;
+            for (; index >= 0 && index < length; index += dir) {
+                if (predicate(array[index], index, array)) return index;
+            }
+            return -1;
+        };
+    };
+
+    var findIndex = createPredicateIndexFinder(1);
+
+
+    function sortedIndex(array, obj, iteratee, context) {
+        iteratee = cb(iteratee, context, 1);
+        var value = iteratee(obj);
+        var low = 0,
+            high = getLength(array);
+        while (low < high) {
+            var mid = Math.floor((low + high) / 2);
+            if (iteratee(array[mid]) < value) low = mid + 1;
+            else high = mid;
+        }
+        return low;
+    };
+
+    var indexOf = createIndexFinder(1, findIndex, sortedIndex);
+
+    function createAssigner(keysFunc, undefinedOnly) {
 
         return function (obj) {
             var length = arguments.length,
@@ -153,8 +178,8 @@
     };
 
     function contains(obj, item, fromIndex, guard) {
-        if(!isArrayLike(obj)) obj = values(obj);
-        if(typeof fromIndex != 'number' || guard) fromIndex = 0;
+        if (!isArrayLike(obj)) obj = values(obj);
+        if (typeof fromIndex != 'number' || guard) fromIndex = 0;
         return indexOf(obj, item, fromIndex) >= 0;
     }
 
@@ -194,6 +219,7 @@
 
     var extendOwn = createAssigner(Object.keys);
 
+
     function Ctor() {};
 
     function baseCreate(prototype) {
@@ -230,25 +256,29 @@
 
     var Events = global.Events = {};
 
-    function onApi(){};
-    function onceMap(){};
-    function offApi(){};
-    function triggerApi(){};
-    function triggerEvents(){};
+    function onApi() {};
+
+    function onceMap() {};
+
+    function offApi() {};
+
+    function triggerApi() {};
+
+    function triggerEvents() {};
 
 
 
 
-    Events.on = function(){};
-    Events.once = function(){};
+    Events.on = function () {};
+    Events.once = function () {};
 
-    Events.listenTo = function(){};
-    Events.listenToOnce = function(){};
+    Events.listenTo = function () {};
+    Events.listenToOnce = function () {};
 
-    Events.off = function(){};
-    Events.stopListening = function(){};
+    Events.off = function () {};
+    Events.stopListening = function () {};
 
-    var Listening = function(listener, obj) {
+    var Listening = function (listener, obj) {
         this.id = listener._listenId;
         this.listener = listener;
         this.obj = obj;
@@ -256,18 +286,18 @@
         this.count = 0;
         this._events = void 0;
     };
-    
+
     Listening.prototype.on = Events.on;
-    Listening.prototype.off = function(name, callback) {};
-    Listening.prototype.cleanup = function() {};
-    
-    Events.bind   = Events.on;
+    Listening.prototype.off = function (name, callback) {};
+    Listening.prototype.cleanup = function () {};
+
+    Events.bind = Events.on;
     Events.unbind = Events.off;
 
     global.Model = function () {
         /* over rideable, preinitialize is constructor  */
         this.preinitialize.apply(this, arguments);
-        /* over rideable, initialize works like constructor */ 
+        /* over rideable, initialize works like constructor */
         this.initialize.apply(this, arguments);
     };
 
@@ -285,13 +315,13 @@
     extend(global.Model.prototype, global.Events, {
         /* over rideable, preinitialize is constructor  */
         preinitialize: function () {},
-        /* over rideable, initialize works like constructor */        
+        /* over rideable, initialize works like constructor */
         initialize: function () {}
     });
 
     /* DOM Class, not instanced like all primitives, this allows framework to run in nodejs, with workers and as an amd module */
     global.View = function () {
-        this.preinitialize.apply(this, arguments);               
+        this.preinitialize.apply(this, arguments);
         this.initialize.apply(this, arguments);
     };
 
