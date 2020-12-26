@@ -36,7 +36,9 @@ function extend(obj){
       		}
 	});
 	return obj;
-}
+};
+
+
 function extend(obj, props) {
 	for (var prop in props) {
     		if (props[prop]) {
