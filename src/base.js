@@ -1,3 +1,23 @@
+/*
+todo:
+function micro(){};
+
+micro.extend = function(){};
+micro.chain = function(){};
+micro.mixin = function(){};
+
+['push','pop','shift','unshift','splice','reverse'].forEach()
+['join','concat','slice'].forEach()
+
+function Macro(){};
+
+Macro.chain = function(){};
+Macro.mixin = function(){};
+
+Macro.extend = inherits;
+
+*/
+
 (function (global) {
 
     function createAssigner(keysFunc, undefinedOnly) {
