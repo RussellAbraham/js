@@ -112,8 +112,26 @@ Color.prototype = {
 }
 
 
+// example
 
 const red = new Color(255, 0, 0, 'red');
+const green = new Color(0, 255, 0, 'green');
+const blue = new Color(0, 0, 255, 'blue');
 
-console.log(red.rgb());
-console.log(red.hex());
+function rgb(){
+    return {
+        red : red.rgb(),
+        green : green.rgb(),
+        blue : blue.rgb()
+    }
+}
+function hex(){
+    return {
+        red : red.hex(),
+        green : green.hex(),
+        blue : blue.hex()
+    }
+}
+
+console.log(rgb());
+console.log(hex());
