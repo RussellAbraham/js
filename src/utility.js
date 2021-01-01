@@ -1,3 +1,34 @@
+function isBase64(input){
+    if (/^data:[^;]+;base64,/.test(input)) return true;
+    return false;
+};
+
+function encodeString(string){
+	return 'data:application/octet-stream;base64,'.concat(btoa(string));	
+};
+
+function stringToUint8(input){
+	var i,  data = atob(input.split(',')[1]),  length = data.length,  output = [];
+	var dataView = new Uint8Array(data.length);
+	for(i = 0;i < length;i++){
+		dataView[i] = data.charCodeAt(i);
+		output.push(dataView[i]);
+	}
+	return JSON.stringify(output,null,2);
+}
+
+function toProps(object) {
+    var resultSet = {};
+    for (var o = object; o; o = o.__proto__) {
+      try {
+        var names = Object.getOwnPropertyNames(o);
+        for (var i = 0; i < names.length; ++i)
+          resultSet[names[i]] = typeof object[names[i]];
+      } catch (e) {}
+    }
+    return JSON.stringify(resultSet);
+}
+
 function dir(obj){
 	var result = [];
 	for(var prop in obj){
