@@ -1,21 +1,3 @@
-function isBase64(input){
-    if (/^data:[^;]+;base64,/.test(input)) return true;
-    return false;
-};
-
-function encodeString(string){
-	return 'data:application/octet-stream;base64,'.concat(btoa(string));	
-};
-
-function stringToUint8(input){
-	var i,  data = atob(input.split(',')[1]),  length = data.length,  output = [];
-	var dataView = new Uint8Array(data.length);
-	for(i = 0;i < length;i++){
-		dataView[i] = data.charCodeAt(i);
-		output.push(dataView[i]);
-	}
-	return JSON.stringify(output,null,2);
-}
 
 function toProps(object) {
     var resultSet = {};
@@ -390,7 +372,40 @@ function isArrayBufferView(val) {
     return result;
 }
 
+function isBase64Url(url){
+    if (/^data:[^;]+;base64,/.test(url)) return true;
+    return false;
+};
+
+function encodeString(string){
+	return 'data:application/octet-stream;base64,'.concat(btoa(string));
+};
+
+function base64ToUint8(url){
+    var dataView;
+    if(isBase64Url(url)){    
+        var data = atob(url.split(',')[1]);
+        dataView = new Uint8Array(data.length);
+        var i, length = data.length;
+        for (i=0; i<length; ++i) {
+          dataView[i] = data.charCodeAt(i);
+        }    
+    }
+    return dataView;
+}
+
+function stringToUint8(string) {
+	var i, length = string.length	
+	var buffer = new ArrayBuffer(length);
+	var array = new Uint8Array(buffer);	
+	for (i = 0; i < length; i++) {		
+		array[i] = string.charCodeAt(i);		
+	}	
+	return buffer;	
+}
+
 const x = {};
+
 ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function (name) {
     x['is' + name] = function (obj) {
         return toString.call(obj) === '[object ' + name + ']';
@@ -505,61 +520,13 @@ function uriEscape(string) {
 }
 
 
-
-function Embed() {
-    this.iframe = document.createElement("iframe");
-    this.iframe.addEventListener('load', this.load.bind(this, true), false);
-}
-
-Embed.prototype.append = function (target) {
-    function isElement(obj) {
-        return !!(obj && obj.nodeType === 1);
-    }
-    if (!target || !isElement(target)) {
-        throw new Error('bad argument');
-    } else {
-        target.appendChild(this.iframe);
-        this.iframe.contentDocument.designMode = 'on'
-    }
-}
-
-new Embed().load();
-
-const iframe = document.createElement('iframe');
-
-iframe.addEventListener('load', function (event) {
-    this.contentDocument.designMode = 'on'
-}, false);
-
-document.body.appendChild(iframe);
-
-
 function htmlEscape(str) {
 	str = str + "";
 	return str.replace(/[^\w :\-\/.?=]/gi, function (c) {
 		return "&#" + +c.charCodeAt(0) + ";";
 	});
 }
-function getDocHeight(D) {
-	return Math.max(
-		D.body.scrollHeight,
-		D.documentElement.scrollHeight,
-		D.body.offsetHeight,
-		D.documentElement.offsetHeight,
-		D.body.clientHeight,
-		D.documentElement.clientHeight
-	);
-}
-function getDocWidth(D) {
-	return Math.max(
-		D.body.scrollWidth,
-		D.documentElement.scrollWidth,
-		D.body.offsetWidth,
-		D.documentElement.offsetWidth,
-		D.body.clientWidth,
-		D.documentElement.clientWidth
-	);
-}
+
 function findPos(obj) {
 	var left = 0,
 		top = 0;
