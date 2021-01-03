@@ -7,7 +7,50 @@
        factory(Base);
     }
  }(this, function (Base) {
- 
+    // Get element(s) by CSS selector:
+    window.qs = function (selector, scope) {
+        return (scope || document).querySelector(selector);
+    };
+    window.qsa = function (selector, scope) {
+        return (scope || document).querySelectorAll(selector);
+    };
+
+    // addEventListener wrapper:
+    window.$on = function (target, type, callback, useCapture) {
+        target.addEventListener(type, callback, !!useCapture);
+    };
+
+    // Attach a handler to event for all elements that match the selector,
+    // now or in the future, based on a root element
+    window.$delegate = function (target, selector, type, handler) {
+        function dispatchEvent(event) {
+            var targetElement = event.target;
+            var potentialElements = window.qsa(selector, target);
+            var hasMatch = Array.prototype.indexOf.call(potentialElements, targetElement) >= 0;
+
+            if (hasMatch) {
+                handler.call(targetElement, event);
+            }
+        }
+
+        // https://developer.mozilla.org/en-US/docs/Web/Events/blur
+        var useCapture = type === 'blur' || type === 'focus';
+
+        window.$on(target, type, dispatchEvent, useCapture);
+    };
+
+    // Find the element's parent with the given tag name:
+    // $parent(qs('a'), 'div');
+    window.$parent = function (element, tagName) {
+        if (!element.parentNode) {
+            return;
+        }
+        if (element.parentNode.tagName.toLowerCase() === tagName.toLowerCase()) {
+            return element.parentNode;
+        }
+        return window.$parent(element.parentNode, tagName);
+    };
+
     function assign(keysCallback, undefinedOnly) {
        return function (object) {
           var length = arguments.length,
@@ -36,15 +79,33 @@
  
     var extend = assign(names);
 
-    DocumentFragment.prototype.append = function(){};
-    DocumentFragment.prototype.render = function(){};
+    DocumentFragment.prototype.append = function(target){
+        this.appendChild(target);
+    };
     
+    DocumentFragment.prototype.render = function(target){
+        target.appendChild(this);
+    };
+
     var View = (Base.View = function () {
        this.preinitialize.apply(this, arguments);
        this.initialize.apply(this, arguments);
     });
  
     extend(View.prototype, Base.Events, {
+       preinitialize: function () {},
+       initialize: function () {},
+       render : function(){
+           return this;
+       }
+    });
+    
+    var Container = (Base.Container = function () {
+       this.preinitialize.apply(this, arguments);
+       this.initialize.apply(this, arguments);
+    });
+ 
+    extend(Container.prototype, Base.Events, {
        preinitialize: function () {},
        initialize: function () {},
        render : function(){
@@ -69,7 +130,7 @@
        return child;
     };
  
-    View.extend = inherits;
+    View.extend = Container.extend = inherits;
  
     return Base;
  
