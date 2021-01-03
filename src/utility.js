@@ -1,28 +1,71 @@
+var objectTags = {
+    'file': '[object File]',
+    'blob': '[object Blob]',
+    'location': '[object Location]',
+    'arraybuffer': '[object ArrayBuffer]',
+    'arguments': '[object Arguments]',
+    'function': '[object Function]',
+    'string': '[object String]',
+    'Number': '[object Number]',
+    'Date': '[object Date]',
+    'RegExp': '[object RegExp]',
+    'Error': '[object Error]'
+}
+
+function __(object) {
+    if (object instanceof __) return object;
+    if (!(this instanceof __)) return new __(object);
+};
+
+['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function (name) {
+    __['is' + name] = function (obj) {
+        return toString.call(obj) === '[object ' + name + ']';
+    }
+});
+
+/* *** toSource() *** */
+
+function toSource(func) {
+    if (func != null) {
+        try {
+            return Function.prototype.toString.call(func);
+        } catch (er) {
+            throw '';
+        }
+        try {
+            return (func + '');
+        } catch (er) {
+            throw '';
+        }
+    }
+    return '';
+}
+/* *** toProps() *** */
 
 function toProps(object) {
     var resultSet = {};
     for (var o = object; o; o = o.__proto__) {
-      try {
-        var names = Object.getOwnPropertyNames(o);
-        for (var i = 0; i < names.length; ++i)
-          resultSet[names[i]] = typeof object[names[i]];
-      } catch (e) {}
+        try {
+            var names = Object.getOwnPropertyNames(o);
+            for (var i = 0; i < names.length; ++i)
+                resultSet[names[i]] = typeof object[names[i]];
+        } catch (e) {}
     }
     return JSON.stringify(resultSet);
 }
 
-function dir(obj){
-	var result = [];
-	for(var prop in obj){
-		if(obj.hasOwnProperty(prop)){
-			result.push(obj[prop]);
-		}
-	}
-	return JSON.stringify(result);
+function dir(obj) {
+    var result = [];
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            result.push(obj[prop]);
+        }
+    }
+    return JSON.stringify(result);
 }
 
-function names(obj){
-    return JSON.stringify(Object.getOwnPropertyNames(obj),null,2);
+function names(obj) {
+    return JSON.stringify(Object.getOwnPropertyNames(obj), null, 2);
 }
 
 /* *** times() *** */
@@ -77,57 +120,59 @@ function memoize(callback, address) {
     }
 }
 
-var limit = function(func, wait, debounce) {
-	var timeout;  
-	return function() {  
-		var context = this;
-		var args = arguments;
-		var throttler = function() {  
-			timeout = null;      
-			func.apply(context, args);      
-		};    
-		if (debounce) clearTimeout(timeout);    
-		if (debounce || !timeout) timeout = setTimeout(throttler, wait);    
-	};  
-};
-function throttle(func, wait) {
-  return limit(func, wait, false);
-};
-function debounce(func, wait) {
-  return limit(func, wait, true);
-};
-var idCounter = 0;
-
-function uniqueId(prefix) {
-    var id = idCounter++;
-    return prefix ? prefix + id : id;
-};
-
-function isObject(obj) {
-    var type = typeof obj;
-    return type === 'function' || type === 'object' && !!obj;
-};
-
-function createAssigner(keysFunc, undefinedOnly) {
-    return function (obj) {
-        var length = arguments.length,
-            index, i;
-        if (length < 2 || obj == null) return obj;
-        for (index = 1; index < length; index++) {
-            var source = arguments[index],
-                keys = keysFunc(source),
-                l = keys.length;
-            for (i = 0; i < l; i++) {
-                var key = keys[i];
-                if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
-            }
-        }
-        return obj;
+var limit = function (func, wait, debounce) {
+    var timeout;
+    return function () {
+        var context = this;
+        var args = arguments;
+        var throttler = function () {
+            timeout = null;
+            func.apply(context, args);
+        };
+        if (debounce) clearTimeout(timeout);
+        if (debounce || !timeout) timeout = setTimeout(throttler, wait);
     };
 };
 
-const extendOwn = createAssigner(Object.keys);
+function throttle(func, wait) {
+    return limit(func, wait, false);
+};
 
+function debounce(func, wait) {
+    return limit(func, wait, true);
+};
+
+function assign(keysCallback, undefinedOnly) {
+    return function (object) {
+        var length = arguments.length,
+            index, i;
+        if (length < 2 || object == null) return object;
+        for (index = 1; index < length; index++) {
+            var source = arguments[index];
+            var keys = keysCallback(source),
+                l = keys.length;
+            for (i = 0; i < l; i++) {
+                var key = keys[i];
+                if (!undefinedOnly || object[key] === void 0) object[key] = source[key];
+            }
+        }
+        return object;
+    }
+}
+
+function names(obj) {
+    var result = [];
+    for (var key in obj) {
+        result.push(key);
+    }
+    return result;
+};
+
+// Internal copy operations for objects
+var extend = assign(names);
+var extendOwn = createAssigner(Object.keys);
+
+// Externale copy operation for objects
 function extend(obj) {
     [].slice.call(arguments, 1).forEach(function (source) {
         for (var prop in source) {
@@ -137,39 +182,7 @@ function extend(obj) {
     return obj;
 };
 
-function Ctor() {};
 
-function baseCreate(prototype) {
-    if (!isObject(prototype)) return {};
-    if (Object.create) return Object.create(prototype);
-    Ctor.prototype = prototype;
-    var result = new Ctor;
-    Ctor.prototype = null;
-    return result;
-}
-
-function create(prototype, props) {
-    var result = baseCreate(prototype);
-    if (props) extendOwn(result, props);
-    return result;
-}
-
-function inherits(protoProps, staticProps) {
-    var parent = this;
-    var child;
-    if (protoProps && has(protoProps, 'constructor')) {
-        child = protoProps.constructor;
-    } else {
-        child = function () {
-            return parent.apply(this, arguments);
-        };
-    }
-    extend(child, parent, staticProps);
-    child.prototype = create(parent.prototype, protoProps);
-    child.prototype.constructor = child;
-    child.__super__ = parent.prototype;
-    return child;
-};
 
 /* *** isArrayLike() *** */
 var property = function (key) {
@@ -199,6 +212,11 @@ function isDate(obj) {
 function isRegExp(obj) {
     return !!(obj && obj.test && obj.exec && (obj.ignoreCase || obj.ignoreCase === false));
 }
+
+function isObject(obj) {
+    var type = typeof obj;
+    return type === 'function' || type === 'object' && !!obj;
+};
 
 /* *** isString()    *** */
 function isString(obj) {
@@ -372,61 +390,60 @@ function isArrayBufferView(val) {
     return result;
 }
 
-function isBase64Url(url){
-    if (/^data:[^;]+;base64,/.test(url)) return true;
+function isBase64(input) {
+    if (/^data:[^;]+;base64,/.test(input)) return true;
     return false;
 };
 
-function encodeString(string){
-	return 'data:application/octet-stream;base64,'.concat(btoa(string));
+function encodeString(string) {
+    return 'data:application/octet-stream;base64,'.concat(btoa(string));
 };
 
-function base64ToUint8(url){
+function stringToUint8ToArray(input) {
+    var i, data = atob(input.split(',')[1]),
+        length = data.length,
+        output = [];
+    var dataView = new Uint8Array(data.length);
+    for (i = 0; i < length; i++) {
+        dataView[i] = data.charCodeAt(i);
+        output.push(dataView[i]);
+    }
+    return JSON.stringify(output, null, 2);
+}
+
+function stringToUint8(string) {
+    var i, length = string.length
+    var buffer = new ArrayBuffer(length);
+    var array = new Uint8Array(buffer);
+    for (i = 0; i < length; i++) {
+        array[i] = string.charCodeAt(i);
+    }
+    return buffer;
+}
+
+function base64ToUint8(url) {
     var dataView;
-    if(isBase64Url(url)){    
+    if (isBase64Url(url)) {
         var data = atob(url.split(',')[1]);
         dataView = new Uint8Array(data.length);
         var i, length = data.length;
-        for (i=0; i<length; ++i) {
-          dataView[i] = data.charCodeAt(i);
-        }    
+        for (i = 0; i < length; ++i) {
+            dataView[i] = data.charCodeAt(i);
+        }
     }
     return dataView;
 }
 
-function stringToUint8(string) {
-	var i, length = string.length	
-	var buffer = new ArrayBuffer(length);
-	var array = new Uint8Array(buffer);	
-	for (i = 0; i < length; i++) {		
-		array[i] = string.charCodeAt(i);		
-	}	
-	return buffer;	
-}
-
-const x = {};
-
-['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function (name) {
-    x['is' + name] = function (obj) {
-        return toString.call(obj) === '[object ' + name + ']';
+function stringToBuffer(input) {
+    var i, data = atob(input.split(',')[1]),
+        length = data.length,
+        output = [];
+    var dataView = new ArrayBuffer(data.length);
+    for (i = 0; i < length; i++) {
+        dataView[i] = data.charCodeAt(i);
+        output.push(dataView[i]);
     }
-});
-
-/* *** toSource() *** */
-function toSource(func) {
-    if (func != null) {
-        try {
-            return Function.prototype.toString.call(func);
-        } catch (er) {
-            throw '';
-        }
-        try {
-            return (func + '');
-        } catch (er) {
-            throw '';
-        }
-    }
-    return '';
+    return JSON.stringify(output, null, 2);
 }
 
 /* *** trim() *** */
@@ -484,8 +501,6 @@ function format(ms) {
         .join(', ');
 };
 
-console.log(format(Date.now()));
-
 function jsEscape(string) {
     return string
         .replace(/(['\\])/g, '\\$1')
@@ -521,27 +536,27 @@ function uriEscape(string) {
 
 
 function htmlEscape(str) {
-	str = str + "";
-	return str.replace(/[^\w :\-\/.?=]/gi, function (c) {
-		return "&#" + +c.charCodeAt(0) + ";";
-	});
+    str = str + "";
+    return str.replace(/[^\w :\-\/.?=]/gi, function (c) {
+        return "&#" + +c.charCodeAt(0) + ";";
+    });
 }
 
 function findPos(obj) {
-	var left = 0,
-		top = 0;
-	if (obj.offsetParent) {
-		while (1) {
-			left += obj.offsetLeft;
-			top += obj.offsetTop;
-			if (!obj.offsetParent) {
-				break;
-			}
-			obj = obj.offsetParent;
-		}
-	} else if (obj.x && obj.y) {
-		left += obj.x;
-		top += obj.y;
-	}
-	return [left, top];
+    var left = 0,
+        top = 0;
+    if (obj.offsetParent) {
+        while (1) {
+            left += obj.offsetLeft;
+            top += obj.offsetTop;
+            if (!obj.offsetParent) {
+                break;
+            }
+            obj = obj.offsetParent;
+        }
+    } else if (obj.x && obj.y) {
+        left += obj.x;
+        top += obj.y;
+    }
+    return [left, top];
 }
