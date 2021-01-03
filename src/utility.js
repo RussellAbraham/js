@@ -1,193 +1,35 @@
-function isBase64(input){
-    if (/^data:[^;]+;base64,/.test(input)) return true;
-    return false;
-};
+/* This library is an interpolated look many common utilities, including underscore and lodash */
 
-function encodeString(string){
-	return 'data:application/octet-stream;base64,'.concat(btoa(string));	
-};
+/* going to use these with a function to detect these properties and parse the result accordingly */
 
-function stringToUint8(input){
-	var i,  data = atob(input.split(',')[1]),  length = data.length,  output = [];
-	var dataView = new Uint8Array(data.length);
-	for(i = 0;i < length;i++){
-		dataView[i] = data.charCodeAt(i);
-		output.push(dataView[i]);
-	}
-	return JSON.stringify(output,null,2);
+var objectTags = {
+    'file' : '[object File]',
+    'blob' : '[object Blob]',
+    'location' : '[object Location]',
+    'arraybuffer' : '[object ArrayBuffer]',
+    'arguments':'[object Arguments]',
+    'function':'[object Function]',
+    'string':'[object String]', 
+    'Number':'[object Number]',
+    'Date':'[object Date]',
+    'RegExp':'[object RegExp]',
+    'Error':'[object Error]'
 }
 
-function toProps(object) {
-    var resultSet = {};
-    for (var o = object; o; o = o.__proto__) {
-      try {
-        var names = Object.getOwnPropertyNames(o);
-        for (var i = 0; i < names.length; ++i)
-          resultSet[names[i]] = typeof object[names[i]];
-      } catch (e) {}
+function __(object){
+    if (object instanceof __) return object;
+    if (!(this instanceof __)) return new __(object);
+};
+
+['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error', 'Location', 'ArrayBuffer','File','Blob'].forEach(function (name) {
+    __['is' + name] = function (obj) {
+        return toString.call(obj) === '[object ' + name + ']';
     }
-    return JSON.stringify(resultSet);
-}
+});
+// 2 reasons the array like is here
 
-function dir(obj){
-	var result = [];
-	for(var prop in obj){
-		if(obj.hasOwnProperty(prop)){
-			result.push(obj[prop]);
-		}
-	}
-	return JSON.stringify(result);
-}
-
-function names(obj){
-    return JSON.stringify(Object.getOwnPropertyNames(obj),null,2);
-}
-
-/* *** times() *** */
-var optimizCallback = function (func, context, argCount) {
-    if (context === void 0) return func;
-    switch (argCount == null ? 3 : argCount) {
-        case 1:
-            return function (value) {
-                return func.call(context, value);
-            };
-        case 2:
-            return function (value, other) {
-                return func.call(context, value, other);
-            };
-        case 3:
-            return function (value, index, collection) {
-                return func.call(context, value, index, collection);
-            };
-        case 4:
-            return function (accumulator, value, index, collection) {
-                return func.call(context, accumulator, value, index, collection);
-            };
-    }
-    return function () {
-        return func.apply(context, arguments);
-    };
-};
-
-function times(n, iteratee, context) {
-    var accum = Array(Math.max(0, n));
-    iteratee = optimizCallback(iteratee, context, 1);
-    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-    return accum;
-};
-
-/* *** memoize() *** */
-function has(obj, key) {
-    return obj != null && {}.hasOwnProperty.call(obj, key);
-}
-
-function identity(object) {
-    return object;
-}
-
-function memoize(callback, address) {
-    const cache = {};
-    var key;
-    address || (address = identity);
-    return function () {
-        key = address.apply(this, arguments);
-        return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
-    }
-}
-
-var limit = function(func, wait, debounce) {
-	var timeout;  
-	return function() {  
-		var context = this;
-		var args = arguments;
-		var throttler = function() {  
-			timeout = null;      
-			func.apply(context, args);      
-		};    
-		if (debounce) clearTimeout(timeout);    
-		if (debounce || !timeout) timeout = setTimeout(throttler, wait);    
-	};  
-};
-function throttle(func, wait) {
-  return limit(func, wait, false);
-};
-function debounce(func, wait) {
-  return limit(func, wait, true);
-};
-var idCounter = 0;
-
-function uniqueId(prefix) {
-    var id = idCounter++;
-    return prefix ? prefix + id : id;
-};
-
-function isObject(obj) {
-    var type = typeof obj;
-    return type === 'function' || type === 'object' && !!obj;
-};
-
-function createAssigner(keysFunc, undefinedOnly) {
-    return function (obj) {
-        var length = arguments.length,
-            index, i;
-        if (length < 2 || obj == null) return obj;
-        for (index = 1; index < length; index++) {
-            var source = arguments[index],
-                keys = keysFunc(source),
-                l = keys.length;
-            for (i = 0; i < l; i++) {
-                var key = keys[i];
-                if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
-            }
-        }
-        return obj;
-    };
-};
-
-const extendOwn = createAssigner(Object.keys);
-
-function extend(obj) {
-    [].slice.call(arguments, 1).forEach(function (source) {
-        for (var prop in source) {
-            if (source[prop] !== void 0) obj[prop] = source[prop];
-        }
-    });
-    return obj;
-};
-
-function Ctor() {};
-
-function baseCreate(prototype) {
-    if (!isObject(prototype)) return {};
-    if (Object.create) return Object.create(prototype);
-    Ctor.prototype = prototype;
-    var result = new Ctor;
-    Ctor.prototype = null;
-    return result;
-}
-
-function create(prototype, props) {
-    var result = baseCreate(prototype);
-    if (props) extendOwn(result, props);
-    return result;
-}
-
-function inherits(protoProps, staticProps) {
-    var parent = this;
-    var child;
-    if (protoProps && has(protoProps, 'constructor')) {
-        child = protoProps.constructor;
-    } else {
-        child = function () {
-            return parent.apply(this, arguments);
-        };
-    }
-    extend(child, parent, staticProps);
-    child.prototype = create(parent.prototype, protoProps);
-    child.prototype.constructor = child;
-    child.__super__ = parent.prototype;
-    return child;
-};
+// 1. JIT bug on ARM processors
+// 2. Low Level Optimization for patching Iteration protocol in ES6 to Backbones Collection __super__
 
 /* *** isArrayLike() *** */
 var property = function (key) {
@@ -203,67 +45,119 @@ var isArrayLike = function (collection) {
     return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
 };
 
+/*
+    check type,
+    
+    function checkType(input){
+        if(isObject(input)){
+            // process as object
+        }
+        else if (isFunction(input)){
+            // process as function
+        }
+    }
+
+    checkType(Object); 
+
+    return all matching types
+
+    function matchingTypes(array){
+        if(isArrayLike(array)){
+            array.sort(isObject);
+            // returns objects from the array for process
+        }
+        else if(isFunction(array)){
+            array.sort(isFunction);
+            // returns functions from the array for process
+        }
+    }
+
+    matchingTypes([function(),{},function(){},{}])
+
+    
+*/
+
 /* *** isFunction() *** */
+
 function isFunction(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
-}
+};
 
 /* *** isDate()      *** */
+
 function isDate(obj) {
     return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear);
-}
+};
 
 /* *** isRegExp()    *** */
+
 function isRegExp(obj) {
     return !!(obj && obj.test && obj.exec && (obj.ignoreCase || obj.ignoreCase === false));
-}
+};
+
+/* *** isObject() *** */
+
+function isObject(obj) {
+    var type = typeof obj;
+    return type === 'function' || type === 'object' && !!obj;
+};
 
 /* *** isString()    *** */
+
 function isString(obj) {
     return !!(obj === "" || (obj && obj.charCodeAt && obj.substr));
 }
 
 /* *** isBoolean()   *** */
+
 function isBoolean(obj) {
     return obj === true || obj === false;
 }
 
 /* *** isNumber()    *** */
+
 function isNumber(obj) {
     return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
 }
 
 /* *** isNull()      *** */
+
 function isNull(obj) {
     return obj === null;
 }
 
 /* *** isUndefined() *** */
+
 function isUndefined(obj) {
     return obj === void 0;
 }
 
 /* *** isObjectLike()    *** */
+
 function isObjectLike(value) {
     return value != null && typeof value == 'object';
 }
 
 /* *** isArray()    *** */
+
 function isArray(obj) {
     return toString.call(obj) === "[object Array]";
 }
 
 /*  *** isLocation() ***  */
+
 function isLocation(obj) {
     return toString.call(obj) === "[object Location]";
 }
 
 /*  *** isCallable() ***  */
+
 function isCallable(obj) {
     return typeof obj === 'function';
 }
 
 /*  *** isConstructor() ***  */
+
 function isContstructor(obj) {
     return isCallable(obj);
 }
@@ -390,12 +284,167 @@ function isArrayBufferView(val) {
     return result;
 }
 
-const x = {};
-['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'].forEach(function (name) {
-    x['is' + name] = function (obj) {
-        return toString.call(obj) === '[object ' + name + ']';
+function isBase64(input){
+    if (/^data:[^;]+;base64,/.test(input)) return true;
+    return false;
+};
+
+/* End of the sorting functions */
+
+/* String Processing, Array & Object Iteration */
+
+function encodeString(string){
+	return 'data:application/octet-stream;base64,'.concat(btoa(string));	
+};
+
+function stringToUint8(input){
+	var i,  data = atob(input.split(',')[1]),  length = data.length,  output = [];
+	var dataView = new Uint8Array(data.length);
+	for(i = 0;i < length;i++){
+		dataView[i] = data.charCodeAt(i);
+		output.push(dataView[i]);
+	}
+	return JSON.stringify(output,null,2);
+}
+
+function stringToBuffer(input){
+	var i,  data = atob(input.split(',')[1]),  length = data.length,  output = [];
+	var dataView = new ArrayBuffer(data.length);
+	for(i = 0;i < length;i++){
+		dataView[i] = data.charCodeAt(i);
+		output.push(dataView[i]);
+	}
+	return JSON.stringify(output,null,2);
+}
+
+function toProps(object) {
+    var resultSet = {};
+    for (var o = object; o; o = o.__proto__) {
+      try {
+        var names = Object.getOwnPropertyNames(o);
+        for (var i = 0; i < names.length; ++i)
+          resultSet[names[i]] = typeof object[names[i]];
+      } catch (e) {}
     }
-});
+    return JSON.stringify(resultSet);
+}
+
+function dir(obj){
+	var result = [];
+	for(var prop in obj){
+		if(obj.hasOwnProperty(prop)){
+			result.push(obj[prop]);
+		}
+	}
+	return JSON.stringify(result);
+}
+
+function objectNames(obj){
+    return JSON.stringify(Object.getOwnPropertyNames(obj),null,2);
+}
+
+/* *** times() *** */
+/* 
+ * use with memoization and steps to run parralel 
+*/
+var optimizCallback = function (func, context, argCount) {
+    if (context === void 0) return func;
+    switch (argCount == null ? 3 : argCount) {
+        case 1:
+            return function (value) {
+                return func.call(context, value);
+            };
+        case 2:
+            return function (value, other) {
+                return func.call(context, value, other);
+            };
+        case 3:
+            return function (value, index, collection) {
+                return func.call(context, value, index, collection);
+            };
+        case 4:
+            return function (accumulator, value, index, collection) {
+                return func.call(context, accumulator, value, index, collection);
+            };
+    }
+    return function () {
+        return func.apply(context, arguments);
+    };
+};
+function times(n, iteratee, context) {
+    var accum = Array(Math.max(0, n));
+    iteratee = optimizCallback(iteratee, context, 1);
+    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+    return accum;
+};
+
+/* *** memoize() *** */
+
+function has(obj, key) {
+    return obj != null && {}.hasOwnProperty.call(obj, key);
+};
+
+function identity(object) {
+    return object;
+};
+
+function memoize(callback, address) {
+    const cache = {};
+    var key;
+    address || (address = identity);
+    return function () {
+        key = address.apply(this, arguments);
+        return has(cache, key) ? cache[key] : (cache[key] = callback.apply(this, arguments));
+    }
+};
+
+var limit = function(func, wait, debounce) {
+	var timeout;  
+	return function() {  
+		var context = this;
+		var args = arguments;
+		var throttler = function() {  
+			timeout = null;      
+			func.apply(context, args);      
+		};    
+		if (debounce) clearTimeout(timeout);    
+		if (debounce || !timeout) timeout = setTimeout(throttler, wait);    
+	};  
+};
+
+/* *** throttle() *** */
+function throttle(func, wait) {
+  return limit(func, wait, false);
+};
+
+/* *** debounce() *** */
+function debounce(func, wait) {
+  return limit(func, wait, true);
+};
+
+
+/* *** uniqueId() *** */
+
+var idCounter = 0;
+
+function uniqueId(prefix) {
+    var id = idCounter++;
+    return prefix ? prefix + id : id;
+};
+
+
+
+
+// this is an external extend
+function extend(obj) {
+    [].slice.call(arguments, 1).forEach(function (source) {
+        for (var prop in source) {
+            if (source[prop] !== void 0) obj[prop] = source[prop];
+        }
+    });
+    return obj;
+};
+
 
 /* *** toSource() *** */
 function toSource(func) {
@@ -505,61 +554,13 @@ function uriEscape(string) {
 }
 
 
-
-function Embed() {
-    this.iframe = document.createElement("iframe");
-    this.iframe.addEventListener('load', this.load.bind(this, true), false);
-}
-
-Embed.prototype.append = function (target) {
-    function isElement(obj) {
-        return !!(obj && obj.nodeType === 1);
-    }
-    if (!target || !isElement(target)) {
-        throw new Error('bad argument');
-    } else {
-        target.appendChild(this.iframe);
-        this.iframe.contentDocument.designMode = 'on'
-    }
-}
-
-new Embed().load();
-
-const iframe = document.createElement('iframe');
-
-iframe.addEventListener('load', function (event) {
-    this.contentDocument.designMode = 'on'
-}, false);
-
-document.body.appendChild(iframe);
-
-
 function htmlEscape(str) {
 	str = str + "";
 	return str.replace(/[^\w :\-\/.?=]/gi, function (c) {
 		return "&#" + +c.charCodeAt(0) + ";";
 	});
 }
-function getDocHeight(D) {
-	return Math.max(
-		D.body.scrollHeight,
-		D.documentElement.scrollHeight,
-		D.body.offsetHeight,
-		D.documentElement.offsetHeight,
-		D.body.clientHeight,
-		D.documentElement.clientHeight
-	);
-}
-function getDocWidth(D) {
-	return Math.max(
-		D.body.scrollWidth,
-		D.documentElement.scrollWidth,
-		D.body.offsetWidth,
-		D.documentElement.offsetWidth,
-		D.body.clientWidth,
-		D.documentElement.clientWidth
-	);
-}
+
 function findPos(obj) {
 	var left = 0,
 		top = 0;
