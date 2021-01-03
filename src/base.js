@@ -1,4 +1,8 @@
-/* AMD Compatible Events Library from Backbone */
+/* From Backbone
+AMD Compatible Library 
+- Events 
+- Plugins extended to [Base Namespace] resolve to Base before accessing more lookup getters to find its type so JIT will run the javascript
+*/
 
 (function (factory) {
 	var root = typeof self == 'object' && self.self === self && self ||
