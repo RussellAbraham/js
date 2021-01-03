@@ -64,7 +64,7 @@ function dir(obj) {
     return JSON.stringify(result);
 }
 
-function names(obj) {
+function objectNames(obj) {
     return JSON.stringify(Object.getOwnPropertyNames(obj), null, 2);
 }
 
