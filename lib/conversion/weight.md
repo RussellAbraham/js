@@ -1,37 +1,109 @@
-Description	Formula	Example
-Convert from Pounds to Kilograms	kg=lb/2.2046	
-Convert from Pounds to Ounces	oz=lb*16	
-Convert from Pounds to Grams	g=lb/0.0022046	
-Convert from Pounds to Stones	st=lb*0.071429	
-Convert from Kilograms to other Measurements
-The table below shows how to convert from Kilograms to other weight measurements:
+- Pounds to Kilograms
 
-Description	Formula	Example
-Convert from Kilograms to Pounds	lb=kg*2.2046	
-Convert from Kilograms to Ounces	oz=kg*35.274	
-Convert from Kilograms to Grams	g=kg*1000	
-Convert from Kilograms to Stones	st=kg*0.1574	
-Convert from Ounces to other Measurements
-The table below shows how to convert from Ounces to other weight measurements:
+`kg=lb/2.2046`
 
-Description	Formula	Example
-Convert from Ounces to Pounds	lb=oz*0.0625	
-Convert from Ounces to Kilograms	kg=oz/35.274	
-Convert from Ounces to Grams	g=oz/0.035274	
-Convert from Ounces to Stones	st=oz*0.0044643	
-Convert from Grams to other Measurements
-The table below shows how to convert from Grams to other weight measurements:
+- Pounds to Ounces
 
-Description	Formula	Example
-Convert from Grams to Pounds	lb=g*0.0022046	
-Convert from Grams to Kilograms	kg=g/1000	
-Convert from Grams to Ounces	oz=g*0.035274	
-Convert from Grams to Stones	st=g*0.00015747	
-Convert from Stones to other Measurements
-The table below shows how to convert from Stones to other weight measurements:
+`oz=lb*16	`
 
-Description	Formula	Example
-Convert from Stones to Pounds	lb=st*14	
-Convert from Stones to Kilograms	kg=st/0.15747	
-Convert from Stones to Ounces	oz=st*224	
-Convert from Stones to Grams	g=st/0.00015747
+- Pounds to Grams
+
+`g=lb/0.0022046	`
+
+- Pounds to Stones
+
+`st=lb*0.071429`
+		
+```javascript
+function lbs2kg(n){
+	n = parseFloat(n);
+	return n / 2.2046;
+};
+
+function lbs2o(n){
+	return n * 16;
+};
+
+function lbs2g(n){
+	return n / 0.0022046;
+};
+
+function lbs2st(n){
+	return n * 0.071429;
+};
+```
+    
+<hr>
+
+<p>Kilograms to Pounds</p>
+
+<pre><code>lb=kg*2.2046</code></pre>
+		
+<p>Kilograms to Ounces</p>
+
+<pre><code>oz=kg*35.274</code></pre>
+
+<p>Kilograms to Grams</p>
+
+<pre><code>g=kg*1000	</code></pre>
+
+<p>Kilograms to Stones</p>
+
+<pre><code>st=kg*0.1574</code></pre>
+
+<hr>
+
+<p>Ounces to Pounds</p>
+
+<pre><code>lb=oz*0.0625</code></pre>
+
+<p>Ounces to Kilograms</p>
+
+<pre><code>kg=oz/35.274</code></pre>
+
+<p>Ounces to Grams</p>
+
+<pre><code>g=oz/0.035274</code></pre>
+
+<p>Ounces to Stones</p>
+
+<pre><code>st=oz*0.0044643</code></pre>
+
+
+
+
+
+<p>Grams to Pounds</p>
+
+<pre><code>lb=g*0.0022046</code></pre>
+
+<p>Grams to Kilograms</p>
+
+<pre><code>kg=g/1000</code></pre>
+
+<p>Grams to Ounces</p>
+
+<pre><code>oz=g*0.035274</code></pre>
+
+<p>Grams to Stones</p>
+
+<pre><code>st=g*0.00015747</code></pre>
+
+<hr>
+
+<p>Stones to Pounds</p>
+
+<pre><code>lb=st*14</code></pre>
+
+<p>Stones to Kilograms</p>
+
+<pre><code>kg=st/0.15747</code></pre>
+
+<p>Stones to Ounces</p>
+
+<pre><code>oz=st*224</code></pre>
+
+<p>Stones to Grams</p>
+
+<pre><code>g=st/0.00015747</code></pre>
+	
