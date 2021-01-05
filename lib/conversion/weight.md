@@ -34,7 +34,7 @@ function lb2g(n){
 `st=lb*0.071429`
 		
 ```javascript
-function lbs2st(n){
+function lb2st(n){
 	return n * 0.071429;
 };
 ```
