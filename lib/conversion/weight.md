@@ -1,33 +1,39 @@
-- Pounds to Kilograms
+### Pounds to Kilograms
 
 `kg=lb/2.2046`
 
-- Pounds to Ounces
+```javascript
+function lb2kg(n){
+	n = parseFloat(n);
+	return n / 2.2046;
+};
+```
 
-`oz=lb*16	`
+### Pounds to Ounces
 
-- Pounds to Grams
+`oz=lb*16`
+
+```javascript
+function lb2oz(n){
+	return n * 16;
+};
+```
+
+### Pounds to Grams
 
 `g=lb/0.0022046	`
 
-- Pounds to Stones
+```javascript
+function lb2g(n){
+	return n / 0.0022046;
+};
+```
+
+### Pounds to Stones
 
 `st=lb*0.071429`
 		
 ```javascript
-function lbs2kg(n){
-	n = parseFloat(n);
-	return n / 2.2046;
-};
-
-function lbs2o(n){
-	return n * 16;
-};
-
-function lbs2g(n){
-	return n / 0.0022046;
-};
-
 function lbs2st(n){
 	return n * 0.071429;
 };
