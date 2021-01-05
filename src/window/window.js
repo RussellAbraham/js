@@ -1,8 +1,5 @@
-function View(){
-    
-}
+var plugins = {};
 
-View.prototype.open = function(options){
-    this.options = (options || {});
-    window.open(options.location,options.name,options.height+','+options.width);
+plugins.open = function(loc,name,xy){
+    window.open(loc,name,xy);
 }

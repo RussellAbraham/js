@@ -48,10 +48,27 @@
       set: function () {}
    });
 
-   var Collection = (Base.Collection = function () {
+   var Collection = (Base.Collection = function (options) {
+      options || (options = {});
       this.preinitialize.apply(this, arguments);
+      if (options.model) this.model = options.model;
+      if (options.comparator !== void 0) this.comparator = options.comparator;
       this.initialize.apply(this, arguments);
+      //if (models) this.reset(models, _.extend({silent: true}, options));
    });
+   
+   var setOptions = {add: true, remove: true, merge: true};
+   var addOptions = {add: true, remove: false};
+ 
+   var splice = function(array, insert, at) {
+     at = Math.min(Math.max(at, 0), array.length);
+     var tail = Array(array.length - at);
+     var length = insert.length;
+     var i;
+     for (i = 0; i < tail.length; i++) tail[i] = array[i + at];
+     for (i = 0; i < length; i++) array[i + at] = insert[i];
+     for (i = 0; i < tail.length; i++) array[i + length + at] = tail[i];
+   };
 
    extend(Collection.prototype, Base.Events, {
       model: Model,
@@ -60,6 +77,7 @@
       get: function () {},
       set: function () {}
    });
+
 
    function inherits(protoProps, staticProps) {
       var parent = this,

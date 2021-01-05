@@ -1,14 +1,6 @@
-var plugins = plugins || {};
+var plugins = {};
 
-(function(object){
-
-    var _window;
-  
-    object.resizeTo = function(x,y) {
-        _window.resizeTo(x,y);
-        _window.focus();
-    }
-      
-    return object;
-
-})(plugins.window);
+plugins.resizeTo = function(x,y) {
+    window.resizeTo(x,y);
+    window.focus();
+};
