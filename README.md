@@ -58,7 +58,32 @@ https://www.html5rocks.com/en/
 https://codepen.io/
 
 ------------------------------------------------------
+
+
 # Standard objects by category
+
+Every Constructor is, at their core, just an object like this.
+
+```javascript
+{
+	__defineGetter__: "[function]",
+	__defineSetter__: "[function]",
+	__lookupGetter__: "[function]",
+	__lookupSetter__: "[function]",
+}
+```
+
+It is common to see methods attached to them. These are some.
+
+```javascript
+constructor : "[function]",
+hasOwnProperty : "[function]",
+isPrototypeOf : "[function]",
+propertyIsEnumerable : "[function]",
+toLocaleString : "[function]",
+toString : "[function]",
+valueOf : "[function]"
+```
 
 ## Value properties
 
