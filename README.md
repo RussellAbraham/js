@@ -228,3 +228,143 @@ Additions to the ECMAScript core for language-sensitive functionalities.
 * Other
 * arguments
 
+HTTP response status codes
+
+100 Continue
+101 Switching Protocols
+103 Early Hints
+200 OK
+201 Created
+202 Accepted
+203 Non-Authoritative Information
+204 No Content
+205 Reset Content
+206 Partial Content
+300 Multiple Choices
+301 Moved Permanently
+302 Found
+303 See Other
+304 Not Modified
+307 Temporary Redirect
+308 Permanent Redirect
+400 Bad Request
+401 Unauthorized
+402 Payment Required
+403 Forbidden
+404 Not Found
+405 Method Not Allowed
+406 Not Acceptable
+407 Proxy Authentication Required
+408 Request Timeout
+409 Conflict
+410 Gone
+411 Length Required
+412 Precondition Failed
+413 Payload Too Large
+414 URI Too Long
+415 Unsupported Media Type
+416 Range Not Satisfiable
+417 Expectation Failed
+418 I'm a teapot
+422 Unprocessable Entity
+425 Too Early
+426 Upgrade Required
+428 Precondition Required
+429 Too Many Requests
+431 Request Header Fields Too Large
+451 Unavailable For Legal Reasons
+500 Internal Server Error
+501 Not Implemented
+502 Bad Gateway
+503 Service Unavailable
+504 Gateway Timeout
+505 HTTP Version Not Supported
+506 Variant Also Negotiates
+507 Insufficient Storage
+508 Loop Detected
+510 Not Extended
+511 Network Authentication Required
+CSP directives
+CSP: base-uri
+CSP: block-all-mixed-content
+CSP: child-src
+CSP: connect-src
+CSP: default-src
+CSP: font-src
+CSP: form-action
+CSP: frame-ancestors
+CSP: frame-src
+CSP: img-src
+CSP: manifest-src
+CSP: media-src
+CSP: navigate-to
+CSP: object-src
+CSP: plugin-types
+CSP: prefetch-src
+CSP: referrer
+CSP: report-to
+CSP: report-uri
+CSP: require-sri-for
+CSP: require-trusted-types-for
+CSP: sandbox
+CSP: script-src-attr
+CSP: script-src-elem
+CSP: script-src
+CSP: style-src-attr
+CSP: style-src-elem
+CSP: style-src
+CSP: trusted-types
+CSP: upgrade-insecure-requests
+CSP: worker-src
+
+CORS errors
+
+Reason: CORS header 'Access-Control-Allow-Origin' does not match 'xyz'
+Reason: CORS request did not succeed
+Reason: CORS disabled
+Reason: CORS request external redirect not allowed
+Reason: invalid token ‘xyz’ in CORS header ‘Access-Control-Allow-Headers’
+Reason: invalid token ‘xyz’ in CORS header ‘Access-Control-Allow-Methods’
+Reason: Did not find method in CORS header ‘Access-Control-Allow-Methods’
+Reason: expected ‘true’ in CORS header ‘Access-Control-Allow-Credentials’
+Reason: missing token ‘xyz’ in CORS header ‘Access-Control-Allow-Headers’ from CORS preflight channel
+Reason: CORS header 'Access-Control-Allow-Origin' missing
+Reason: Multiple CORS header 'Access-Control-Allow-Origin' not allowed
+Reason: Credential is not supported if the CORS header ‘Access-Control-Allow-Origin’ is ‘*’
+Reason: CORS header ‘Origin’ cannot be added
+Reason: CORS preflight channel did not succeed
+Reason: CORS request not HTTP
+Feature-Policy directives
+Feature-Policy: accelerometer
+Feature-Policy: ambient-light-sensor
+Feature-Policy: autoplay
+Feature-Policy: battery
+Feature-Policy: camera
+Feature-Policy: display-capture
+Feature-Policy: document-domain
+Feature-Policy: encrypted-media
+Feature-Policy: fullscreen
+Feature-Policy: geolocation
+Feature-Policy: gyroscope
+Feature-Policy: layout-animations
+Feature-Policy: legacy-image-formats
+Feature-Policy: magnetometer
+Feature-Policy: microphone
+Feature-Policy: midi
+Feature-Policy: oversized-images
+Feature-Policy: payment
+Feature-Policy: picture-in-picture
+Feature-Policy: publickey-credentials-get
+Feature-Policy: screen-wake-lock
+Feature-Policy: sync-xhr
+Feature-Policy: unoptimized-images
+Feature-Policy: unsized-media
+Feature-Policy: usb
+Feature-Policy: vibrate
+Feature-Policy: vr
+Feature-Policy: wake-lock
+
+web-share
+
+Feature-Policy: xr-spatial-tracking
+Feature-Policy: xr
