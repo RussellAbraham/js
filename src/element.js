@@ -39,3 +39,110 @@ function element(target, element, options) {
 	
 }
 
+
+
+function createButton(options) {
+	
+	options = (options || {});
+	
+	var button = document.createElement("button");
+
+	button.className = options.class;	
+	
+	if(options.text){
+		button.textContent = options.text;		
+	} 
+	else {
+		button.innerHTML = options.html;
+	}
+
+	button.setAttribute("data-target", options.target);
+	button.setAttribute("data-toggle", options.toggle);
+	
+	button.setAttribute("aria-pressed", "false");
+	
+	function looseJsonParse(obj) {
+		return Function('"use strict";return (' + obj + ")")();
+	}
+
+	button.addEventListener( "click", function (event) {
+			var target = event.target;
+			var pressed = target.getAttribute("aria-pressed");
+			if (!looseJsonParse(pressed)) {
+				target.setAttribute("aria-pressed", "true");
+				target.classList.add('pressed');
+			} else {
+				target.setAttribute("aria-pressed", "false");
+				target.classList.remove('pressed');
+			}
+		},
+		false
+	);
+
+	return button;
+
+}
+
+var json = {
+	html : '&#9776;',
+	class : 'btn',
+	target : '',
+	toggle : ''
+};
+
+document.body.appendChild(createButton(json));
+
+document.body.appendChild(createButton(json));
+
+document.body.appendChild(createButton(json));
+
+
+function createSection() {
+    var section = document.createElement('section');
+
+    section.className = '';
+    section.id = 's1';
+    section.setAttribute('aria-hidden', 'true');
+}
+
+
+function createButton2(options) {
+    options = (options || {});
+
+    var button = document.createElement('button');
+
+    button.className = options.class;
+
+    button.setAttribute('data-target', options.target);
+    button.setAttribute('data-toggle', options.toggle);
+
+    button.setAttribute('aria-pressed', 'false');
+
+    if(options.text){
+        button.textContent = options.text;
+    } else {
+        button.innerHTML = options.html;
+    }
+
+    function looseJsonParse(obj) {
+        return Function('"use strict";return (' + obj + ')')();
+    };
+
+    button.addEventListener('click', function (event) {
+        var target = event.target.getAttribute('data-target');
+        var selector = document.querySelector(target);
+        var pressed = target.getAttribute('aria-pressed');
+        if (!looseJsonParse(pressed)) {
+            target.setAttribute('aria-pressed', 'true');
+            target.classList.add('pressed');
+            selector.classList.add('changed');
+        } else {
+            target.setAttribute('aria-pressed', 'false');
+            target.classList.remove('pressed');
+            selector.classList.add('changed');
+        }
+    }, false);
+
+    return button;
+
+}
