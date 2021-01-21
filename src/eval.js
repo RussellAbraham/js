@@ -192,7 +192,7 @@ function toProps(obj) {
 
 // run additional level of parsing if the indicated flags properties are present on the input, 
 
-// else return input value and error, that nested level, does not exist on the input
+// else return input value and error, that the requested property, does not exist on the input
 
 
 function parse(string) {
@@ -201,21 +201,37 @@ function parse(string) {
 
     if (typeof string == "function" || false) {
         result = toSource(string);
-    } else if (!!(string && string.test && string.exec && (string.ignoreCase || string.ignoreCase === false))) {
+    }
+
+    else if (!!(string && string.test && string.exec && (string.ignoreCase || string.ignoreCase === false))) {
         result = new RegExp(string).toString();
-    } else if (!!(string && string.getTimezoneOffset && string.setUTCFullYear)) {
+    }
+
+    else if (!!(string && string.getTimezoneOffset && string.setUTCFullYear)) {
         result = string.toString();
-    } else if (typeof string === "object" || false) {
+    } 
+    
+    else if (typeof string === "object" || false) {
         result = toProps(string);
-    } else if (!!(string === "" || (string && string.charCodeAt && string.substr))) {
+    }
+
+    else if (!!(string === "" || (string && string.charCodeAt && string.substr))) {
         result = string;
-    } else if (!!(string === 0 || (string && string.toExponential && string.toFixed))) {
+    } 
+    
+    else if (!!(string === 0 || (string && string.toExponential && string.toFixed))) {
         result = string;
-    } else if (string === true || string === false) {
+    } 
+    
+    else if (string === true || string === false) {
         result = string;
-    } else if (string === void 0) {
+    } 
+    
+    else if (string === void 0) {
         result = undefined;
-    } else if (string === null) {
+    } 
+    
+    else if (string === null) {
         result = null;
     }
 
