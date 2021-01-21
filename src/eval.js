@@ -5,14 +5,12 @@
 var SimplePropertyRetriever = {
     getOwnEnumerables: function (obj) {
         return this._getPropertyNames(obj, true, false, this._enumerable);
-        // Or could use for..in filtered with hasOwnProperty or just this: return Object.keys(obj);
     },
     getOwnNonenumerables: function (obj) {
         return this._getPropertyNames(obj, true, false, this._notEnumerable);
     },
     getOwnEnumerablesAndNonenumerables: function (obj) {
         return this._getPropertyNames(obj, true, false, this._enumerableAndNotEnumerable);
-        // Or just use: return Object.getOwnPropertyNames(obj);
     },
     getPrototypeEnumerables: function (obj) {
         return this._getPropertyNames(obj, false, true, this._enumerable);
@@ -25,7 +23,6 @@ var SimplePropertyRetriever = {
     },
     getOwnAndPrototypeEnumerables: function (obj) {
         return this._getPropertyNames(obj, true, true, this._enumerable);
-        // Or could use unfiltered for..in
     },
     getOwnAndPrototypeNonenumerables: function (obj) {
         return this._getPropertyNames(obj, true, true, this._notEnumerable);
@@ -33,7 +30,6 @@ var SimplePropertyRetriever = {
     getOwnAndPrototypeEnumerablesAndNonenumerables: function (obj) {
         return this._getPropertyNames(obj, true, true, this._enumerableAndNotEnumerable);
     },
-    // Private static property checker callbacks
     _enumerable: function (obj, prop) {
         return obj.propertyIsEnumerable(prop);
     },
@@ -63,12 +59,10 @@ var SimplePropertyRetriever = {
     }
 };
 
-
 function sortci(a, b) {
     return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
 }
 
-// custom because I want to be able to introspect native browser objects *and* functions
 function stringify(o, simple, visited) {
     var json = '',
         i, vi, type = '',
@@ -139,8 +133,7 @@ function stringify(o, simple, visited) {
                 parts.push(names[i] + ': ' + stringify(o[names[i]], true, visited)); // safety from max stack
             } catch (e) {
                 if (e.name == 'NS_ERROR_NOT_IMPLEMENTED') {
-                    // do nothing - not sure it's useful to show this error when the variable is protected
-                    // parts.push(names[i] + ': NS_ERROR_NOT_IMPLEMENTED');
+
                 }
             }
         }
