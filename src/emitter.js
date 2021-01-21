@@ -1,19 +1,19 @@
 
 
-var Emitter = (function(Emitter){
+var Events = (function(Events){
 
-    Emitter.on = function(event, listener){
+    Events.on = function(event, listener){
         this.events = this.events || {};
         this.events[event] = this.events[event] || [];
         this.events[event].push(listener);
         return this;
     };
     
-    Emitter.once = function(){};
+    Events.once = function(){};
     
-    Emitter.listen = function(){};
+    Events.listen = function(){};
 
-    Emitter.off = function(event, listener){
+    Events.off = function(event, listener){
         var listeners = undefined;
         if(!this.events || !(listeners = this.events[event])){
             return this;
@@ -29,7 +29,7 @@ var Emitter = (function(Emitter){
         return this;
     };
 
-    Emitter.emit = function(event){
+    Events.emit = function(event){
         var self = this, length = arguments.length;
         for(length, args = Array(length > 1 ? length - 1 : 0), key = 1;key < length;key += 1){
             args[key - 1] = arguments[key];
@@ -43,7 +43,7 @@ var Emitter = (function(Emitter){
         })
     };
 
-    return Emitter;
+    return Events;
 
 })({});
 

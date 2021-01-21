@@ -60,5 +60,7 @@
     })    
   };
 
+  var bin = Base.bin = {};
+
   return Base;
 });

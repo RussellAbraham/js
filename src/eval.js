@@ -303,3 +303,56 @@ function reparse(string) {
       }    
     };    
 })(this);
+
+
+(function (window, document) {
+	
+	var channel = new MessageChannel();
+	var port1 = channel.port1;
+
+	var iframe = document.createElement("iframe"),
+		sandbox;
+
+	//iframe.style.cssText = 'display:none;';
+
+	iframe.id = "sandbox";
+
+	document.body.appendChild(iframe);
+
+	sandbox = iframe.contentWindow;
+
+	sandbox.document.open();
+
+	sandbox.document.write("<!DOCTYPE html>Hello</html>");
+
+	sandbox.document.close();
+
+	// PORT2
+
+	window.post = function (message) {
+		return port1.postMessage(message);
+	};
+
+	port1.addEventListener( "message", function (event) { 
+		console.log(event.data); 
+	}, false );
+
+	iframe.addEventListener( "load", function (event) { 
+		sandbox.postMessage("init", "*", [channel.port2]);	
+	}, false );
+
+	
+	sandbox.addEventListener("message", function (event) {
+		
+		var port2;
+		
+		port2 = event.ports[0];
+
+		port2.onmessage = function(event){
+			port2.postMessage(event.data);
+		};
+		
+	}, false);
+	
+	
+})(this, document);
