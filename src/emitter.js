@@ -47,6 +47,24 @@ var Events = (function(Events){
 
 })({});
 
+// middleware function
+function Listening(listener, obj) {
+    this.id = listener.cid;
+    this.listener = listener;
+    this.obj = obj;
+    this.interop = true;
+    this.count = 0;
+    this.events = void 0;
+};
+
+Listening.prototype.on = function(){};
+
+Listening.prototype.off = function(){};
+
+Listening.prototype.cleanup = function () {
+    delete this.listener.listeningTo[this.obj.cid];
+    if (!this.interop) delete this.obj.listeners[this.id];
+};
 
 function Emitter(){
 
