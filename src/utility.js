@@ -1,3 +1,5 @@
+
+
 /* *** isFunction() *** */
 function isFunction(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
@@ -195,9 +197,44 @@ function isArrayBufferView(val) {
     return result;
 }
 
+/* *** isBase64 *** */
 function isBase64(input) {
     if (/^data:[^;]+;base64,/.test(input)) return true;
     return false;
+};
+
+var _ = {
+    isFunction : isFunction,
+    isDate : isDate,
+    isRegExp : isRegExp,
+    isObject : isObject,
+    isString : isString,
+    isBoolean : isBoolean,
+    isNumber : isNumber,
+    isUndefined : isUndefined,  
+    isNull : isNull,
+//
+
+//
+    isFinite : isFinite,
+    isEven : isEven,
+    isPrime : isPrime,
+
+    isAlphaNumeric : isAlphaNumeric,
+    
+
+    isFile : isFile,
+    isBlob : isBlob,
+    
+    isStream : isStream,
+
+
+    
+    isArrayBuffer : isArrayBuffer,
+    isArrayBufferView : isArrayBufferView,
+    isBase64 : isBase64
+
+
 };
 
 function encodeString(string) {
@@ -250,6 +287,10 @@ function stringToBuffer(input) {
     }
     return JSON.stringify(output, null, 2);
 }
+
+function sanitizeMarkup(html){
+    return html.replace(/<[^>]*>/g, '')
+};
 
 /* *** trim() *** */
 function trim(str) {
