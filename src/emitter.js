@@ -66,8 +66,8 @@ Listening.prototype.cleanup = function () {
     if (!this.interop) delete this.obj.listeners[this.id];
 };
 
-function Emitter(){
-
+function Emitter(name){
+    this.name = name;
 };
 
 Emitter.prototype = Object.create(Object.prototype,{
