@@ -38,11 +38,7 @@ Request.prototype.load = function(url){
 	this.xhr.open('GET', 'https://assets.codepen.io/1674766/'+url, true);
 	this.xhr.responseType = 'arraybuffer';
 	this.xhr.send(null);
-};
-
-
-
-
+}
 
 function Control(){
 	this.request = new Request();
